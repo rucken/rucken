@@ -1,0 +1,34 @@
+{
+  "root": "libs/rucken",
+  "sourceRoot": "libs/rucken/src",
+  "projectType": "library",
+  "targets": {
+    "build": {
+      "executor": "@nrwl/node:package",
+      "outputs": ["{options.outputPath}"],
+      "options": {
+        "outputPath": "dist/libs/rucken",
+        "tsConfig": "libs/rucken/tsconfig.lib.json",
+        "packageJson": "libs/rucken/package.json",
+        "main": "libs/rucken/src/index.ts",
+        "assets": ["libs/rucken/*.md"]
+      }
+    },
+    "lint": {
+      "executor": "@nrwl/linter:eslint",
+      "outputs": ["{options.outputFile}"],
+      "options": {
+        "lintFilePatterns": ["libs/rucken/**/*.ts"]
+      }
+    },
+    "test": {
+      "executor": "@nrwl/jest:jest",
+      "outputs": ["coverage/libs/rucken"],
+      "options": {
+        "jestConfig": "libs/rucken/jest.config.js",
+        "passWithNoTests": true
+      }
+    }
+  },
+  "tags": []
+}

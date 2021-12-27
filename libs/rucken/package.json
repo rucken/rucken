@@ -1,0 +1,10 @@
+{
+  "name": "rucken",
+  "version": "3.0.2",
+  "bin": {
+    "rucken": "./src/index.js"
+  },
+  "dependencies": {
+    "tslib": "^2.0.0"
+  }
+}
