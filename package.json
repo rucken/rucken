@@ -9,7 +9,7 @@
     "test": "npm run nx -- test rucken",
     "release": "standard-version",
     "github-release": "conventional-github-releaser -p angular -r 0",
-    "publish": "npm run release && npm run test && npm run build && npm run github-release && ./scripts/add-header-to-rucken.js && npm publish ./dist/libs/rucken"
+    "publish": "npm run test && npm run build && export $(cat ./.env) && npm run release && npm run github-release && ./scripts/add-header-to-rucken.js && npm publish ./dist/libs/rucken"
   },
   "private": true,
   "devDependencies": {
