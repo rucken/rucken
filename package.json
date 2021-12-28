@@ -2,6 +2,25 @@
   "name": "rucken",
   "version": "3.0.6",
   "license": "MIT",
+  "author": "EndyKaufman <admin@site15.ru>",
+  "engines": {
+    "node": ">=12",
+    "npm": ">=6.4.0"
+  },
+  "bugs": {
+    "url": "https://github.com/rucken/rucken/issues"
+  },
+  "homepage": "https://github.com/rucken/rucken",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/rucken/rucken.git"
+  },
+  "maintainers": [
+    {
+      "name": "EndyKaufman",
+      "email": "admin@site15.ru"
+    }
+  ],
   "readme": "README.md",
   "scripts": {
     "nx": "nx",
