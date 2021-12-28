@@ -2,6 +2,8 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [3.0.28](https://github.com/rucken/rucken/compare/v3.0.27...v3.0.28) (2021-12-28)
+
 ### [3.0.27](https://github.com/rucken/rucken/compare/v3.0.26...v3.0.27) (2021-12-28)
 
 ### 3.0.26 (2021-12-28)
