@@ -1,6 +1,6 @@
 {
   "name": "rucken",
-  "version": "3.0.22",
+  "version": "3.0.23",
   "license": "MIT",
   "author": "EndyKaufman <admin@site15.ru>",
   "engines": {
@@ -30,7 +30,7 @@
     "release": "standard-version",
     "github-release": "conventional-github-releaser -p angular -r 0",
     "delete-local-tags": "git tag -l | xargs git tag -d && git tag -l | xargs git tag -d",
-    "publish": "npm run test && export $(cat ./.env) && npm run release && git fetch --tags -f && npm run github-release && npm run build && ./scripts/add-header-to-rucken.js && npm publish ./dist/libs/rucken"
+    "publish": "npm run delete-local-tags && npm run test && export $(cat ./.env) && npm run release && npm run github-release && npm run build && ./scripts/add-header-to-rucken.js && npm publish ./dist/libs/rucken"
   },
   "private": true,
   "devDependencies": {
