@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [3.1.0](https://github.com/rucken/rucken/compare/v3.0.30...v3.1.0) (2021-12-28)
+
+
+### Features
+
+* add ci config for publish ([e16a305](https://github.com/rucken/rucken/commit/e16a305248e5b2989038ba64fcf9fa7554cf6c87))
+
 ### [3.0.30](https://github.com/rucken/rucken/compare/v3.0.29...v3.0.30) (2021-12-28)
 
 ### [3.0.32](https://github.com/rucken/rucken/compare/v3.0.29...v3.0.32) (2021-12-28)
