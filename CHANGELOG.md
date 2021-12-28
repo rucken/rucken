@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [3.0.16](https://github.com/rucken/rucken/compare/v3.0.15...v3.0.16) (2021-12-28)
+
+
+### Bug Fixes
+
+* move build step after releasers ([5449d66](https://github.com/rucken/rucken/commit/5449d66265c3b8de3ccbc3ca5b58f3974dbfebcf))
+
 ### 3.0.15 (2021-12-28)
 
 
