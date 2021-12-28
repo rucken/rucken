@@ -1,6 +1,6 @@
 {
   "name": "rucken",
-  "version": "3.0.10",
+  "version": "3.0.11",
   "license": "MIT",
   "author": "EndyKaufman <admin@site15.ru>",
   "engines": {
@@ -57,10 +57,5 @@
   },
   "dependencies": {
     "tslib": "^2.0.0"
-  },
-  "standard-version": {
-    "skip": {
-      "tag": true
-    }
   }
 }
