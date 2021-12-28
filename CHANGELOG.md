@@ -2,6 +2,14 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [3.0.6](https://github.com/rucken/rucken/compare/v3.0.4...v3.0.6) (2021-12-28)
+
+
+### Bug Fixes
+
+* add readme to package json ([aa07ef6](https://github.com/rucken/rucken/commit/aa07ef636071328177b14d7d1d140ce034bc61e4))
+* update standard-version config add skip tag step ([1bbf219](https://github.com/rucken/rucken/commit/1bbf219895c3000e228510499f3db6c33a117fda))
+
 ### [3.0.5](https://github.com/rucken/rucken/compare/v3.0.4...v3.0.5) (2021-12-28)
 
 
