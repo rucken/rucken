@@ -1,6 +1,6 @@
 {
   "name": "rucken",
-  "version": "3.0.8",
+  "version": "3.0.9",
   "bin": {
     "rucken": "./src/index.js"
   },
