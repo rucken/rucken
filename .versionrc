@@ -1,7 +1,7 @@
 {
   "bumpFiles": [
     {
-      "filename": "libs/rucken/package.json",
+      "filename": "./libs/rucken/package.json",
       "type": "json"
     }
   ]
