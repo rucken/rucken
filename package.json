@@ -29,7 +29,7 @@
     "test": "npm run nx -- test rucken",
     "release": "standard-version",
     "publish": "./scripts/add-header-to-rucken.js && npm publish ./dist/libs/rucken",
-    "create-release": "npm run test && export $(cat ./.env) && npm run release && npm run build && ./scripts/add-header-to-rucken.js"
+    "create-release": "npm run test && export $(cat ./.env) && npm run release && npm run build && ./scripts/add-header-to-rucken.js && git push --follow-tags origin master"
   },
   "private": true,
   "devDependencies": {
