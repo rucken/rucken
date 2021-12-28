@@ -2,6 +2,14 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [3.0.14](https://github.com/rucken/rucken/compare/v3.0.13...v3.0.14) (2021-12-28)
+
+
+### Bug Fixes
+
+* change error message ([198e12f](https://github.com/rucken/rucken/commit/198e12f2d70dc8a81274ff246697f2ca5915494d))
+* update tests ([6a92794](https://github.com/rucken/rucken/commit/6a9279487c217448efac652cdc25f0f3145634a8))
+
 ### [3.0.13](https://github.com/rucken/rucken/compare/v3.0.12...v3.0.13) (2021-12-28)
 
 ### [3.0.12](https://github.com/rucken/rucken/compare/v3.0.11...v3.0.12) (2021-12-28)
