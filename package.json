@@ -29,7 +29,7 @@
     "test": "npm run nx -- test rucken",
     "release": "standard-version",
     "publish": "./scripts/add-header-to-rucken.js && npm publish ./dist/libs/rucken",
-    "create-release": "npm run test && export $(cat ./.env) && npm run release && npm run build && ./scripts/add-header-to-rucken.js && git push --follow-tags origin master"
+    "create-release": "npm run test && npm run build && npm run release && git push --follow-tags origin master"
   },
   "private": true,
   "devDependencies": {
@@ -45,7 +45,6 @@
     "@types/node": "14.14.33",
     "@typescript-eslint/eslint-plugin": "~5.3.0",
     "@typescript-eslint/parser": "~5.3.0",
-    "conventional-github-releaser": "^3.1.5",
     "eslint": "8.2.0",
     "eslint-config-prettier": "8.1.0",
     "jest": "27.2.3",
