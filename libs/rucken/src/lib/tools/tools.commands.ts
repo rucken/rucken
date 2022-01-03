@@ -4,7 +4,7 @@ import { ToolsService } from './tools.service';
 
 @Console({
   command: 'tools',
-  description: 'common utils',
+  description: 'common console nx tools',
 })
 export class ToolsCommands {
   private readonly config = this.toolsConfigService.getConfig('rucken.json');
@@ -17,7 +17,7 @@ export class ToolsCommands {
   @Command({
     alias: 'fl',
     command: 'files-list',
-    description: 'create list of ts files for all libraries',
+    description: 'create list of ts files for all nx libraries',
   })
   async filesList() {
     this.toolsService.setLogger('filesList');
@@ -30,7 +30,7 @@ export class ToolsCommands {
   @Command({
     alias: 'vu',
     command: 'version-updater',
-    description: 'update versions in applications',
+    description: 'update versions in all nx applications',
   })
   async versionUpdater() {
     this.toolsService.setLogger('versionUpdater');
@@ -44,7 +44,7 @@ export class ToolsCommands {
     alias: 'a',
     command: 'all',
     description:
-      'create list of ts files for all libraries + update versions in applications',
+      'create list of ts files for all nx libraries + update versions in all nx applications',
   })
   async all() {
     this.filesList();

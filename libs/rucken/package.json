@@ -1,10 +1,36 @@
 {
-    "name": "rucken",
-    "version": "3.2.1",
-    "bin": {
-        "rucken": "./src/main.js"
-    },
-    "dependencies": {
-        "tslib": "^2.0.0"
+  "name": "rucken",
+  "version": "3.2.1",
+  "description": "Console nx tools for rucken",
+  "license": "MIT",
+  "author": "EndyKaufman <admin@site15.ru>",
+  "engines": {
+    "node": ">=12",
+    "npm": ">=6.4.0"
+  },
+  "bugs": {
+    "url": "https://github.com/rucken/rucken/issues"
+  },
+  "homepage": "https://github.com/rucken/rucken",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/rucken/rucken.git"
+  },
+  "maintainers": [
+    {
+      "name": "EndyKaufman",
+      "email": "admin@site15.ru"
     }
+  ],
+  "bin": {
+    "rucken": "./src/main.js"
+  },
+  "dependencies": {
+    "tslib": "^2.0.0",
+    "log4js": "^6.3.0",
+    "nestjs-console": "^7.0.1",
+    "recursive-readdir": "^2.2.2",
+    "replace-ext": "^2.0.0",
+    "sort-paths": "^1.1.1"
+  }
 }
