@@ -24,11 +24,12 @@
   "readme": "README.md",
   "scripts": {
     "nx": "nx",
-    "start": "nx serve",
-    "build": "npm run nx -- build rucken",
+    "bs": "npm run build && npm run start",
+    "start": "node ./dist/libs/rucken/src/main.js",
+    "build": "npm run nx -- build rucken && ./scripts/add-header-to-rucken.js",
     "test": "npm run nx -- test rucken",
     "release": "standard-version",
-    "publish": "./scripts/add-header-to-rucken.js && npm publish ./dist/libs/rucken",
+    "publish": "npm publish ./dist/libs/rucken",
     "create-release": "npm run test && npm run build && npm run release && git push --follow-tags origin master"
   },
   "private": true,
@@ -43,18 +44,25 @@
     "@nrwl/workspace": "13.4.1",
     "@types/jest": "27.0.2",
     "@types/node": "14.14.33",
+    "@types/recursive-readdir": "^2.2.0",
+    "@types/replace-ext": "^2.0.0",
     "@typescript-eslint/eslint-plugin": "~5.3.0",
     "@typescript-eslint/parser": "~5.3.0",
     "eslint": "8.2.0",
     "eslint-config-prettier": "8.1.0",
     "jest": "27.2.3",
+    "log4js": "^6.3.0",
     "nestjs-console": "^7.0.1",
     "prettier": "^2.3.1",
+    "recursive-readdir": "^2.2.2",
+    "replace-ext": "^2.0.0",
+    "sort-paths": "^1.1.1",
     "standard-version": "^9.3.2",
     "ts-jest": "27.0.5",
     "typescript": "~4.3.5"
   },
   "dependencies": {
+    "source-map-support": "^0.5.21",
     "tslib": "^2.0.0"
   }
 }

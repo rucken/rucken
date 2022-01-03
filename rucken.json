@@ -1,0 +1,16 @@
+{
+  "tools": {
+    "filesList": {
+      "excludes": [
+        "*main.ts",
+        "*node_modules*",
+        "*public_api.ts*",
+        "*.spec*",
+        "environment*",
+        "*test*",
+        "*e2e*",
+        "*.stories.ts"
+      ]
+    }
+  }
+}

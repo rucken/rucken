@@ -1,13 +1,13 @@
 #!/usr/bin/env node
 const fs = require('fs');
 
-const filePath = 'dist/libs/rucken/src/index.js';
-const data = fs.readFileSync(filePath).toString().split('\n');
+const filePath = 'dist/libs/rucken/src/main.js';
+const content = fs.readFileSync(filePath).toString();
+const header = '#!/usr/bin/env node';
 
-fs.writeFile(
-  filePath,
-  ['#!/usr/bin/env node', ...data].join('\n'),
-  function (err) {
+if (!content.includes(header)) {
+  const data = content.split('\n');
+  fs.writeFile(filePath, [header, ...data].join('\n'), function (err) {
     if (err) return console.log(err);
-  }
-);
+  });
+}
