@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [3.2.0](https://github.com/rucken/rucken/compare/v3.1.4...v3.2.0) (2022-01-03)
+
+
+### Features
+
+* **tools:** add files-list and version-updater commands for nx workspace ([d8931dc](https://github.com/rucken/rucken/commit/d8931dc3990aa1bba1e8b55849d66a0db82596e1))
+
 ### [3.1.4](https://github.com/rucken/rucken/compare/v3.1.3...v3.1.4) (2021-12-28)
 
 
