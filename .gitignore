@@ -40,3 +40,5 @@ Thumbs.db
 
 # Envs
 .env
+/integrations/app
+jest.result.json

@@ -1,0 +1,7 @@
+{
+  "name": "@app/feature-common",
+  "version": "1.0.0",
+  "dependencies": {
+    "rxjs": "1.0.0"
+  }
+}
