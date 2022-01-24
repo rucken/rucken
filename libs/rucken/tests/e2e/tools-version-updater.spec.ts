@@ -1,7 +1,7 @@
 import { readFileSync } from 'fs';
 import { resolve } from 'path';
 
-describe('Tools versionUpdater (e2e)', () => {
+describe('Tools version-updater (e2e)', () => {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   let rootJson: any;
 

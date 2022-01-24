@@ -1,7 +1,7 @@
 import { readFileSync } from 'fs';
 import { resolve } from 'path';
 
-describe('Tools filesList (e2e)', () => {
+describe('Tools files-list (e2e)', () => {
   it('libs/feature-client', () => {
     const filesList = readFileSync(
       resolve(
@@ -15,7 +15,8 @@ describe('Tools filesList (e2e)', () => {
     )
       .toString()
       .split('\n');
-    expect(filesList[0]).toEqual(
+    expect(filesList[0]).toEqual(`export * from './lib/feature-client-user';`);
+    expect(filesList[1]).toEqual(
       `export * from './lib/feature-client.module';`
     );
   });
@@ -33,7 +34,8 @@ describe('Tools filesList (e2e)', () => {
     )
       .toString()
       .split('\n');
-    expect(filesList[0]).toEqual(
+    expect(filesList[0]).toEqual(`export * from './lib/feature-server-user';`);
+    expect(filesList[1]).toEqual(
       `export * from './lib/feature-server.module';`
     );
   });
@@ -51,8 +53,11 @@ describe('Tools filesList (e2e)', () => {
     )
       .toString()
       .split('\n');
-    expect(filesList[0]).toEqual(`export * from './lib/feature-common';`);
+    expect(filesList[0]).toEqual(`export * from './lib/feature-common-user';`);
+    expect(filesList[1]).toEqual(`export * from './lib/feature-common';`);
   });
+
+  //
 
   it('apps/client', () => {
     try {

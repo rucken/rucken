@@ -4,7 +4,7 @@ import { GettextService } from './gettext.service';
 
 @Console()
 export class GettextCommands {
-  private readonly config = this.gettextConfigService.getConfig('rucken.json');
+  private readonly config = this.gettextConfigService.getConfig();
 
   constructor(
     private readonly gettextService: GettextService,
@@ -21,16 +21,25 @@ export class GettextCommands {
         required: true,
       },
       {
-        flags: '-d,--default [default]',
+        flags: '-dl,--default-locale [default]',
         description: 'default locale',
         defaultValue: 'en',
       },
     ],
   })
-  async filesList(argument: { default: string; locales: string }) {
+  async filesList({
+    defaultLocale,
+    locales,
+  }: {
+    defaultLocale: string;
+    locales: string;
+  }) {
+    console.log({ defaultLocale, locales });
     this.gettextService.setLogger('gettext');
-    console.log({
-      argument,
-    });
+    this.gettextService.extractTranslatesFromSourcesForLibraries(
+      'workspace.json',
+      locales.split(','),
+      defaultLocale
+    );
   }
 }

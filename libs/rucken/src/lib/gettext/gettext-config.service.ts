@@ -15,7 +15,7 @@ export const DEFAULT_GETTEXT_CONFIG: GettextConfig = {
   gettext: {
     markers: ['getText', 'dictionary'],
     gettextExtractorOptions: {
-      pattern: `./{{{sourceRoot}}}/**/*.@(ts|js|tsx|jsx)`,
+      pattern: '**/*.@(ts|js|tsx|jsx)',
     },
     po2jsonOptions: { format: 'mf' },
   },
@@ -23,7 +23,10 @@ export const DEFAULT_GETTEXT_CONFIG: GettextConfig = {
 
 @Injectable()
 export class GettextConfigService {
-  public getConfig(configFile: string): GettextConfig {
+  public getConfig(configFile?: string): GettextConfig {
+    if (!configFile) {
+      configFile = 'rucken.json';
+    }
     if (!existsSync(configFile)) {
       return DEFAULT_GETTEXT_CONFIG;
     }

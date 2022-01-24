@@ -20,7 +20,7 @@ export class ToolsCommands {
     description: 'create list of ts files for all nx libraries',
   })
   async filesList() {
-    this.toolsService.setLogger('filesList');
+    this.toolsService.setLogger('files-list');
     this.toolsService.makeTsListHandler(
       'workspace.json',
       this.config['filesList']
@@ -33,7 +33,7 @@ export class ToolsCommands {
     description: 'update versions in all nx applications',
   })
   async versionUpdater() {
-    this.toolsService.setLogger('versionUpdater');
+    this.toolsService.setLogger('version-updater');
     this.toolsService.versionUpdaterHandler(
       'workspace.json',
       this.config['versionUpdater']
