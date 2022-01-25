@@ -1,14 +1,17 @@
 import { Command, Console } from 'nestjs-console';
-import { GettextConfigService } from './gettext-config.service';
+import { UtilsService } from '../utils/utils.service';
+import { DEFAULT_GETTEXT_CONFIG } from './gettext.config';
 import { GettextService } from './gettext.service';
 
 @Console()
 export class GettextCommands {
-  private readonly config = this.gettextConfigService.getConfig();
+  private readonly config = this.utilsService.getRuckenConfig(
+    DEFAULT_GETTEXT_CONFIG
+  ).gettext;
 
   constructor(
     private readonly gettextService: GettextService,
-    private readonly gettextConfigService: GettextConfigService
+    private readonly utilsService: UtilsService
   ) {}
 
   @Command({
@@ -16,14 +19,12 @@ export class GettextCommands {
     description: 'translate marker extractor',
     options: [
       {
-        flags: '-l,--locales [locales]',
-        description: 'list of available languages',
-        required: true,
+        flags: '-l,--locales [strings]',
+        description: 'list of available languages (example: ru,en)',
       },
       {
-        flags: '-dl,--default-locale [default]',
-        description: 'default locale',
-        defaultValue: 'en',
+        flags: '-dl,--default-locale [string]',
+        description: 'default locale (default: en)',
       },
     ],
   })
@@ -34,12 +35,13 @@ export class GettextCommands {
     defaultLocale: string;
     locales: string;
   }) {
-    console.log({ defaultLocale, locales });
     this.gettextService.setLogger('gettext');
-    this.gettextService.extractTranslatesFromSourcesForLibraries(
-      'workspace.json',
-      locales.split(','),
-      defaultLocale
-    );
+    this.gettextService.extractTranslatesFromSourcesForLibraries({
+      po2jsonOptions: this.config.po2jsonOptions,
+      pattern: this.config.gettextExtractorOptions.pattern,
+      locales: locales.split(',') || this.config.locales,
+      defaultLocale: defaultLocale || this.config.defaultLocale,
+      markers: this.config.markers,
+    });
   }
 }

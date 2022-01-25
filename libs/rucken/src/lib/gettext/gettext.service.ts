@@ -1,4 +1,5 @@
 import { Injectable } from '@nestjs/common';
+import { parseFileSync } from '@rjaros/po2json';
 import equal from 'fast-deep-equal';
 import {
   existsSync,
@@ -11,28 +12,45 @@ import { GettextExtractor, JsExtractors } from 'gettext-extractor';
 import { i18nextToPo, i18nextToPot } from 'i18next-conv';
 import { getLogger, Logger } from 'log4js';
 import { dirname, resolve } from 'path';
-import { parseFileSync } from '@rjaros/po2json';
-import { GettextConfigService } from './gettext-config.service';
+import { UtilsService } from '../utils/utils.service';
 
 @Injectable()
 export class GettextService {
   private logger: Logger;
 
-  constructor(private readonly gettextConfigService: GettextConfigService) {}
+  constructor(private readonly utilsService: UtilsService) {}
 
   setLogger(command: string): void {
     this.logger = getLogger(`${GettextService.name}: ${command}`);
     this.logger.level = 'all';
   }
 
-  public extractTranslatesFromSourcesForLibraries(
-    workspaceFile: string,
-    locales: string[],
-    defaultLocale: string
-  ): void {
+  public extractTranslatesFromSourcesForLibraries({
+    po2jsonOptions,
+    pattern,
+    locales,
+    defaultLocale,
+    markers,
+  }: {
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    po2jsonOptions: Record<string, any>;
+    pattern: string;
+    locales: string[];
+    defaultLocale: string;
+    markers: string[];
+  }): void {
     this.logger.info('Start create translate files...');
+    this.logger.info(
+      `Config: ${JSON.stringify({
+        po2jsonOptions,
+        pattern,
+        locales,
+        defaultLocale,
+        markers,
+      })}`
+    );
     try {
-      const projects = this.getProjects(workspaceFile);
+      const projects = this.utilsService.getWorkspaceProjects();
       Object.keys(projects)
         //.filter((projectName) => workspaceJson.projects[projectName].projectType === 'library')
         .forEach((projectName) => {
@@ -40,24 +58,26 @@ export class GettextService {
           const assetsPath =
             projects[projectName].projectType === 'application' ? 'assets' : '';
           locales.forEach((locale) => {
-            this.processLibrary(
-              projects[projectName].sourceRoot,
+            this.processLibrary({
+              po2jsonOptions,
+              pattern,
+              sourceRoot: projects[projectName].sourceRoot,
               defaultLocale,
-              '',
+              marker: '',
               locale,
-              assetsPath
+              assetsPath,
+            });
+            markers.forEach((marker) =>
+              this.processLibrary({
+                po2jsonOptions,
+                pattern,
+                sourceRoot: projects[projectName].sourceRoot,
+                defaultLocale,
+                marker,
+                locale,
+                assetsPath,
+              })
             );
-            this.gettextConfigService
-              .getConfig()
-              .gettext.markers.forEach((marker) =>
-                this.processLibrary(
-                  projects[projectName].sourceRoot,
-                  defaultLocale,
-                  marker,
-                  locale,
-                  assetsPath
-                )
-              );
           });
         });
       this.logger.info('End of create translate files...');
@@ -67,13 +87,24 @@ export class GettextService {
     }
   }
 
-  private processLibrary(
-    sourceRoot: string,
-    defaultLocale: string,
-    marker?: string,
-    locale?: string,
-    assetsPath?: string
-  ) {
+  private processLibrary({
+    po2jsonOptions,
+    pattern,
+    sourceRoot,
+    defaultLocale,
+    marker,
+    locale,
+    assetsPath,
+  }: {
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    po2jsonOptions: Record<string, any>;
+    pattern: string;
+    sourceRoot: string;
+    defaultLocale: string;
+    marker?: string;
+    locale?: string;
+    assetsPath?: string;
+  }) {
     const defaultJsonFileName = `${defaultLocale}.json`;
     const defaultPotFileName = 'template.pot';
     const defaultPotFile = resolve(
@@ -126,12 +157,7 @@ export class GettextService {
             },
           }),
         ])
-        .parseFilesGlob(
-          `./${sourceRoot}/${
-            this.gettextConfigService.getConfig().gettext
-              .gettextExtractorOptions.pattern
-          }`
-        );
+        .parseFilesGlob(`./${sourceRoot}/${pattern}`);
     }
 
     if (existsSync(defaultJsonFile)) {
@@ -162,10 +188,7 @@ export class GettextService {
     if (existsSync(defaultJsonFile)) {
       newDefaultJsonData = {
         ...defaultJsonData,
-        ...parseFileSync(
-          defaultJsonFile,
-          this.gettextConfigService.getConfig().gettext.po2jsonOptions
-        ),
+        ...parseFileSync(defaultJsonFile, po2jsonOptions),
       };
     }
 
@@ -173,10 +196,7 @@ export class GettextService {
     if (existsSync(localePoFile)) {
       newLocaleJsonData = {
         ...localeJsonData,
-        ...parseFileSync(
-          localePoFile,
-          this.gettextConfigService.getConfig().gettext.po2jsonOptions
-        ),
+        ...parseFileSync(localePoFile, po2jsonOptions),
       };
     }
 
@@ -266,22 +286,5 @@ export class GettextService {
         unlinkSync(localeJsonFile);
       }
     }
-  }
-
-  private getProjects(workspaceFile: string) {
-    const workspaceJson = JSON.parse(readFileSync(workspaceFile).toString());
-    return Object.keys(workspaceJson.projects)
-      .map((projectName) =>
-        typeof workspaceJson.projects[projectName] === 'string'
-          ? {
-              [projectName]: JSON.parse(
-                readFileSync(
-                  `${workspaceJson.projects[projectName]}/project.json`
-                ).toString()
-              ),
-            }
-          : { [projectName]: workspaceJson.projects[projectName] }
-      )
-      .reduce((all, cur) => ({ ...all, ...cur }), {});
   }
 }

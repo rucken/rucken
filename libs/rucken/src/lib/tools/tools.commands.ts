@@ -1,5 +1,6 @@
 import { Command, Console } from 'nestjs-console';
-import { ToolsConfigService } from './tools-config.service';
+import { UtilsService } from '../utils/utils.service';
+import { DEFAULT_TOOLS_CONFIG } from './tools.config';
 import { ToolsService } from './tools.service';
 
 @Console({
@@ -7,11 +8,14 @@ import { ToolsService } from './tools.service';
   description: 'common console nx tools',
 })
 export class ToolsCommands {
-  private readonly config = this.toolsConfigService.getConfig('rucken.json');
+  private readonly filesListConfig =
+    this.utilsService.getRuckenConfig(DEFAULT_TOOLS_CONFIG).filesList;
+  private readonly versionUpdaterConfig =
+    this.utilsService.getRuckenConfig(DEFAULT_TOOLS_CONFIG).versionUpdater;
 
   constructor(
     private readonly toolsService: ToolsService,
-    private readonly toolsConfigService: ToolsConfigService
+    private readonly utilsService: UtilsService
   ) {}
 
   @Command({
@@ -21,23 +25,34 @@ export class ToolsCommands {
   })
   async filesList() {
     this.toolsService.setLogger('files-list');
-    this.toolsService.makeTsListHandler(
-      'workspace.json',
-      this.config['filesList']
-    );
+    this.toolsService.makeTsListHandler({
+      indexFileName: this.filesListConfig.indexFileName,
+      excludes: this.filesListConfig.excludes,
+    });
   }
 
   @Command({
     alias: 'vu',
     command: 'version-updater',
     description: 'update versions in all nx applications',
+    options: [
+      {
+        flags: '-upv,--update-package-version [boolean]',
+        description: 'update package version (default: true)',
+      },
+    ],
   })
-  async versionUpdater() {
+  async versionUpdater({
+    updatePackageVersion,
+  }: {
+    updatePackageVersion?: string;
+  } = {}) {
     this.toolsService.setLogger('version-updater');
-    this.toolsService.versionUpdaterHandler(
-      'workspace.json',
-      this.config['versionUpdater']
-    );
+    this.toolsService.versionUpdaterHandler({
+      updatePackageVersion: updatePackageVersion
+        ? updatePackageVersion.toUpperCase().trim() === 'TRUE'
+        : this.versionUpdaterConfig.updatePackageVersion,
+    });
   }
 
   @Command({
