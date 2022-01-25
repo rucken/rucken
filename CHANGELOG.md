@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [3.3.0](https://github.com/rucken/rucken/compare/v3.2.2...v3.3.0) (2022-01-25)
+
+
+### Features
+
+* **gettext:** add gettext command ([#2](https://github.com/rucken/rucken/issues/2)) ([244a7f2](https://github.com/rucken/rucken/commit/244a7f2824bca67c2dc640e6936c1ecba6ab3a0a)), closes [#1](https://github.com/rucken/rucken/issues/1)
+
 ### [3.2.2](https://github.com/rucken/rucken/compare/v3.2.1...v3.2.2) (2022-01-03)
 
 ### [3.2.1](https://github.com/rucken/rucken/compare/v3.2.0...v3.2.1) (2022-01-03)
