@@ -28,7 +28,7 @@
     "build": "npm run nx -- build rucken && ./scripts/add-header-to-rucken.js",
     "release": "standard-version",
     "publish": "npm publish ./dist/libs/rucken",
-    "create-release": "npm run test && npm run build && npm run release && git push --follow-tags origin master",
+    "create-release": "npm run test && npm run build && npm run release && git push --follow-tags origin develop",
     "test:e2e": "npm run nx -- test rucken --skip-nx-cache --json --outputFile=jest.result.json --testLocationInResults",
     "test:integrations-prepare": "sh ./integrations/scripts/prepare-application.sh",
     "test:integrations-run": "npm run test:e2e",
