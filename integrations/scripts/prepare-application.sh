@@ -25,9 +25,9 @@ npx --yes npm-check-updates -u
 npm i --force
 npm install --save class-validator-multi-lang  --force
 npm install --save-dev ./lib/rucken-0.0.0.tgz @ngneat/transloco-keys-manager  --force
+npx nx format
 npx rucken tools all
 npx rucken gettext --locales=en,ru --default-locale=en
-npx nx format
 tsc --noEmit -p tsconfig.base.json
 npx --yes nx affected:build --all
 
