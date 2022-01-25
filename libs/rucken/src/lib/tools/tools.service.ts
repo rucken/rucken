@@ -5,26 +5,33 @@ import { dirname, resolve, sep } from 'path';
 import recursive from 'recursive-readdir';
 import replaceExt from 'replace-ext';
 import sortPaths from 'sort-paths';
-import { ToolsConfig } from './tools-config.service';
+import { UtilsService } from '../utils/utils.service';
 
 @Injectable()
 export class ToolsService {
   private logger: Logger;
+
+  constructor(private readonly utilsService: UtilsService) {}
 
   setLogger(command: string): void {
     this.logger = getLogger(`${ToolsService.name}: ${command}`);
     this.logger.level = 'all';
   }
 
-  versionUpdaterHandler(
-    workspaceFile: string,
-    config: ToolsConfig['filesList']
-  ): void {
+  versionUpdaterHandler({
+    updatePackageVersion,
+  }: {
+    updatePackageVersion: boolean;
+  }): void {
     this.logger.info('Start update versions...');
-    this.showConfigInfo(config);
+    this.logger.info(
+      `Config: ${JSON.stringify({
+        updatePackageVersion,
+      })}`
+    );
 
     const rootConfigPath = resolve('package.json');
-    const projects = this.getProjects(workspaceFile);
+    const projects = this.utilsService.getWorkspaceProjects();
 
     Object.keys(projects)
       .filter((key) => !key.includes('-e2e'))
@@ -32,27 +39,24 @@ export class ToolsService {
         this.logger.debug(
           `Process project "${projectName}" in ${projects[projectName].root}`
         );
-        this.updateFolderPackageFromRootPackage(
+        this.updateFolderPackageFromRootPackage({
           rootConfigPath,
-          `${projects[projectName].root}/package.json`
-        );
+          appConfigPath: `${projects[projectName].root}/package.json`,
+          updatePackageVersion,
+        });
       });
     this.logger.info('End of update versions...');
   }
 
-  private showConfigInfo(config: {
-    indexFileName: string;
-    excludes: string[];
+  private updateFolderPackageFromRootPackage({
+    rootConfigPath,
+    appConfigPath,
+    updatePackageVersion,
+  }: {
+    rootConfigPath: string;
+    appConfigPath: string;
+    updatePackageVersion: boolean;
   }) {
-    if (config) {
-      this.logger.debug(`Config: ${JSON.stringify(config)}`);
-    }
-  }
-
-  private updateFolderPackageFromRootPackage(
-    rootConfigPath: string,
-    appConfigPath: string
-  ) {
     this.logger.info(
       `Start for ${JSON.stringify({
         rootConfigPath: rootConfigPath,
@@ -77,7 +81,9 @@ export class ToolsService {
     try {
       content = readFileSync(appConfigPath).toString();
       folderConfig = JSON.parse(content);
-      folderConfig['version'] = rootConfig['version'];
+      if (updatePackageVersion) {
+        folderConfig['version'] = rootConfig['version'];
+      }
       if (folderConfig['peerDependencies']) {
         const peerDependenciesKeys = Object.keys(
           folderConfig['peerDependencies']
@@ -113,16 +119,22 @@ export class ToolsService {
     );
   }
 
-  makeTsListHandler(
-    workspaceFile: string,
-    config: ToolsConfig['filesList']
-  ): void {
+  makeTsListHandler({
+    indexFileName,
+    excludes,
+  }: {
+    indexFileName: string;
+    excludes: string[];
+  }): void {
     this.logger.info('Start create list files...');
-    this.showConfigInfo(config);
+    this.logger.info(
+      `Config: ${JSON.stringify({
+        indexFileName,
+        excludes,
+      })}`
+    );
 
-    const indexFileName = config.indexFileName;
-    const excludes = config.excludes;
-    const projects = this.getProjects(workspaceFile);
+    const projects = this.utilsService.getWorkspaceProjects();
 
     Object.keys(projects)
       .filter((projectName) => projects[projectName].projectType === 'library')
@@ -131,20 +143,24 @@ export class ToolsService {
         this.logger.debug(
           `Process library "${projectName}" in ${projects[projectName].sourceRoot}`
         );
-        this.processLibrary(
-          projects[projectName].sourceRoot,
+        this.processLibrary({
+          path: projects[projectName].sourceRoot,
           indexFileName,
-          excludes
-        );
+          excludes,
+        });
       });
     this.logger.info('End of create list files...');
   }
 
-  private processLibrary(
-    path: string,
-    indexFileName: string,
-    excludes: string[]
-  ): void {
+  private processLibrary({
+    path,
+    indexFileName,
+    excludes,
+  }: {
+    path: string;
+    indexFileName: string;
+    excludes: string[];
+  }): void {
     const indexFilePath = resolve(path, `${indexFileName}.ts`);
     const newExcludes = ['!*.ts*', ...excludes, indexFilePath];
     if (!existsSync(path)) {
@@ -178,22 +194,5 @@ export class ToolsService {
         writeFileSync(indexFilePath, body);
       }
     });
-  }
-
-  private getProjects(workspaceFile: string) {
-    const workspaceJson = JSON.parse(readFileSync(workspaceFile).toString());
-    return Object.keys(workspaceJson.projects)
-      .map((projectName) =>
-        typeof workspaceJson.projects[projectName] === 'string'
-          ? {
-              [projectName]: JSON.parse(
-                readFileSync(
-                  `${workspaceJson.projects[projectName]}/project.json`
-                ).toString()
-              ),
-            }
-          : { [projectName]: workspaceJson.projects[projectName] }
-      )
-      .reduce((all, cur) => ({ ...all, ...cur }), {});
   }
 }
