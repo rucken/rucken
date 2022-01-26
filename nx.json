@@ -1,7 +1,7 @@
 {
   "npmScope": "rucken",
   "affected": {
-    "defaultBase": "master"
+    "defaultBase": "develop"
   },
   "implicitDependencies": {
     "package.json": {
