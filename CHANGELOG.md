@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [3.3.2](https://github.com/rucken/rucken/compare/v3.3.1...v3.3.2) (2022-01-26)
+
+
+### Bug Fixes
+
+* update integration test files ([68c9e05](https://github.com/rucken/rucken/commit/68c9e05675e6b17d4a3e81c827f0848fddd9f274))
+
 ### [3.3.1](https://github.com/rucken/rucken/compare/v3.3.0...v3.3.1) (2022-01-25)
 
 
