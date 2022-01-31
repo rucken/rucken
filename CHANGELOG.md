@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [3.4.0](https://github.com/rucken/rucken/compare/v3.3.3...v3.4.0) (2022-01-31)
+
+
+### Features
+
+* add transloco-extractor for angular and nestjs code ([#3](https://github.com/rucken/rucken/issues/3)) ([6bab9e3](https://github.com/rucken/rucken/commit/6bab9e391267e318595fe955c853bacfae149e1e))
+
 ### [3.3.3](https://github.com/rucken/rucken/compare/v3.3.2...v3.3.3) (2022-01-26)
 
 ### Bug Fixes
