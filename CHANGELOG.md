@@ -4,31 +4,27 @@ All notable changes to this project will be documented in this file. See [standa
 
 ### [3.3.3](https://github.com/rucken/rucken/compare/v3.3.2...v3.3.3) (2022-01-26)
 
-
 ### Bug Fixes
 
-* update publish script ([68f8367](https://github.com/rucken/rucken/commit/68f836759fb6347628f58ff9e03a4c9a8ac7b15b))
+- update publish script ([68f8367](https://github.com/rucken/rucken/commit/68f836759fb6347628f58ff9e03a4c9a8ac7b15b))
 
 ### [3.3.2](https://github.com/rucken/rucken/compare/v3.3.1...v3.3.2) (2022-01-26)
 
-
 ### Bug Fixes
 
-* update integration test files ([68c9e05](https://github.com/rucken/rucken/commit/68c9e05675e6b17d4a3e81c827f0848fddd9f274))
+- update integration test files ([68c9e05](https://github.com/rucken/rucken/commit/68c9e05675e6b17d4a3e81c827f0848fddd9f274))
 
 ### [3.3.1](https://github.com/rucken/rucken/compare/v3.3.0...v3.3.1) (2022-01-25)
 
-
 ### Bug Fixes
 
-* change publish install command ([2663e14](https://github.com/rucken/rucken/commit/2663e149dc2ed2bcbe98c2769f37f032834d8d9b))
+- change publish install command ([2663e14](https://github.com/rucken/rucken/commit/2663e149dc2ed2bcbe98c2769f37f032834d8d9b))
 
 ## [3.3.0](https://github.com/rucken/rucken/compare/v3.2.2...v3.3.0) (2022-01-25)
 
-
 ### Features
 
-* **gettext:** add gettext command ([#2](https://github.com/rucken/rucken/issues/2)) ([244a7f2](https://github.com/rucken/rucken/commit/244a7f2824bca67c2dc640e6936c1ecba6ab3a0a)), closes [#1](https://github.com/rucken/rucken/issues/1)
+- **gettext:** add gettext command ([#2](https://github.com/rucken/rucken/issues/2)) ([244a7f2](https://github.com/rucken/rucken/commit/244a7f2824bca67c2dc640e6936c1ecba6ab3a0a)), closes [#1](https://github.com/rucken/rucken/issues/1)
 
 ### [3.2.2](https://github.com/rucken/rucken/compare/v3.2.1...v3.2.2) (2022-01-03)
 

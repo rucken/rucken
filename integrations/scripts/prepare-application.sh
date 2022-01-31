@@ -7,6 +7,7 @@ cd ../
 node ./integrations/scripts/path-files.js
 cd ./integrations/app
 npm install --save-dev @nrwl/angular @nrwl/nest @nrwl/node --force
+npm install --save @ngneat/transloco @ngneat/transloco-locale
 npm run nx -- g @nrwl/nest:app server
 npm run nx -- g @nrwl/angular:app client --style=scss --routing=true
 npm run nx -- g @nrwl/node:app cli
@@ -15,6 +16,7 @@ npm run nx -- g @nrwl/angular:lib feature/client
 npm run nx -- g @nrwl/node:lib feature/common
 npm run nx -- g @nrwl/workspace:remove client-e2e
 cd ../../
+node ./integrations/scripts/path-files.js
 cp -Rf ./integrations/default/* ./integrations/app
 rm -rf ./integrations/app/lib
 mkdir ./integrations/app/lib
@@ -25,11 +27,13 @@ npm pack .
 cd ../
 npx --yes npm-check-updates -u
 npm i --force
-npm install --save class-validator-multi-lang  --force
-npm install --save-dev ./lib/rucken-0.0.0.tgz @ngneat/transloco-keys-manager  --force
+npm install --save class-validator-multi-lang --force
+npm install --save-dev ./lib/rucken-0.0.0.tgz @ngneat/transloco-keys-manager --force
 npm run nx -- format
-npm run rucken -- tools all
-npm run rucken -- gettext --locales=en,ru --default-locale=en
+npm run rucken -- make-ts-list
+npm run rucken -- version-updater
+npm run rucken -- translate --locales=en,ru --default-locale=en
+npm run rucken -- prepare --locales=en,ru --default-locale=en
 tsc --noEmit -p tsconfig.base.json
 npm run nx -- affected:build --all
 

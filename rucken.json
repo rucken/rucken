@@ -1,6 +1,6 @@
 {
   "tools": {
-    "filesList": {
+    "makeTsList": {
       "excludes": [
         "*main.ts",
         "*node_modules*",
@@ -9,7 +9,8 @@
         "environment*",
         "*test*",
         "*e2e*",
-        "*.stories.ts"
+        "*.stories.ts",
+        "*.d.ts"
       ]
     }
   }

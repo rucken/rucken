@@ -1,9 +1,9 @@
 import { readFileSync } from 'fs';
 import { resolve } from 'path';
 
-describe('Tools files-list (e2e)', () => {
+describe('Tools make-ts-list (e2e)', () => {
   it('libs/feature-client', () => {
-    const filesList = readFileSync(
+    const makeTsList = readFileSync(
       resolve(
         __dirname,
         '..',
@@ -15,14 +15,14 @@ describe('Tools files-list (e2e)', () => {
     )
       .toString()
       .split('\n');
-    expect(filesList[0]).toEqual(`export * from './lib/feature-client-user';`);
-    expect(filesList[1]).toEqual(
+    expect(makeTsList[0]).toEqual(`export * from './lib/feature-client-user';`);
+    expect(makeTsList[1]).toEqual(
       `export * from './lib/feature-client.module';`
     );
   });
 
   it('libs/feature-server', () => {
-    const filesList = readFileSync(
+    const makeTsList = readFileSync(
       resolve(
         __dirname,
         '..',
@@ -34,14 +34,14 @@ describe('Tools files-list (e2e)', () => {
     )
       .toString()
       .split('\n');
-    expect(filesList[0]).toEqual(`export * from './lib/feature-server-user';`);
-    expect(filesList[1]).toEqual(
+    expect(makeTsList[0]).toEqual(`export * from './lib/feature-server-user';`);
+    expect(makeTsList[1]).toEqual(
       `export * from './lib/feature-server.module';`
     );
   });
 
   it('libs/feature-common', () => {
-    const filesList = readFileSync(
+    const makeTsList = readFileSync(
       resolve(
         __dirname,
         '..',
@@ -53,8 +53,8 @@ describe('Tools files-list (e2e)', () => {
     )
       .toString()
       .split('\n');
-    expect(filesList[0]).toEqual(`export * from './lib/feature-common-user';`);
-    expect(filesList[1]).toEqual(`export * from './lib/feature-common';`);
+    expect(makeTsList[0]).toEqual(`export * from './lib/feature-common-user';`);
+    expect(makeTsList[1]).toEqual(`export * from './lib/feature-common';`);
   });
 
   //

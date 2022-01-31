@@ -25,7 +25,7 @@
   "scripts": {
     "nx": "nx",
     "start": "node ./dist/libs/rucken/src/main.js",
-    "build": "npm run nx -- build rucken && ./scripts/add-header-to-rucken.js",
+    "build": "npm run nx -- build rucken && ./scripts/add-header-to-rucken.js && npm run lib:build-changelog",
     "release": "standard-version",
     "publish": "npm publish ./dist/libs/rucken",
     "create-release": "npm run test && npm run build && npm run release && git push --follow-tags origin develop",
@@ -35,10 +35,15 @@
     "test": "npm run build && npm run test:integrations-prepare && npm run test:integrations-run",
     "lint": "npm run tsc:lint && nx workspace-lint && nx run-many --target=lint --all",
     "lint:fix": "npm run tsc:lint && nx workspace-lint --fix && nx run-many --target=lint --all --fix && nx format:write --all",
-    "tsc:lint": "tsc --noEmit -p tsconfig.base.json"
+    "tsc:lint": "tsc --noEmit -p tsconfig.base.json",
+    "lib:build-changelog": "./node_modules/.bin/cp-cli ./CHANGELOG.md ./dist/libs/rucken/CHANGELOG.md",
+    "run-to-current": "npm run start -- prepare --locales=en,ru --default-locale=en",
+    "create-readme": "npm run start -- make-ts-list --help && npm run start -- version-updater --help && npm run start -- translate --help && npm run start -- extract-i18n --help && npm run start -- gettext --help && npm run start -- prepare --help"
   },
   "private": true,
   "devDependencies": {
+    "@ngneat/transloco-keys-manager": "^3.3.3",
+    "@ngneat/transloco-scoped-libs": "^3.0.4",
     "@nrwl/cli": "13.4.1",
     "@nrwl/eslint-plugin-nx": "13.4.1",
     "@nrwl/jest": "13.4.1",
@@ -53,6 +58,7 @@
     "@types/replace-ext": "^2.0.0",
     "@typescript-eslint/eslint-plugin": "~5.3.0",
     "@typescript-eslint/parser": "~5.3.0",
+    "cp-cli": "^2.0.0",
     "eslint": "8.2.0",
     "eslint-config-prettier": "8.1.0",
     "jest": "27.2.3",

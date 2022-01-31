@@ -28,7 +28,7 @@ export class GettextCommands {
       },
     ],
   })
-  async filesList({
+  async gettext({
     defaultLocale,
     locales,
   }: {
@@ -39,7 +39,7 @@ export class GettextCommands {
     this.gettextService.extractTranslatesFromSourcesForLibraries({
       po2jsonOptions: this.config.po2jsonOptions,
       pattern: this.config.gettextExtractorOptions.pattern,
-      locales: locales.split(',') || this.config.locales,
+      locales: locales ? locales.split(',') : this.config.locales,
       defaultLocale: defaultLocale || this.config.defaultLocale,
       markers: this.config.markers,
     });

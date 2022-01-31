@@ -1,5 +1,5 @@
 export interface ToolsConfig {
-  filesList: {
+  makeTsList: {
     indexFileName: string;
     excludes: string[];
   };
@@ -9,7 +9,7 @@ export interface ToolsConfig {
 }
 
 export const DEFAULT_TOOLS_CONFIG: ToolsConfig = {
-  filesList: {
+  makeTsList: {
     indexFileName: 'index',
     excludes: [
       '*node_modules*',
@@ -19,6 +19,7 @@ export const DEFAULT_TOOLS_CONFIG: ToolsConfig = {
       '*test*',
       '*e2e*',
       '*.stories.ts',
+      '*.d.ts',
     ],
   },
   versionUpdater: {
