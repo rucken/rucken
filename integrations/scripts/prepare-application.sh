@@ -34,6 +34,7 @@ npm run rucken -- make-ts-list
 npm run rucken -- version-updater
 npm run rucken -- translate --locales=en,ru --default-locale=en
 npm run rucken -- prepare --locales=en,ru --default-locale=en
+npm run rucken -- prepare --locales=en,ru --default-locale=en
 tsc --noEmit -p tsconfig.base.json
 npm run nx -- affected:build --all
 

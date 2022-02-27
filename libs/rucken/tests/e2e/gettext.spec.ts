@@ -487,9 +487,9 @@ msgstr "ServerUserPassword"`);
       )
     ).toString();
     expect(content).toEqual(`{
+    "CliUser {{Username}}": "CliUser {{Username}}",
     "CliUser Id": "CliUser Id",
-    "CliUser Password": "CliUser Password",
-    "CliUser Username": "CliUser Username"
+    "CliUser Password": "CliUser Password"
 }`);
 
     content = readFileSync(
@@ -506,14 +506,14 @@ msgstr "ServerUserPassword"`);
       .split('\n')
       .filter((v, i) => i > 9)
       .join('\n');
-    expect(content).toEqual(`msgid "CliUser Id"
+    expect(content).toEqual(`msgid "CliUser {{Username}}"
+msgstr "CliUser {{Username}}"
+
+msgid "CliUser Id"
 msgstr "CliUser Id"
 
 msgid "CliUser Password"
-msgstr "CliUser Password"
-
-msgid "CliUser Username"
-msgstr "CliUser Username"`);
+msgstr "CliUser Password"`);
 
     content = readFileSync(
       resolve(
@@ -526,9 +526,9 @@ msgstr "CliUser Username"`);
       )
     ).toString();
     expect(content).toEqual(`{
+    "CliUser {{Username}}": "",
     "CliUser Id": "",
-    "CliUser Password": "",
-    "CliUser Username": ""
+    "CliUser Password": ""
 }`);
 
     content = readFileSync(
@@ -545,13 +545,13 @@ msgstr "CliUser Username"`);
       .split('\n')
       .filter((v, i) => i > 10)
       .join('\n');
-    expect(content).toEqual(`msgid "CliUser Id"
+    expect(content).toEqual(`msgid "CliUser {{Username}}"
+msgstr ""
+
+msgid "CliUser Id"
 msgstr ""
 
 msgid "CliUser Password"
-msgstr ""
-
-msgid "CliUser Username"
 msgstr ""`);
 
     content = readFileSync(
@@ -568,13 +568,13 @@ msgstr ""`);
       .split('\n')
       .filter((v, i) => i > 9)
       .join('\n');
-    expect(content).toEqual(`msgid "CliUser Id"
+    expect(content).toEqual(`msgid "CliUser {{Username}}"
+msgstr "CliUser {{Username}}"
+
+msgid "CliUser Id"
 msgstr "CliUser Id"
 
 msgid "CliUser Password"
-msgstr "CliUser Password"
-
-msgid "CliUser Username"
-msgstr "CliUser Username"`);
+msgstr "CliUser Password"`);
   });
 });
