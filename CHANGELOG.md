@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [3.4.1](https://github.com/rucken/rucken/compare/v3.4.0...v3.4.1) (2022-02-27)
+
+
+### Bug Fixes
+
+* add revert wrong extract strings with { and } symbol ([5ed8d9b](https://github.com/rucken/rucken/commit/5ed8d9b4b356aa4c3239ef954f3841f9c13843b7))
+
 ## [3.4.0](https://github.com/rucken/rucken/compare/v3.3.3...v3.4.0) (2022-01-31)
 
 
