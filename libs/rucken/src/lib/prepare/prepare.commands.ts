@@ -33,7 +33,7 @@ export class PrepareCommands {
   ) {}
 
   @Command({
-    command: 'prepare',
+    command: 'prepare [projectPath] [projectType]',
     description: 'make-ts-list + version-update + translate',
     options: [
       {
@@ -50,15 +50,20 @@ export class PrepareCommands {
       },
     ],
   })
-  async prepare({
-    defaultLocale,
-    locales,
-    updatePackageVersion,
-  }: {
-    defaultLocale: string;
-    locales: string;
-    updatePackageVersion?: string;
-  }) {
+  async prepare(
+    projectPath: string,
+    projectType: string,
+    {
+      defaultLocale,
+      locales,
+      updatePackageVersion,
+    }: {
+      defaultLocale: string;
+      locales: string;
+      updatePackageVersion?: string;
+    }
+  ) {
+    console.log(projectPath, projectType);
     this.makeTsListService.setLogger('prepare');
     this.makeTsListService.makeTsListHandler({
       indexFileName: this.makeTsListConfig.indexFileName,

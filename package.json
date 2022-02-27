@@ -29,6 +29,7 @@
     "release": "standard-version",
     "publish": "npm publish ./dist/libs/rucken",
     "create-release": "npm run test && npm run build && npm run release && git push --follow-tags origin develop",
+    "lib:build-changelog": "./node_modules/.bin/cp-cli ./CHANGELOG.md ./dist/libs/rucken/CHANGELOG.md",
     "test:e2e": "npm run nx -- test rucken --skip-nx-cache --json --outputFile=jest.result.json --testLocationInResults",
     "test:integrations-prepare": "sh ./integrations/scripts/prepare-application.sh",
     "test:integrations-run": "npm run test:e2e",
@@ -36,7 +37,6 @@
     "lint": "npm run tsc:lint && nx workspace-lint && nx run-many --target=lint --all",
     "lint:fix": "npm run tsc:lint && nx workspace-lint --fix && nx run-many --target=lint --all --fix && nx format:write --all",
     "tsc:lint": "tsc --noEmit -p tsconfig.base.json",
-    "lib:build-changelog": "./node_modules/.bin/cp-cli ./CHANGELOG.md ./dist/libs/rucken/CHANGELOG.md",
     "run-to-current": "npm run start -- prepare --locales=en,ru --default-locale=en",
     "create-readme": "npm run start -- make-ts-list --help && npm run start -- version-updater --help && npm run start -- translate --help && npm run start -- extract-i18n --help && npm run start -- gettext --help && npm run start -- prepare --help"
   },
