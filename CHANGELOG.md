@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [3.5.0](https://github.com/rucken/rucken/compare/v3.4.1...v3.5.0) (2022-03-25)
+
+
+### Features
+
+* add support work with postgres, create and drop application database ([#5](https://github.com/rucken/rucken/issues/5)) ([#6](https://github.com/rucken/rucken/issues/6)) ([dafd1c0](https://github.com/rucken/rucken/commit/dafd1c06816864e2735756acd13b31c2284f063c))
+
 ### [3.4.1](https://github.com/rucken/rucken/compare/v3.4.0...v3.4.1) (2022-02-27)
 
 ### Bug Fixes
