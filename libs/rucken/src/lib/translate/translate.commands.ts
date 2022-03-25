@@ -43,8 +43,8 @@ export class TranslateCommands {
     defaultLocale: string;
     locales: string;
   }) {
-    this.gettextService.setLogger('translate');
-    this.extracti18nService.setLogger('translate');
+    this.gettextService.setLogger(`translate: ${GettextService.title}`);
+    this.extracti18nService.setLogger(`translate: ${Extracti18nService.title}`);
 
     this.extracti18nService.extract(
       locales ? locales.split(',') : this.extracti18nConfig.locales,

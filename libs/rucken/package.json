@@ -1,13 +1,26 @@
 {
     "name": "rucken",
     "version": "3.4.1",
-    "description": "Console nx tools for rucken",
+    "description": "Console nx tools",
     "license": "MIT",
     "author": "EndyKaufman <admin@site15.ru>",
     "engines": {
-        "node": ">=12",
-        "npm": ">=6.4.0"
+        "node": ">=16",
+        "npm": ">=8"
     },
+    "keywords": [
+        "cli",
+        "nx",
+        "workspace",
+        "rucken",
+        "admin",
+        "extract-i18n",
+        "gettext",
+        "translate",
+        "make-ts-list",
+        "version-updater",
+        "postgres"
+    ],
     "bugs": {
         "url": "https://github.com/rucken/rucken/issues"
     },
@@ -37,7 +50,13 @@
         "i18next-conv": "12.0.2",
         "@rjaros/po2json": "^1.0.0-beta-4",
         "@ngneat/transloco-keys-manager": "^3.3.3",
-        "@ngneat/transloco-scoped-libs": "^3.0.4"
+        "@ngneat/transloco-scoped-libs": "^3.0.4",
+        "lodash.mergewith": "^4.6.2",
+        "connection-string": "^4.3.5"
+    },
+    "peerDependencies": {
+        "pg": "^8.7.3",
+        "pg-promise": "^10.11.1"
     },
     "i18n": [
         {

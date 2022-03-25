@@ -6,7 +6,8 @@ npx --yes create-nx-workspace --name=app --preset=empty --interactive=false --nx
 cd ../
 node ./integrations/scripts/path-files.js
 cd ./integrations/app
-npm install --save-dev @nrwl/angular @nrwl/nest @nrwl/node --force
+npm i --force
+npm install --save-dev @nrwl/angular@previous @nrwl/nest@previous @nrwl/node@previous --force
 npm install --save @ngneat/transloco @ngneat/transloco-locale
 npm run nx -- g @nrwl/nest:app server
 npm run nx -- g @nrwl/angular:app client --style=scss --routing=true
@@ -25,7 +26,6 @@ npx --yes replace-json-property ./integrations/app/lib/package.json version 0.0.
 cd ./integrations/app/lib
 npm pack .
 cd ../
-npx --yes npm-check-updates -u
 npm i --force
 npm install --save class-validator-multi-lang --force
 npm install --save-dev ./lib/rucken-0.0.0.tgz @ngneat/transloco-keys-manager --force
@@ -36,7 +36,7 @@ npm run rucken -- translate --locales=en,ru --default-locale=en
 npm run rucken -- prepare --locales=en,ru --default-locale=en
 npm run rucken -- prepare --locales=en,ru --default-locale=en
 tsc --noEmit -p tsconfig.base.json
-npm run nx -- affected:build --all
+npm run nx -- run-many --target=build --all
 
 # mkdir ./integrations/app/src/app/new-api
 # cp -Rf ./apps/demo/src/app/panels/new-api/* ./integrations/app/src/app/new-api/

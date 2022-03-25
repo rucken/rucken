@@ -6,13 +6,15 @@ import { UtilsService } from '../utils/utils.service';
 
 @Injectable()
 export class VersionUpdaterService {
+  public static title = 'version-updater';
+
   private logger: Logger;
 
   constructor(private readonly utilsService: UtilsService) {}
 
   setLogger(command: string): void {
-    this.logger = getLogger(`${VersionUpdaterService.name}: ${command}`);
-    this.logger.level = 'all';
+    this.logger = getLogger(command);
+    this.logger.level = UtilsService.logLevel();
   }
 
   versionUpdaterHandler({
@@ -21,7 +23,7 @@ export class VersionUpdaterService {
     updatePackageVersion: boolean;
   }): void {
     this.logger.info('Start update versions...');
-    this.logger.info(
+    this.logger.debug(
       `Config: ${JSON.stringify({
         updatePackageVersion,
       })}`
@@ -54,7 +56,7 @@ export class VersionUpdaterService {
     appConfigPath: string;
     updatePackageVersion: boolean;
   }) {
-    this.logger.info(
+    this.logger.debug(
       `Start for ${JSON.stringify({
         rootConfigPath: rootConfigPath,
         appConfigPath: appConfigPath,

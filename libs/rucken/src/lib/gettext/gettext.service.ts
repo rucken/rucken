@@ -16,13 +16,15 @@ import { UtilsService } from '../utils/utils.service';
 
 @Injectable()
 export class GettextService {
+  public static title = 'gettext';
+
   private logger: Logger;
 
   constructor(private readonly utilsService: UtilsService) {}
 
   setLogger(command: string): void {
-    this.logger = getLogger(`${GettextService.name}: ${command}`);
-    this.logger.level = 'all';
+    this.logger = getLogger(command);
+    this.logger.level = UtilsService.logLevel();
   }
 
   public extractTranslatesFromSourcesForLibraries({
@@ -40,7 +42,7 @@ export class GettextService {
     markers: string[];
   }): void {
     this.logger.info('Start create translate files...');
-    this.logger.info(
+    this.logger.debug(
       `Config: ${JSON.stringify({
         po2jsonOptions,
         pattern,
