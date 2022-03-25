@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [3.5.1](https://github.com/rucken/rucken/compare/v3.5.0...v3.5.1) (2022-03-25)
+
+
+### Bug Fixes
+
+* update for correct work with envs for nx applications ([87955ce](https://github.com/rucken/rucken/commit/87955ce4358a288f8ec74d05a9234774e387787d))
+
 ## [3.5.0](https://github.com/rucken/rucken/compare/v3.4.1...v3.5.0) (2022-03-25)
 
 
