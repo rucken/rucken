@@ -22,13 +22,13 @@ jobs:
       - name: Install Packages
         run: npm i --force
 
+      - name: Build
+        run: npm run build
+
       - name: Test
         run: npm run test
         env:
           CI: true
-
-      - name: Build
-        run: npm run build
 
       - name: Generate Release Body
         run: npx extract-changelog-release > RELEASE_BODY.md

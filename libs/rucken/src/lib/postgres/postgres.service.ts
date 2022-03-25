@@ -3,6 +3,7 @@ import { ConnectionString } from 'connection-string';
 import { getLogger, Logger } from 'log4js';
 import { Client } from 'pg';
 import pgp from 'pg-promise';
+import pg from 'pg-promise/typescript/pg-subset';
 import { UtilsService } from '../utils/utils.service';
 
 @Injectable()
@@ -10,6 +11,8 @@ export class PostgresService {
   public static title = 'postgres';
 
   private logger: Logger;
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  private rootDatabaseConnection: pgp.IDatabase<any, pg.IClient>;
 
   constructor(private readonly utilsService: UtilsService) {}
 
@@ -29,28 +32,30 @@ export class PostgresService {
     dropAppDatabase?: boolean;
     extensions: string[];
   }) {
-    const envRootDatabaseUrl =
-      process.env.ROOT_POSTGRES_URL || process.env.ROOT_DATABASE_URL;
-    const envAppDatabaseUrl =
-      process.env.POSTGRES_URL || process.env.DATABASE_URL;
+    const envRootDatabaseUrl = this.utilsService.replaceEnv(
+      process.env.ROOT_POSTGRES_URL || process.env.ROOT_DATABASE_URL
+    );
+    const envAppDatabaseUrl = this.utilsService.replaceEnv(
+      process.env.POSTGRES_URL || process.env.DATABASE_URL
+    );
     const envNxAppDatabaseUrls = Object.keys(
       this.utilsService.getWorkspaceProjects()
     )
-      .map(
-        (key) =>
+      .map((key) =>
+        this.utilsService.replaceEnv(
           process.env[
             `${this.utilsService
               .getExtractAppName(key)
               .toUpperCase()}_POSTGRES_URL`
           ] ||
-          process.env[
-            `${this.utilsService
-              .getExtractAppName(key)
-              .toUpperCase()}_DATABASE_URL`
-          ]
+            process.env[
+              `${this.utilsService
+                .getExtractAppName(key)
+                .toUpperCase()}_DATABASE_URL`
+            ]
+        )
       )
       .filter(Boolean);
-
     if (!rootDatabaseUrl) {
       if (envRootDatabaseUrl) {
         rootDatabaseUrl = envRootDatabaseUrl;
@@ -71,14 +76,11 @@ export class PostgresService {
     }
     if (appDatabaseUrl) {
       if (dropAppDatabase) {
-        await this.dropAppDatabaseHandler(
-          this.utilsService.replaceEnv(rootDatabaseUrl),
-          this.utilsService.replaceEnv(appDatabaseUrl)
-        );
+        await this.dropAppDatabaseHandler(rootDatabaseUrl, appDatabaseUrl);
       }
       await this.createAppDatabaseHandler(
-        this.utilsService.replaceEnv(rootDatabaseUrl),
-        this.utilsService.replaceEnv(appDatabaseUrl),
+        rootDatabaseUrl,
+        appDatabaseUrl,
         extensions
       );
     } else {
@@ -86,22 +88,24 @@ export class PostgresService {
         envNxAppDatabaseUrls.forEach(async (envNxAppDatabaseUrl) => {
           if (dropAppDatabase) {
             await this.dropAppDatabaseHandler(
-              this.utilsService.replaceEnv(rootDatabaseUrl),
-              this.utilsService.replaceEnv(envNxAppDatabaseUrl)
+              rootDatabaseUrl,
+              envNxAppDatabaseUrl
             );
           }
           await this.createAppDatabaseHandler(
-            this.utilsService.replaceEnv(rootDatabaseUrl),
-            this.utilsService.replaceEnv(envNxAppDatabaseUrl),
+            rootDatabaseUrl,
+            envNxAppDatabaseUrl,
             extensions
           );
           await this.applyPermissionsHandler(
-            this.utilsService.replaceEnv(rootDatabaseUrl),
-            this.utilsService.replaceEnv(envNxAppDatabaseUrl)
+            rootDatabaseUrl,
+            envNxAppDatabaseUrl
           );
         });
       }
     }
+
+    this.closeRootDbConnection();
   }
 
   async dropAppDatabaseHandler(
@@ -113,8 +117,8 @@ export class PostgresService {
     const appDatabase = this.parseDatabaseUrl(appDatabaseUrl);
     this.logger.debug('Root database:', rootDatabase.DATABASE);
     this.logger.debug('App database:', appDatabase.DATABASE);
-    const db = pgp({})({
-      user: rootDatabase.USERNAME,
+    const db = this.getRootDbConnection({
+      username: rootDatabase.USERNAME,
       password: rootDatabase.PASSWORD,
       port: rootDatabase.PORT,
       host: (rootDatabase.HOST || '').split(':')[0],
@@ -134,7 +138,6 @@ export class PostgresService {
         `Application database user and root database user must be different`
       );
     }
-    db.$pool.end();
     this.logger.info('End of drop database...');
   }
 
@@ -148,8 +151,8 @@ export class PostgresService {
     const appDatabase = this.parseDatabaseUrl(appDatabaseUrl);
     this.logger.debug('Root database:', rootDatabase.DATABASE);
     this.logger.debug('App database:', appDatabase.DATABASE);
-    const db = pgp({})({
-      user: rootDatabase.USERNAME,
+    const db = this.getRootDbConnection({
+      username: rootDatabase.USERNAME,
       password: rootDatabase.PASSWORD,
       port: rootDatabase.PORT,
       host: (rootDatabase.HOST || '').split(':')[0],
@@ -214,9 +217,30 @@ export class PostgresService {
         throw err;
       }
     }
-    db.$pool.end();
-
     this.logger.info('End of create database...');
+  }
+
+  private getRootDbConnection(rootDatabase: {
+    username?: string;
+    password?: string;
+    host?: string;
+    database?: string;
+    port?: number;
+  }) {
+    if (!this.rootDatabaseConnection) {
+      this.rootDatabaseConnection = pgp({})({
+        user: rootDatabase.username,
+        password: rootDatabase.password,
+        port: rootDatabase.port,
+        host: (rootDatabase.host || '').split(':')[0],
+      });
+    }
+    return this.rootDatabaseConnection;
+  }
+
+  private async closeRootDbConnection() {
+    await this.rootDatabaseConnection.$pool.end();
+    this.rootDatabaseConnection = null;
   }
 
   async applyPermissionsHandler(

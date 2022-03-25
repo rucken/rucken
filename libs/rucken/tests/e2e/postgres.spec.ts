@@ -51,7 +51,7 @@ describe('Postgres (e2e)', () => {
   });
 
   it('create application database with set command line args ', async () => {
-    await execa('npm', [
+    const result = await execa('npm', [
       'start',
       '--',
       'postgres',
@@ -62,6 +62,8 @@ describe('Postgres (e2e)', () => {
         5432
       )}/${POSTGRES_DB}?schema=public`,
     ]);
+
+    expect(result.stderr).toEqual('');
 
     const pgConfig = {
       user: POSTGRES_USER,
@@ -77,7 +79,7 @@ describe('Postgres (e2e)', () => {
   });
 
   it('duplicate create application database with set command line args ', async () => {
-    await execa('npm', [
+    const result = await execa('npm', [
       'start',
       '--',
       'postgres',
@@ -88,6 +90,8 @@ describe('Postgres (e2e)', () => {
         5432
       )}/${POSTGRES_DB}?schema=public`,
     ]);
+
+    expect(result.stderr).toEqual('');
 
     const pgConfig = {
       user: POSTGRES_USER,
@@ -103,7 +107,7 @@ describe('Postgres (e2e)', () => {
   });
 
   it('drop application database before create application database with set command line args ', async () => {
-    await execa('npm', [
+    const result = await execa('npm', [
       'start',
       '--',
       'postgres',
@@ -115,7 +119,8 @@ describe('Postgres (e2e)', () => {
         5432
       )}/${POSTGRES_DB}?schema=public`,
     ]);
-    expect(true).toEqual(true);
+
+    expect(result.stderr).toEqual('');
 
     const pgConfig = {
       user: POSTGRES_USER,
@@ -131,7 +136,7 @@ describe('Postgres (e2e)', () => {
   });
 
   it('create application 2 database with set command line args ', async () => {
-    await execa('npm', [
+    const result = await execa('npm', [
       'start',
       '--',
       'postgres',
@@ -142,7 +147,8 @@ describe('Postgres (e2e)', () => {
         5432
       )}/${POSTGRES_DB2}?schema=public`,
     ]);
-    expect(true).toEqual(true);
+
+    expect(result.stderr).toEqual('');
 
     const pgConfig = {
       user: POSTGRES_USER,
@@ -166,13 +172,15 @@ describe('Postgres (e2e)', () => {
       5432
     )}/${POSTGRES_DB2}?schema=public`;
 
-    await execa('npm', ['start', '--', 'postgres'], {
+    const result = await execa('npm', ['start', '--', 'postgres'], {
       env: {
         ...process.env,
         ROOT_POSTGRES_URL: rootDatabaseUrl,
         POSTGRES_URL: appDatabaseUrl,
       },
     });
+
+    expect(result.stderr).toEqual('');
 
     const pgConfig = {
       user: POSTGRES_USER2,
@@ -196,7 +204,7 @@ describe('Postgres (e2e)', () => {
 
     const appDatabaseUrl = `postgres://${POSTGRES_USER3}:${POSTGRES_PASSWORD3}@\${POSTGRES_HOST}:\${POSTGRES_PORT}/${POSTGRES_DB3}?schema=public`;
 
-    await execa('npm', ['start', '--', 'postgres'], {
+    const result = await execa('npm', ['start', '--', 'postgres'], {
       env: {
         ...process.env,
         ROOT_POSTGRES_URL: rootDatabaseUrl,
@@ -205,6 +213,8 @@ describe('Postgres (e2e)', () => {
         POSTGRES_PORT: dbPort,
       },
     });
+
+    expect(result.stderr).toEqual('');
 
     const pgConfig = {
       user: POSTGRES_USER3,
@@ -229,7 +239,7 @@ describe('Postgres (e2e)', () => {
     const nxApp1DatabaseUrl = `postgres://nx1app:nx1password@\${POSTGRES_HOST}:\${POSTGRES_PORT}/nx1db?schema=public`;
     const nxApp2DatabaseUrl = `postgres://nx2app:nx2password@\${POSTGRES_HOST}:\${POSTGRES_PORT}/nx2db?schema=public`;
 
-    await execa(
+    const result = await execa(
       'node',
       [
         resolve(
@@ -255,6 +265,8 @@ describe('Postgres (e2e)', () => {
         },
       }
     );
+
+    expect(result.stderr).toEqual('');
 
     const pgConfigNx1 = {
       user: 'nx1app',

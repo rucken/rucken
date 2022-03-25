@@ -51,6 +51,9 @@ export class UtilsService {
   }
 
   replaceEnv(command: string | undefined): string {
+    if (!command) {
+      return command;
+    }
     let newCommand = command;
     Object.keys(process.env).forEach(
       (key) =>
