@@ -4,10 +4,6 @@
   "version": "3.5.1",
   "license": "MIT",
   "author": "EndyKaufman <admin@site15.ru>",
-  "engines": {
-    "node": ">=16",
-    "npm": ">=8"
-  },
   "keywords": [
     "cli",
     "nx",
