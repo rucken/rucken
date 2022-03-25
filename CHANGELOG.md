@@ -4,17 +4,15 @@ All notable changes to this project will be documented in this file. See [standa
 
 ### [3.4.1](https://github.com/rucken/rucken/compare/v3.4.0...v3.4.1) (2022-02-27)
 
-
 ### Bug Fixes
 
-* add revert wrong extract strings with { and } symbol ([5ed8d9b](https://github.com/rucken/rucken/commit/5ed8d9b4b356aa4c3239ef954f3841f9c13843b7))
+- add revert wrong extract strings with { and } symbol ([5ed8d9b](https://github.com/rucken/rucken/commit/5ed8d9b4b356aa4c3239ef954f3841f9c13843b7))
 
 ## [3.4.0](https://github.com/rucken/rucken/compare/v3.3.3...v3.4.0) (2022-01-31)
 
-
 ### Features
 
-* add transloco-extractor for angular and nestjs code ([#3](https://github.com/rucken/rucken/issues/3)) ([6bab9e3](https://github.com/rucken/rucken/commit/6bab9e391267e318595fe955c853bacfae149e1e))
+- add transloco-extractor for angular and nestjs code ([#3](https://github.com/rucken/rucken/issues/3)) ([6bab9e3](https://github.com/rucken/rucken/commit/6bab9e391267e318595fe955c853bacfae149e1e))
 
 ### [3.3.3](https://github.com/rucken/rucken/compare/v3.3.2...v3.3.3) (2022-01-26)
 

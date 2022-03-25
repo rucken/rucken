@@ -26,7 +26,7 @@ export class Extracti18nCommands {
     ],
   })
   async extracti18n({ locales }: { locales: string }) {
-    this.extracti18nService.setLogger('extract-i18n');
+    this.extracti18nService.setLogger(Extracti18nService.title);
     this.extracti18nService.extract(
       locales ? locales.split(',') : this.config.locales,
       this.config.markers

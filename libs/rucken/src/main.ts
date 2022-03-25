@@ -4,6 +4,7 @@ require('source-map-support').install();
 import { getLogger } from 'log4js';
 import { BootstrapConsole } from 'nestjs-console';
 import { AppModule } from './lib/app.module';
+import { UtilsService } from './lib/utils/utils.service';
 
 const bootstrap = new BootstrapConsole({
   module: AppModule,
@@ -12,7 +13,7 @@ const bootstrap = new BootstrapConsole({
 
 bootstrap.init().then(async (app) => {
   const logger = getLogger(`rucken`);
-  logger.level = 'all';
+  logger.level = UtilsService.logLevel();
   try {
     await app.init();
     await bootstrap.boot();

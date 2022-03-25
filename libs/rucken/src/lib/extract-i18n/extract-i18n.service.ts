@@ -7,18 +7,20 @@ import { UtilsService } from '../utils/utils.service';
 
 @Injectable()
 export class Extracti18nService {
+  public static title = 'extract-i18n';
+
   private logger: Logger;
 
   constructor(private readonly utilsService: UtilsService) {}
 
   setLogger(command: string): void {
-    this.logger = getLogger(`${Extracti18nService.name}: ${command}`);
-    this.logger.level = 'all';
+    this.logger = getLogger(command);
+    this.logger.level = UtilsService.logLevel();
   }
 
   public extract(locales: string[], markers: string[]): void {
     this.logger.info('Start create translate files...');
-    this.logger.info(
+    this.logger.debug(
       `Config: ${JSON.stringify({
         locales,
         markers,

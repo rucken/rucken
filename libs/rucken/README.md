@@ -1,10 +1,10 @@
-Console nx tools for rucken
+Console nx tools
 
 ## make-ts-list - create list of ts files for all nx libraries
 
 > npx rucken "make-ts-list" "--help"
 
-```
+```sh
 Usage: main make-ts-list|fl [options]
 
 create list of ts files for all nx libraries
@@ -17,7 +17,7 @@ Options:
 
 > npx rucken "version-updater" "--help"
 
-```
+```sh
 Usage: main version-updater|vu [options]
 
 update versions in all nx applications
@@ -31,7 +31,7 @@ Options:
 
 > npx rucken "translate" "--help"
 
-```
+```sh
 Usage: main translate [options]
 
 extract translate from source (run: extract-i18n => gettext => extract-i18n)
@@ -46,7 +46,7 @@ Options:
 
 > npx rucken "extract-i18n" "--help"
 
-```
+```sh
 Usage: main extract-i18n [options]
 
 translate marker extractor (use: transloco-keys-manager + transloco-scoped-libs)
@@ -60,7 +60,7 @@ Options:
 
 > npx rucken "gettext" "--help"
 
-```
+```sh
 Usage: main gettext [options]
 
 translate marker extractor
@@ -75,7 +75,7 @@ Options:
 
 > npx rucken "prepare" "--help"
 
-```
+```sh
 Usage: main prepare [options]
 
 make-ts-list + version-update + translate
@@ -85,4 +85,22 @@ Options:
   -dl,--default-locale [string]            default locale (default: en)
   -upv,--update-package-version [boolean]  update package version (default: true)
   -h, --help                               display help for command
+```
+
+## postgres - application database creator
+
+> npx rucken "postgres" "--help"
+
+```sh
+Usage: main postgres [options]
+
+postgres application database creator
+
+Options:
+  -r,--root-database-url [strings]  database url for connect as root user (example:
+                                    postgres://ROOT_POSTGRES_USER:ROOT_POSTGRES_PASSWORD@localhost:POSTGRES_PORT/postgres?schema=public)
+  -a,--app-database-url [strings]   application database url used for create new database (example:
+                                    postgres://POSTGRES_USER:POSTGRES_PASSWORD@localhost:POSTGRES_PORT/POSTGRES_DATABASE?schema=public)
+  -d,--drop-app-database [boolean]  drop application database before try create it (default: false)
+  -h, --help                        display help for command
 ```

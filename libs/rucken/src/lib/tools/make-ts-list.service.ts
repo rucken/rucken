@@ -9,13 +9,15 @@ import { UtilsService } from '../utils/utils.service';
 
 @Injectable()
 export class MakeTsListService {
+  public static title = 'make-ts-list';
+
   private logger: Logger;
 
   constructor(private readonly utilsService: UtilsService) {}
 
   setLogger(command: string): void {
-    this.logger = getLogger(`${MakeTsListService.name}: ${command}`);
-    this.logger.level = 'all';
+    this.logger = getLogger(command);
+    this.logger.level = UtilsService.logLevel();
   }
 
   makeTsListHandler({
@@ -26,7 +28,7 @@ export class MakeTsListService {
     excludes: string[];
   }): void {
     this.logger.info('Start create list files...');
-    this.logger.info(
+    this.logger.debug(
       `Config: ${JSON.stringify({
         indexFileName,
         excludes,

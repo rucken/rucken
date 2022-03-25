@@ -4,6 +4,9 @@ import mergeWith from 'lodash.mergewith';
 
 @Injectable()
 export class UtilsService {
+  public static logLevel = () =>
+    (process.env['DEBUG'] === '*' ? 'all' : process.env['DEBUG']) || 'error';
+
   getWorkspaceProjects(workspaceFile?: string) {
     if (!workspaceFile) {
       workspaceFile = 'workspace.json';
@@ -37,5 +40,28 @@ export class UtilsService {
     } catch (error) {
       return defaultValue;
     }
+  }
+
+  getExtractAppName(nxAppName: string) {
+    return nxAppName
+      .split('-')
+      .join('_')
+      .replace('-server', '')
+      .replace('-ms', '');
+  }
+
+  replaceEnv(command: string | undefined): string {
+    let newCommand = command;
+    Object.keys(process.env).forEach(
+      (key) =>
+        (newCommand = (newCommand || '')
+          .split('%space%')
+          .join(' ')
+          .split('%br%')
+          .join('<br/>')
+          .split(`\${${key}}`)
+          .join(process.env[key]))
+    );
+    return newCommand || '';
   }
 }

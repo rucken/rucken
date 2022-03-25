@@ -19,7 +19,7 @@ export class MakeTsListCommands {
     description: 'create list of ts files for all nx libraries',
   })
   async makeTsList() {
-    this.makeTsListService.setLogger('make-ts-list');
+    this.makeTsListService.setLogger(MakeTsListService.title);
     this.makeTsListService.makeTsListHandler({
       indexFileName: this.config.indexFileName,
       excludes: this.config.excludes,

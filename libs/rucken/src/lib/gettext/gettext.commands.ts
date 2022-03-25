@@ -35,7 +35,7 @@ export class GettextCommands {
     defaultLocale: string;
     locales: string;
   }) {
-    this.gettextService.setLogger('gettext');
+    this.gettextService.setLogger(GettextService.title);
     this.gettextService.extractTranslatesFromSourcesForLibraries({
       po2jsonOptions: this.config.po2jsonOptions,
       pattern: this.config.gettextExtractorOptions.pattern,

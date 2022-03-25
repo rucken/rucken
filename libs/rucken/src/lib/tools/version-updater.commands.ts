@@ -29,7 +29,7 @@ export class VersionUpdaterCommands {
   }: {
     updatePackageVersion?: string;
   } = {}) {
-    this.versionUpdaterService.setLogger('version-updater');
+    this.versionUpdaterService.setLogger(VersionUpdaterService.title);
     this.versionUpdaterService.versionUpdaterHandler({
       updatePackageVersion: updatePackageVersion
         ? updatePackageVersion.toUpperCase().trim() === 'TRUE'

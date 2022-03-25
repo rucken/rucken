@@ -59,26 +59,28 @@ export class PrepareCommands {
     locales: string;
     updatePackageVersion?: string;
   }) {
-    this.makeTsListService.setLogger('prepare');
+    this.makeTsListService.setLogger(`prepare: ${MakeTsListService.title}`);
     this.makeTsListService.makeTsListHandler({
       indexFileName: this.makeTsListConfig.indexFileName,
       excludes: this.makeTsListConfig.excludes,
     });
 
-    this.versionUpdaterService.setLogger('prepare');
+    this.versionUpdaterService.setLogger(
+      `prepare: ${VersionUpdaterService.title}`
+    );
     this.versionUpdaterService.versionUpdaterHandler({
       updatePackageVersion: updatePackageVersion
         ? updatePackageVersion.toUpperCase().trim() === 'TRUE'
         : this.versionUpdaterConfig.updatePackageVersion,
     });
 
-    this.extracti18nService.setLogger('prepare');
+    this.extracti18nService.setLogger(`prepare: ${Extracti18nService.title}`);
     this.extracti18nService.extract(
       locales ? locales.split(',') : this.extracti18nConfig.locales,
       this.extracti18nConfig.markers
     );
 
-    this.gettextService.setLogger('prepare');
+    this.gettextService.setLogger(`prepare: ${GettextService.title}`);
     this.gettextService.extractTranslatesFromSourcesForLibraries({
       po2jsonOptions: this.gettextConfig.po2jsonOptions,
       pattern: this.gettextConfig.gettextExtractorOptions.pattern,
