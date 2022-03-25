@@ -20,7 +20,7 @@ jobs:
       - name: Setup Node.js 16.x to publish to npmjs.org
         uses: actions/setup-node@v1
         with:
-          node-version: '16.x'
+          node-version: '16.13.1'
           registry-url: 'https://registry.npmjs.org'
 
       - uses: actions/cache@v2
@@ -35,5 +35,13 @@ jobs:
 
       - name: Lint
         run: npm run lint
+        env:
+          CI: true
+
+      - name: Build
+        run: npm run build
+
+      - name: Test
+        run: npm run test
         env:
           CI: true

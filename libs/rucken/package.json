@@ -4,10 +4,6 @@
     "description": "Console nx tools",
     "license": "MIT",
     "author": "EndyKaufman <admin@site15.ru>",
-    "engines": {
-        "node": ">=16",
-        "npm": ">=8"
-    },
     "keywords": [
         "cli",
         "nx",
