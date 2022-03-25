@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [3.5.2](https://github.com/rucken/rucken/compare/v3.5.1...v3.5.2) (2022-03-25)
+
+
+### Bug Fixes
+
+* remove minimal versions of node in package.json ([07fc9b8](https://github.com/rucken/rucken/commit/07fc9b8a4e429b1bcb996100e82d1708dce6be1f))
+
 ### [3.5.1](https://github.com/rucken/rucken/compare/v3.5.0...v3.5.1) (2022-03-25)
 
 
