@@ -2,26 +2,30 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
-### [3.5.2](https://github.com/rucken/rucken/compare/v3.5.1...v3.5.2) (2022-03-25)
+### [3.5.3](https://github.com/rucken/rucken/compare/v3.5.2...v3.5.3) (2022-03-26)
 
 
 ### Bug Fixes
 
-* remove minimal versions of node in package.json ([07fc9b8](https://github.com/rucken/rucken/commit/07fc9b8a4e429b1bcb996100e82d1708dce6be1f))
+* update for work with async foreach and add support top-level await for application ([998666c](https://github.com/rucken/rucken/commit/998666ceeef76caa5a71092eee95518d7c8328cb))
+
+### [3.5.2](https://github.com/rucken/rucken/compare/v3.5.1...v3.5.2) (2022-03-25)
+
+### Bug Fixes
+
+- remove minimal versions of node in package.json ([07fc9b8](https://github.com/rucken/rucken/commit/07fc9b8a4e429b1bcb996100e82d1708dce6be1f))
 
 ### [3.5.1](https://github.com/rucken/rucken/compare/v3.5.0...v3.5.1) (2022-03-25)
 
-
 ### Bug Fixes
 
-* update for correct work with envs for nx applications ([87955ce](https://github.com/rucken/rucken/commit/87955ce4358a288f8ec74d05a9234774e387787d))
+- update for correct work with envs for nx applications ([87955ce](https://github.com/rucken/rucken/commit/87955ce4358a288f8ec74d05a9234774e387787d))
 
 ## [3.5.0](https://github.com/rucken/rucken/compare/v3.4.1...v3.5.0) (2022-03-25)
 
-
 ### Features
 
-* add support work with postgres, create and drop application database ([#5](https://github.com/rucken/rucken/issues/5)) ([#6](https://github.com/rucken/rucken/issues/6)) ([dafd1c0](https://github.com/rucken/rucken/commit/dafd1c06816864e2735756acd13b31c2284f063c))
+- add support work with postgres, create and drop application database ([#5](https://github.com/rucken/rucken/issues/5)) ([#6](https://github.com/rucken/rucken/issues/6)) ([dafd1c0](https://github.com/rucken/rucken/commit/dafd1c06816864e2735756acd13b31c2284f063c))
 
 ### [3.4.1](https://github.com/rucken/rucken/compare/v3.4.0...v3.4.1) (2022-02-27)
 
