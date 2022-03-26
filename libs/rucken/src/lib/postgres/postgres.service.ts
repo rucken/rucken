@@ -85,7 +85,8 @@ export class PostgresService {
       );
     } else {
       if (envNxAppDatabaseUrls.length > 0) {
-        envNxAppDatabaseUrls.forEach(async (envNxAppDatabaseUrl) => {
+        for (let i = 0; i < envNxAppDatabaseUrls.length; i++) {
+          const envNxAppDatabaseUrl = envNxAppDatabaseUrls[i];
           if (dropAppDatabase) {
             await this.dropAppDatabaseHandler(
               rootDatabaseUrl,
@@ -101,7 +102,7 @@ export class PostgresService {
             rootDatabaseUrl,
             envNxAppDatabaseUrl
           );
-        });
+        }
       }
     }
 

@@ -11,9 +11,10 @@ const bootstrap = new BootstrapConsole({
   useDecorators: true,
 });
 
-bootstrap.init().then(async (app) => {
+async function main() {
   const logger = getLogger(`rucken`);
   logger.level = UtilsService.logLevel();
+  const app = await bootstrap.init();
   try {
     await app.init();
     await bootstrap.boot();
@@ -23,4 +24,6 @@ bootstrap.init().then(async (app) => {
     await app.close();
     process.exit(1);
   }
-});
+}
+
+main();
