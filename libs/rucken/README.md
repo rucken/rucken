@@ -1,3 +1,6 @@
+[![npm version](https://badge.fury.io/js/rucken.svg)](https://badge.fury.io/js/rucken)
+[![monthly downloads](https://badgen.net/npm/dm/rucken)](https://www.npmjs.com/package/rucken)
+
 Console nx tools
 
 ## make-ts-list - create list of ts files for all nx libraries
@@ -5,7 +8,7 @@ Console nx tools
 > npx rucken "make-ts-list" "--help"
 
 ```sh
-Usage: main make-ts-list|fl [options]
+Usage: rucken make-ts-list|fl [options]
 
 create list of ts files for all nx libraries
 
@@ -18,7 +21,7 @@ Options:
 > npx rucken "version-updater" "--help"
 
 ```sh
-Usage: main version-updater|vu [options]
+Usage: rucken version-updater|vu [options]
 
 update versions in all nx applications
 
@@ -32,7 +35,7 @@ Options:
 > npx rucken "translate" "--help"
 
 ```sh
-Usage: main translate [options]
+Usage: rucken translate [options]
 
 extract translate from source (run: extract-i18n => gettext => extract-i18n)
 
@@ -47,7 +50,7 @@ Options:
 > npx rucken "extract-i18n" "--help"
 
 ```sh
-Usage: main extract-i18n [options]
+Usage: rucken extract-i18n [options]
 
 translate marker extractor (use: transloco-keys-manager + transloco-scoped-libs)
 
@@ -61,7 +64,7 @@ Options:
 > npx rucken "gettext" "--help"
 
 ```sh
-Usage: main gettext [options]
+Usage: rucken gettext [options]
 
 translate marker extractor
 
@@ -76,7 +79,7 @@ Options:
 > npx rucken "prepare" "--help"
 
 ```sh
-Usage: main prepare [options]
+Usage: rucken prepare [options]
 
 make-ts-list + version-update + translate
 
@@ -92,7 +95,7 @@ Options:
 > npx rucken "postgres" "--help"
 
 ```sh
-Usage: main postgres [options]
+Usage: rucken postgres [options]
 
 postgres application database creator
 
@@ -103,4 +106,17 @@ Options:
                                     postgres://POSTGRES_USER:POSTGRES_PASSWORD@localhost:POSTGRES_PORT/POSTGRES_DATABASE?schema=public)
   -d,--drop-app-database [boolean]  drop application database before try create it (default: false)
   -h, --help                        display help for command
+```
+
+## env-replacer - recursive replace input value with process environment values
+
+> npx rucken "env-replacer" "--help"
+
+```sh
+Usage: rucken env-replacer [options] <input>
+
+recursive replace input value with process environment values
+
+Options:
+  -h, --help  display help for command
 ```

@@ -50,7 +50,7 @@ export class UtilsService {
       .replace('-ms', '');
   }
 
-  replaceEnv(command: string | undefined): string {
+  replaceEnv(command: string | undefined, depth = 10): string {
     if (!command) {
       return command;
     }
@@ -63,8 +63,13 @@ export class UtilsService {
           .split('%br%')
           .join('<br/>')
           .split(`\${${key}}`)
+          .join(process.env[key])
+          .split(`$${key}`)
           .join(process.env[key]))
     );
+    if (command !== newCommand && newCommand.includes('$') && depth > 0) {
+      newCommand = this.replaceEnv(newCommand, depth - 1);
+    }
     return newCommand || '';
   }
 }

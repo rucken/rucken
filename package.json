@@ -48,7 +48,7 @@
     "tsc:lint": "tsc --noEmit -p tsconfig.base.json",
     "lib:build-changelog": "./node_modules/.bin/cp-cli ./CHANGELOG.md ./dist/libs/rucken/CHANGELOG.md",
     "run-to-current": "npm run start -- prepare --locales=en,ru --default-locale=en",
-    "create-readme": "npm run start -- make-ts-list --help && npm run start -- version-updater --help && npm run start -- translate --help && npm run start -- extract-i18n --help && npm run start -- gettext --help && npm run start -- prepare --help && npm run start -- postgres --help"
+    "create-readme": "npm run start -- make-ts-list --help && npm run start -- version-updater --help && npm run start -- translate --help && npm run start -- extract-i18n --help && npm run start -- gettext --help && npm run start -- prepare --help && npm run start -- postgres --help && npm run start -- env-replacer --help"
   },
   "private": true,
   "devDependencies": {

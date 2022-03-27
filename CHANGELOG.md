@@ -4,10 +4,9 @@ All notable changes to this project will be documented in this file. See [standa
 
 ### [3.5.3](https://github.com/rucken/rucken/compare/v3.5.2...v3.5.3) (2022-03-26)
 
-
 ### Bug Fixes
 
-* update for work with async foreach and add support top-level await for application ([998666c](https://github.com/rucken/rucken/commit/998666ceeef76caa5a71092eee95518d7c8328cb))
+- update for work with async foreach and add support top-level await for application ([998666c](https://github.com/rucken/rucken/commit/998666ceeef76caa5a71092eee95518d7c8328cb))
 
 ### [3.5.2](https://github.com/rucken/rucken/compare/v3.5.1...v3.5.2) (2022-03-25)
 

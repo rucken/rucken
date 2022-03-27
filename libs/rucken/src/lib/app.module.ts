@@ -1,4 +1,5 @@
 import { Module } from '@nestjs/common';
+import { EnvReplacerModule } from './env-replacer/env-replacer.module';
 import { Extracti18nModule } from './extract-i18n/extract-i18n.module';
 import { GettextModule } from './gettext/gettext.module';
 import { PostgresModule } from './postgres/postgres.module';
@@ -14,6 +15,7 @@ import { TranslateModule } from './translate/translate.module';
     TranslateModule.forRoot(),
     PrepareModule.forRoot(),
     PostgresModule.forRoot(),
+    EnvReplacerModule.forRoot(),
   ],
 })
 export class AppModule {}
