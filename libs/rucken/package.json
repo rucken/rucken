@@ -14,8 +14,12 @@
     "gettext",
     "translate",
     "make-ts-list",
+    "index",
     "version-updater",
-    "postgres"
+    "postgres",
+    "env",
+    "replace",
+    "change"
   ],
   "bugs": {
     "url": "https://github.com/rucken/rucken/issues"

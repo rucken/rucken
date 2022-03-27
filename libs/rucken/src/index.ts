@@ -1,5 +1,7 @@
 export * from './main';
 export * from './lib/app.module';
+export * from './lib/env-replacer/env-replacer.commands';
+export * from './lib/env-replacer/env-replacer.module';
 export * from './lib/extract-i18n/extract-i18n.commands';
 export * from './lib/extract-i18n/extract-i18n.config';
 export * from './lib/extract-i18n/extract-i18n.module';
