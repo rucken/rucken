@@ -1,9 +1,9 @@
 # rucken
 
+Console nx tools
+
 [![npm version](https://badge.fury.io/js/rucken.svg)](https://badge.fury.io/js/rucken)
 [![monthly downloads](https://badgen.net/npm/dm/rucken)](https://www.npmjs.com/package/rucken)
-
-Console nx tools
 
 ## make-ts-list - create list of ts files for all nx libraries
 
