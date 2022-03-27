@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [3.6.0](https://github.com/rucken/rucken/compare/v3.5.3...v3.6.0) (2022-03-27)
+
+
+### Features
+
+* add env-replacer ([e727c26](https://github.com/rucken/rucken/commit/e727c26cc1a4eaaef283f990b32211e764fd78c1))
+
 ### [3.5.3](https://github.com/rucken/rucken/compare/v3.5.2...v3.5.3) (2022-03-26)
 
 ### Bug Fixes
