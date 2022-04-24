@@ -1,10 +1,10 @@
 import { Injectable } from '@nestjs/common';
 import { ConnectionString } from 'connection-string';
 import { getLogger, Logger } from 'log4js';
-import { Client } from 'pg';
-import pgp from 'pg-promise';
-import pg from 'pg-promise/typescript/pg-subset';
 import { UtilsService } from '../utils/utils.service';
+// import { Client } from 'pg';
+// import pgp from 'pg-promise';
+// import pg from 'pg-promise/typescript/pg-subset';
 
 @Injectable()
 export class PostgresService {
@@ -12,13 +12,29 @@ export class PostgresService {
 
   private logger: Logger;
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  private rootDatabaseConnection: pgp.IDatabase<any, pg.IClient>;
+  private rootDatabaseConnection: any; // pgp.IDatabase<any, pg.IClient>;
 
   constructor(private readonly utilsService: UtilsService) {}
+
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  private Client: any;
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  private pgp: any;
 
   setLogger(command: string): void {
     this.logger = getLogger(command);
     this.logger.level = UtilsService.logLevel();
+  }
+
+  loadPackages() {
+    if (!this.Client) {
+      // eslint-disable-next-line @typescript-eslint/no-var-requires
+      this.Client = require('pg').Client;
+    }
+    if (!this.pgp) {
+      // eslint-disable-next-line @typescript-eslint/no-var-requires
+      this.pgp = require('pg-promise');
+    }
   }
 
   async postgres({
@@ -32,6 +48,7 @@ export class PostgresService {
     dropAppDatabase?: boolean;
     extensions: string[];
   }) {
+    this.loadPackages();
     const envRootDatabaseUrl = this.utilsService.replaceEnv(
       process.env.ROOT_POSTGRES_URL || process.env.ROOT_DATABASE_URL
     );
@@ -192,7 +209,7 @@ export class PostgresService {
           database: appDatabase.DATABASE,
           idleTimeoutMillis: 30000,
         };
-        const appClient = new Client(pgAppConfig);
+        const appClient = new this.Client(pgAppConfig);
         await appClient.connect();
         for (const query of updateDatabaseQuery) {
           try {
@@ -221,7 +238,7 @@ export class PostgresService {
     this.logger.info('End of create database...');
   }
 
-  private getRootDbConnection(rootDatabase: {
+  getRootDbConnection(rootDatabase: {
     username?: string;
     password?: string;
     host?: string;
@@ -229,7 +246,7 @@ export class PostgresService {
     port?: number;
   }) {
     if (!this.rootDatabaseConnection) {
-      this.rootDatabaseConnection = pgp({})({
+      this.rootDatabaseConnection = this.pgp({})({
         user: rootDatabase.username,
         password: rootDatabase.password,
         port: rootDatabase.port,
@@ -239,7 +256,7 @@ export class PostgresService {
     return this.rootDatabaseConnection;
   }
 
-  private async closeRootDbConnection() {
+  async closeRootDbConnection() {
     await this.rootDatabaseConnection.$pool.end();
     this.rootDatabaseConnection = null;
   }
@@ -317,7 +334,7 @@ END $$;`*/
       database: appDatabase.DATABASE,
       idleTimeoutMillis: 30000,
     };
-    const client = new Client(pgConfig);
+    const client = new this.Client(pgConfig);
     await client.connect();
     for (const query of createDatabaseQuery) {
       try {
