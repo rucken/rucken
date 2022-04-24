@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [3.6.1](https://github.com/rucken/rucken/compare/v3.6.0...v3.6.1) (2022-04-24)
+
+
+### Bug Fixes
+
+* change style of imports pg dependencies to lazy stayle ([39ce647](https://github.com/rucken/rucken/commit/39ce647e8d6bafb52fcf74690576f1cc6f521edb))
+
 ## [3.6.0](https://github.com/rucken/rucken/compare/v3.5.3...v3.6.0) (2022-03-27)
 
 
