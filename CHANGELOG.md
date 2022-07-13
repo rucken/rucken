@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [3.6.3](https://github.com/rucken/rucken/compare/v3.6.2...v3.6.3) (2022-07-13)
+
+
+### Bug Fixes
+
+* append @nestjs/core and @nestjs/common to cli deps ([3f580fa](https://github.com/rucken/rucken/commit/3f580faf5e6e5854dd4c5e01288f8d693744f677))
+
 ### [3.6.2](https://github.com/rucken/rucken/compare/v3.6.1...v3.6.2) (2022-07-13)
 
 
