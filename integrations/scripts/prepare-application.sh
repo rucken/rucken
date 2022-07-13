@@ -2,12 +2,12 @@
 rm -rf ./integrations/app
 mkdir ./integrations/app
 cd ./integrations
-npx --yes create-nx-workspace@previous --name=app --preset=empty --interactive=false --nx-cloud=false
+npx --yes create-nx-workspace@13.4.1 --name=app --preset=empty --interactive=false --nx-cloud=false
 cd ../
 node ./integrations/scripts/path-files.js
 cd ./integrations/app
 npm i --force
-npm install --save-dev @nrwl/angular@previous @nrwl/nest@previous @nrwl/node@previous --force
+npm install --save-dev @nrwl/angular@13.4.1 @nrwl/nest@13.4.1 @nrwl/node@13.4.1 --force
 npm install --save @ngneat/transloco @ngneat/transloco-locale
 npm run nx -- g @nrwl/nest:app server
 npm run nx -- g @nrwl/angular:app client --style=scss --routing=true
