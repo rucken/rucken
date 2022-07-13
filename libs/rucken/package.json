@@ -41,6 +41,8 @@
     "dependencies": {
         "tslib": "2.0.0",
         "log4js": "6.3.0",
+        "@nestjs/common": "8.2.4",
+        "@nestjs/core": "8.2.4",
         "nestjs-console": "7.0.1",
         "recursive-readdir": "2.2.2",
         "replace-ext": "2.0.0",
