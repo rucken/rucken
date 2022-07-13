@@ -8,10 +8,17 @@ export class UtilsService {
     (process.env['DEBUG'] === '*' ? 'all' : process.env['DEBUG']) || 'error';
 
   getWorkspaceProjects(workspaceFile?: string) {
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    let workspaceJson: any;
     if (!workspaceFile) {
       workspaceFile = 'workspace.json';
     }
-    const workspaceJson = JSON.parse(readFileSync(workspaceFile).toString());
+    if (existsSync(workspaceFile)) {
+      workspaceJson = JSON.parse(readFileSync(workspaceFile).toString());
+    } else {
+      workspaceJson = this.getRuckenConfig({ workspace: { projects: [] } });
+    }
+
     return Object.keys(workspaceJson.projects)
       .map((projectName) =>
         typeof workspaceJson.projects[projectName] === 'string'
