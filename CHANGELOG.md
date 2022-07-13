@@ -2,6 +2,14 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [3.6.2](https://github.com/rucken/rucken/compare/v3.6.1...v3.6.2) (2022-07-13)
+
+
+### Bug Fixes
+
+* add support get nx projects from rucken config ([2d5061a](https://github.com/rucken/rucken/commit/2d5061a236bab1f69604331d833d93a995afdcf6))
+* lock dependencies ([aaa994e](https://github.com/rucken/rucken/commit/aaa994ee19feca401f1c44eb1dc68ab927fbab27))
+
 ### [3.6.1](https://github.com/rucken/rucken/compare/v3.6.0...v3.6.1) (2022-04-24)
 
 
