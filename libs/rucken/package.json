@@ -49,9 +49,9 @@
         "sort-paths": "1.1.1",
         "fast-deep-equal": "3.1.3",
         "gettext-extractor": "3.5.4",
-        "i18next-conv": "12.0.2",
+        "i18next-conv": "12.1.1",
         "@rjaros/po2json": "1.0.0-beta-4",
-        "@ngneat/transloco-keys-manager": "3.3.3",
+        "@ngneat/transloco-keys-manager": "3.4.1",
         "@ngneat/transloco-scoped-libs": "3.0.4",
         "lodash.mergewith": "4.6.2",
         "connection-string": "4.3.5"
