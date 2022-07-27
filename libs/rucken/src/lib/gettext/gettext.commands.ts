@@ -26,14 +26,22 @@ export class GettextCommands {
         flags: '-dl,--default-locale [string]',
         description: 'default locale (default: en)',
       },
+      {
+        flags: '-rut,--reset-unused-translates [boolean]',
+        description:
+          'remove all translates if they not found in source code (default: true)',
+        defaultValue: 'true',
+      },
     ],
   })
   async gettext({
     defaultLocale,
     locales,
+    resetUnusedTranslates,
   }: {
     defaultLocale: string;
     locales: string;
+    resetUnusedTranslates?: string;
   }) {
     this.gettextService.setLogger(GettextService.title);
     this.gettextService.extractTranslatesFromSourcesForLibraries({
@@ -42,6 +50,12 @@ export class GettextCommands {
       locales: locales ? locales.split(',') : this.config.locales,
       defaultLocale: defaultLocale || this.config.defaultLocale,
       markers: this.config.markers,
+      resetUnusedTranslates:
+        (
+          resetUnusedTranslates ||
+          this.config.resetUnusedTranslates ||
+          'false'
+        ).toLowerCase() === 'true',
     });
   }
 }

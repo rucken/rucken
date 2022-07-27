@@ -34,32 +34,55 @@ export class TranslateCommands {
         flags: '-dl,--default-locale [string]',
         description: 'default locale (default: en)',
       },
+      {
+        flags: '-rut,--reset-unused-translates [boolean]',
+        description:
+          'remove all translates if they not found in source code (default: true)',
+        defaultValue: 'true',
+      },
     ],
   })
   async translate({
     defaultLocale,
     locales,
+    resetUnusedTranslates,
   }: {
     defaultLocale: string;
     locales: string;
+    resetUnusedTranslates?: string;
   }) {
     this.gettextService.setLogger(`translate: ${GettextService.title}`);
     this.extracti18nService.setLogger(`translate: ${Extracti18nService.title}`);
 
     this.extracti18nService.extract(
       locales ? locales.split(',') : this.extracti18nConfig.locales,
-      this.extracti18nConfig.markers
+      this.extracti18nConfig.markers,
+      (
+        resetUnusedTranslates ||
+        this.gettextConfig.resetUnusedTranslates ||
+        'false'
+      ).toLowerCase() === 'true'
     );
+
     this.gettextService.extractTranslatesFromSourcesForLibraries({
       po2jsonOptions: this.gettextConfig.po2jsonOptions,
       pattern: this.gettextConfig.gettextExtractorOptions.pattern,
       locales: locales ? locales.split(',') : this.gettextConfig.locales,
       defaultLocale: defaultLocale || this.gettextConfig.defaultLocale,
       markers: this.gettextConfig.markers,
+      resetUnusedTranslates:
+        (
+          resetUnusedTranslates ||
+          this.gettextConfig.resetUnusedTranslates ||
+          'false'
+        ).toLowerCase() === 'true',
     });
+
     this.extracti18nService.extract(
       locales ? locales.split(',') : this.extracti18nConfig.locales,
-      this.extracti18nConfig.markers
+      this.extracti18nConfig.markers,
+      false,
+      true
     );
   }
 }

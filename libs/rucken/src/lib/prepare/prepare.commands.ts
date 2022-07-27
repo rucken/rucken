@@ -45,6 +45,12 @@ export class PrepareCommands {
         description: 'default locale (default: en)',
       },
       {
+        flags: '-rut,--reset-unused-translates [boolean]',
+        description:
+          'remove all translates if they not found in source code (default: true)',
+        defaultValue: 'true',
+      },
+      {
         flags: '-upv,--update-package-version [boolean]',
         description: 'update package version (default: true)',
       },
@@ -53,10 +59,12 @@ export class PrepareCommands {
   async prepare({
     defaultLocale,
     locales,
+    resetUnusedTranslates,
     updatePackageVersion,
   }: {
     defaultLocale: string;
     locales: string;
+    resetUnusedTranslates?: string;
     updatePackageVersion?: string;
   }) {
     this.makeTsListService.setLogger(`prepare: ${MakeTsListService.title}`);
@@ -68,29 +76,44 @@ export class PrepareCommands {
     this.versionUpdaterService.setLogger(
       `prepare: ${VersionUpdaterService.title}`
     );
+    this.extracti18nService.setLogger(`prepare: ${Extracti18nService.title}`);
+    this.gettextService.setLogger(`prepare: ${GettextService.title}`);
+
     this.versionUpdaterService.versionUpdaterHandler({
       updatePackageVersion: updatePackageVersion
         ? updatePackageVersion.toUpperCase().trim() === 'TRUE'
         : this.versionUpdaterConfig.updatePackageVersion,
     });
 
-    this.extracti18nService.setLogger(`prepare: ${Extracti18nService.title}`);
     this.extracti18nService.extract(
       locales ? locales.split(',') : this.extracti18nConfig.locales,
-      this.extracti18nConfig.markers
+      this.extracti18nConfig.markers,
+      (
+        resetUnusedTranslates ||
+        this.gettextConfig.resetUnusedTranslates ||
+        'false'
+      ).toLowerCase() === 'true'
     );
 
-    this.gettextService.setLogger(`prepare: ${GettextService.title}`);
     this.gettextService.extractTranslatesFromSourcesForLibraries({
       po2jsonOptions: this.gettextConfig.po2jsonOptions,
       pattern: this.gettextConfig.gettextExtractorOptions.pattern,
       locales: locales ? locales.split(',') : this.gettextConfig.locales,
       defaultLocale: defaultLocale || this.gettextConfig.defaultLocale,
       markers: this.gettextConfig.markers,
+      resetUnusedTranslates:
+        (
+          resetUnusedTranslates ||
+          this.gettextConfig.resetUnusedTranslates ||
+          'false'
+        ).toLowerCase() === 'true',
     });
+
     this.extracti18nService.extract(
       locales ? locales.split(',') : this.extracti18nConfig.locales,
-      this.extracti18nConfig.markers
+      this.extracti18nConfig.markers,
+      false,
+      true
     );
   }
 }

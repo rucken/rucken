@@ -33,6 +33,7 @@ export class GettextService {
     locales,
     defaultLocale,
     markers,
+    resetUnusedTranslates,
   }: {
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     po2jsonOptions: Record<string, any>;
@@ -40,6 +41,7 @@ export class GettextService {
     locales: string[];
     defaultLocale: string;
     markers: string[];
+    resetUnusedTranslates?: boolean;
   }): void {
     this.logger.info('Start create translate files...');
     this.logger.debug(
@@ -49,39 +51,44 @@ export class GettextService {
         locales,
         defaultLocale,
         markers,
+        resetUnusedTranslates,
       })}`
     );
     try {
       const projects = this.utilsService.getWorkspaceProjects();
-      Object.keys(projects)
-        //.filter((projectName) => workspaceJson.projects[projectName].projectType === 'library')
-        .forEach((projectName) => {
-          this.logger.debug(projectName, projects[projectName].sourceRoot);
-          const assetsPath =
-            projects[projectName].projectType === 'application' ? 'assets' : '';
-          locales.forEach((locale) => {
+      const projectNames = Object.keys(projects);
+      for (let pIdx = 0; pIdx < projectNames.length; pIdx++) {
+        const projectName = projectNames[pIdx];
+        this.logger.debug(projectName, projects[projectName].sourceRoot);
+        const assetsPath =
+          projects[projectName].projectType === 'application' ? 'assets' : '';
+        for (let lIdx = 0; lIdx < locales.length; lIdx++) {
+          const locale = locales[lIdx];
+          this.processLibrary({
+            po2jsonOptions,
+            pattern,
+            sourceRoot: projects[projectName].sourceRoot,
+            defaultLocale,
+            marker: '',
+            locale,
+            assetsPath,
+            resetUnusedTranslates,
+          });
+          for (let mIdx = 0; mIdx < markers.length; mIdx++) {
+            const marker = markers[mIdx];
             this.processLibrary({
               po2jsonOptions,
               pattern,
               sourceRoot: projects[projectName].sourceRoot,
               defaultLocale,
-              marker: '',
+              marker,
               locale,
               assetsPath,
+              resetUnusedTranslates,
             });
-            markers.forEach((marker) =>
-              this.processLibrary({
-                po2jsonOptions,
-                pattern,
-                sourceRoot: projects[projectName].sourceRoot,
-                defaultLocale,
-                marker,
-                locale,
-                assetsPath,
-              })
-            );
-          });
-        });
+          }
+        }
+      }
       this.logger.info('End of create translate files...');
     } catch (error) {
       this.logger.error(error);
@@ -97,6 +104,7 @@ export class GettextService {
     marker,
     locale,
     assetsPath,
+    resetUnusedTranslates,
   }: {
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     po2jsonOptions: Record<string, any>;
@@ -106,6 +114,7 @@ export class GettextService {
     marker?: string;
     locale?: string;
     assetsPath?: string;
+    resetUnusedTranslates?: boolean;
   }) {
     const defaultJsonFileName = `${defaultLocale}.json`;
     const defaultPotFileName = 'template.pot';
@@ -186,21 +195,23 @@ export class GettextService {
       }
     }
 
+    const newDefaultPotJsonData = existsSync(defaultPotFile)
+      ? parseFileSync(defaultPotFile, po2jsonOptions)
+      : {};
     // считываем пот файл
-    if (existsSync(defaultJsonFile)) {
-      newDefaultJsonData = {
-        ...defaultJsonData,
-        ...parseFileSync(defaultJsonFile, po2jsonOptions),
-      };
-    }
+    newDefaultJsonData = {
+      ...defaultJsonData,
+      ...(resetUnusedTranslates ? {} : newDefaultPotJsonData),
+    };
 
+    const newLocaleJsonPoData = existsSync(localePoFile)
+      ? parseFileSync(localePoFile, po2jsonOptions)
+      : {};
     // считываем по файл локали
-    if (existsSync(localePoFile)) {
-      newLocaleJsonData = {
-        ...localeJsonData,
-        ...parseFileSync(localePoFile, po2jsonOptions),
-      };
-    }
+    newLocaleJsonData = {
+      ...localeJsonData,
+      ...(resetUnusedTranslates ? {} : newLocaleJsonPoData),
+    };
 
     // чистим значения помеченные как отсутствующие
     // для дефолтного языка ставим ключ в качестве значения
@@ -240,6 +251,22 @@ export class GettextService {
 
     // если язык не дефолт и у него перевод равен ключу, то сносим перевод
     Object.keys(newJsonData).forEach((key) => {
+      if (newJsonData[key] === `Missing value for '${key}'`) {
+        if (locale === defaultLocale) {
+          newJsonData[key] = key;
+        } else {
+          newJsonData[key] = '';
+        }
+      }
+
+      if (
+        locale !== defaultLocale &&
+        newLocaleJsonPoData[key] &&
+        newLocaleJsonPoData[key] !== key
+      ) {
+        newJsonData[key] = newLocaleJsonPoData[key];
+      }
+      
       if (newJsonData[key] && (newJsonData[key] as string).includes('\\{')) {
         newJsonData[key] = (newJsonData[key] as string).split('\\{').join('{');
       }
@@ -259,7 +286,7 @@ export class GettextService {
             if (!existsSync(dirname(defaultPotFile))) {
               mkdirSync(dirname(defaultPotFile), { recursive: true });
             }
-            if (!equal(newJsonData, localeJsonData)) {
+            if (!equal(newJsonData, localeJsonData) || resetUnusedTranslates) {
               writeFileSync(defaultPotFile, poContent.toString());
             }
           })
@@ -271,7 +298,7 @@ export class GettextService {
           if (!existsSync(dirname(localePoFile))) {
             mkdirSync(dirname(localePoFile), { recursive: true });
           }
-          if (!equal(newJsonData, localeJsonData)) {
+          if (!equal(newJsonData, localeJsonData) || resetUnusedTranslates) {
             writeFileSync(localePoFile, poContent.toString());
           }
         })
@@ -280,7 +307,7 @@ export class GettextService {
       if (!existsSync(dirname(localeJsonFile))) {
         mkdirSync(dirname(localeJsonFile), { recursive: true });
       }
-      if (!equal(newJsonData, localeJsonData)) {
+      if (!equal(newJsonData, localeJsonData) || resetUnusedTranslates) {
         writeFileSync(localeJsonFile, JSON.stringify(newJsonData, null, 4));
       }
     } else {
@@ -289,9 +316,6 @@ export class GettextService {
       }
       if (existsSync(localePoFile)) {
         unlinkSync(localePoFile);
-      }
-      if (existsSync(localeJsonFile)) {
-        unlinkSync(localeJsonFile);
       }
     }
   }

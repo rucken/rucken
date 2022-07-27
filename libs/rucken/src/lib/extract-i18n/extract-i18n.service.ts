@@ -18,7 +18,12 @@ export class Extracti18nService {
     this.logger.level = UtilsService.logLevel();
   }
 
-  public extract(locales: string[], markers: string[]): void {
+  public extract(
+    locales: string[],
+    markers: string[],
+    resetUnusedTranslates: boolean,
+    noExtract?: boolean
+  ): void {
     this.logger.info('Start create translate files...');
     this.logger.debug(
       `Config: ${JSON.stringify({
@@ -38,7 +43,11 @@ export class Extracti18nService {
         )
         .forEach((projectName) => {
           this.logger.debug(projectName, projects[projectName].sourceRoot);
-          this.processApplication(projects[projectName].sourceRoot);
+          this.processApplication(
+            projects[projectName].sourceRoot,
+            resetUnusedTranslates,
+            noExtract
+          );
         });
 
       this.logger.info('Process libraries...');
@@ -52,7 +61,9 @@ export class Extracti18nService {
             projectName,
             projects[projectName].sourceRoot,
             projects[projectName].root,
-            markers
+            markers,
+            resetUnusedTranslates,
+            noExtract
           );
         });
       this.collectServerToTranslocoConfig(projects, locales);
@@ -191,29 +202,41 @@ export class Extracti18nService {
     return {};
   }
 
-  processApplication(sourceRoot: string) {
-    spawnSync('transloco-keys-manager', [
-      'extract',
-      '--input',
-      `${resolve(sourceRoot)}`,
-      '--output',
-      `${resolve(sourceRoot)}/assets/i18n`,
-    ]);
+  processApplication(
+    sourceRoot: string,
+    resetUnusedTranslates: boolean,
+    noExtract: boolean
+  ) {
+    if (!noExtract) {
+      spawnSync('transloco-keys-manager', [
+        'extract',
+        ...(resetUnusedTranslates ? ['--replace'] : []),
+        '--input',
+        `${resolve(sourceRoot)}`,
+        '--output',
+        `${resolve(sourceRoot)}/assets/i18n`,
+      ]);
+    }
   }
 
   processLibrary(
     projectName: string,
     sourceRoot: string,
     root: string,
-    markers: string[]
+    markers: string[],
+    resetUnusedTranslates: boolean,
+    noExtract: boolean
   ) {
-    spawnSync('transloco-keys-manager', [
-      'extract',
-      '--input',
-      `${resolve(sourceRoot)}`,
-      '--output',
-      `${resolve(sourceRoot)}/i18n`,
-    ]);
+    if (!noExtract) {
+      spawnSync('transloco-keys-manager', [
+        'extract',
+        ...(resetUnusedTranslates ? ['--replace'] : []),
+        '--input',
+        `${resolve(sourceRoot)}`,
+        '--output',
+        `${resolve(sourceRoot)}/i18n`,
+      ]);
+    }
     const packageJsonFilePath = resolve(root, 'package.json');
     try {
       const packageJson = existsSync(packageJsonFilePath)

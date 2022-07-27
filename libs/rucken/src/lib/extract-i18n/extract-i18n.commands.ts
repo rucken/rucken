@@ -23,13 +23,30 @@ export class Extracti18nCommands {
         flags: '-l,--locales [strings]',
         description: 'list of available languages (example: ru,en)',
       },
+      {
+        flags: '-rut,--reset-unused-translates [boolean]',
+        description:
+          'remove all translates if they not found in source code (default: true)',
+        defaultValue: 'true',
+      },
     ],
   })
-  async extracti18n({ locales }: { locales: string }) {
+  async extracti18n({
+    locales,
+    resetUnusedTranslates,
+  }: {
+    locales: string;
+    resetUnusedTranslates?: string;
+  }) {
     this.extracti18nService.setLogger(Extracti18nService.title);
     this.extracti18nService.extract(
       locales ? locales.split(',') : this.config.locales,
-      this.config.markers
+      this.config.markers,
+      (
+        resetUnusedTranslates ||
+        this.config.resetUnusedTranslates ||
+        'false'
+      ).toLowerCase() === 'true'
     );
   }
 }

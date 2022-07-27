@@ -7,6 +7,7 @@ export interface GettextConfig {
       pattern: string;
     };
     po2jsonOptions: Record<string, unknown>;
+    resetUnusedTranslates: string;
   };
 }
 
@@ -19,5 +20,6 @@ export const DEFAULT_GETTEXT_CONFIG: GettextConfig = {
       pattern: '**/*.@(ts|js|tsx|jsx)',
     },
     po2jsonOptions: { format: 'mf' },
+    resetUnusedTranslates: 'true',
   },
 };
