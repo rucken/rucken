@@ -2,6 +2,18 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [4.0.0](https://github.com/rucken/rucken/compare/v3.6.3...v4.0.0) (2022-07-27)
+
+
+### ⚠ BREAKING CHANGES
+
+* new options resetUnusedTranslates enabled as default
+
+### Features
+
+* add new options resetUnusedTranslates for remove words not used in source code ([8e74b19](https://github.com/rucken/rucken/commit/8e74b191de003b664f6b84c3b5039fd994b52713))
+* bump some deps ([9c1de23](https://github.com/rucken/rucken/commit/9c1de239030473d14bb31a521750695798026d88))
+
 ### [3.6.3](https://github.com/rucken/rucken/compare/v3.6.2...v3.6.3) (2022-07-13)
 
 
