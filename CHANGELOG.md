@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [4.1.0](https://github.com/rucken/rucken/compare/v4.0.1...v4.1.0) (2022-08-05)
+
+
+### Features
+
+* remove timestamp from pot and po files ([81f70f3](https://github.com/rucken/rucken/commit/81f70f3998b5cae80ee8821124c6854cfc8324b6))
+
 ### [4.0.1](https://github.com/rucken/rucken/compare/v4.0.0...v4.0.1) (2022-08-05)
 
 
