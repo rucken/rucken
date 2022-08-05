@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [4.0.1](https://github.com/rucken/rucken/compare/v4.0.0...v4.0.1) (2022-08-05)
+
+
+### Bug Fixes
+
+* reverted logic used for resetUnusedTranslatesBoolean in prepare and translate, because if use this logic we may reset exists translates in json files ([2f90af5](https://github.com/rucken/rucken/commit/2f90af530ec74a9b142adbc54e8a5881c60080a5))
+
 ## [4.0.0](https://github.com/rucken/rucken/compare/v3.6.3...v4.0.0) (2022-07-27)
 
 
