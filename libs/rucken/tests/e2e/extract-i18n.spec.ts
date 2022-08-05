@@ -56,7 +56,7 @@ describe('Extract-i18n (e2e)', () => {
     )
       .toString()
       .split('\n')
-      .filter((v, i) => i > 9)
+      .filter((v, i) => i > 7)
       .join('\n');
     expect(content).toEqual(`msgid "client feature transloco message!"
 msgstr "client feature transloco message!"
@@ -95,7 +95,7 @@ msgstr "FeatureClientUser Password"`);
     )
       .toString()
       .split('\n')
-      .filter((v, i) => i > 10)
+      .filter((v, i) => i > 8)
       .join('\n');
     expect(content).toEqual(`msgid "client feature transloco message!"
 msgstr ""
@@ -118,7 +118,7 @@ msgstr ""`);
     )
       .toString()
       .split('\n')
-      .filter((v, i) => i > 9)
+      .filter((v, i) => i > 7)
       .join('\n');
     expect(content).toEqual(`msgid "client feature transloco message!"
 msgstr "client feature transloco message!"
@@ -283,7 +283,7 @@ msgstr "FeatureClientUser Password"`);
     )
       .toString()
       .split('\n')
-      .filter((v, i) => i > 9)
+      .filter((v, i) => i > 7)
       .join('\n');
     expect(content).toEqual(`msgid "client transloco message!"
 msgstr "client transloco message!"
@@ -349,7 +349,7 @@ msgstr "Password"`);
     )
       .toString()
       .split('\n')
-      .filter((v, i) => i > 10)
+      .filter((v, i) => i > 8)
       .join('\n');
     expect(content).toEqual(`msgid "client transloco message!"
 msgstr ""
@@ -372,7 +372,7 @@ msgstr ""`);
     )
       .toString()
       .split('\n')
-      .filter((v, i) => i > 9)
+      .filter((v, i) => i > 7)
       .join('\n');
     expect(content).toEqual(`msgid "client transloco message!"
 msgstr "client transloco message!"

@@ -29,7 +29,7 @@ describe('Gettext (e2e)', () => {
     )
       .toString()
       .split('\n')
-      .filter((v, i) => i > 9)
+      .filter((v, i) => i > 7)
       .join('\n');
     expect(content).toEqual(`msgid "FeatureClientUser Id"
 msgstr "FeatureClientUser Id"`);
@@ -60,7 +60,7 @@ msgstr "FeatureClientUser Id"`);
     )
       .toString()
       .split('\n')
-      .filter((v, i) => i > 10)
+      .filter((v, i) => i > 8)
       .join('\n');
     expect(content).toEqual(`msgid "FeatureClientUser Id"
 msgstr ""`);
@@ -77,7 +77,7 @@ msgstr ""`);
     )
       .toString()
       .split('\n')
-      .filter((v, i) => i > 9)
+      .filter((v, i) => i > 7)
       .join('\n');
     expect(content).toEqual(`msgid "FeatureClientUser Id"
 msgstr "FeatureClientUser Id"`);
@@ -112,7 +112,7 @@ msgstr "FeatureClientUser Id"`);
     )
       .toString()
       .split('\n')
-      .filter((v, i) => i > 9)
+      .filter((v, i) => i > 7)
       .join('\n');
     expect(content).toEqual(`msgid "FeatureServerUser Id"
 msgstr "FeatureServerUser Id"
@@ -151,7 +151,7 @@ msgstr "FeatureServerUser Username"`);
     )
       .toString()
       .split('\n')
-      .filter((v, i) => i > 10)
+      .filter((v, i) => i > 8)
       .join('\n');
     expect(content).toEqual(`msgid "FeatureServerUser Id"
 msgstr ""
@@ -174,7 +174,7 @@ msgstr ""`);
     )
       .toString()
       .split('\n')
-      .filter((v, i) => i > 9)
+      .filter((v, i) => i > 7)
       .join('\n');
     expect(content).toEqual(`msgid "FeatureServerUser Id"
 msgstr "FeatureServerUser Id"
@@ -215,7 +215,7 @@ msgstr "FeatureServerUser Username"`);
     )
       .toString()
       .split('\n')
-      .filter((v, i) => i > 9)
+      .filter((v, i) => i > 7)
       .join('\n');
     expect(content).toEqual(`msgid "FeatureCommonUser Id"
 msgstr "FeatureCommonUser Id"
@@ -254,7 +254,7 @@ msgstr "FeatureCommonUser Username"`);
     )
       .toString()
       .split('\n')
-      .filter((v, i) => i > 10)
+      .filter((v, i) => i > 8)
       .join('\n');
     expect(content).toEqual(`msgid "FeatureCommonUser Id"
 msgstr ""
@@ -277,7 +277,7 @@ msgstr ""`);
     )
       .toString()
       .split('\n')
-      .filter((v, i) => i > 9)
+      .filter((v, i) => i > 7)
       .join('\n');
     expect(content).toEqual(`msgid "FeatureCommonUser Id"
 msgstr "FeatureCommonUser Id"
@@ -318,7 +318,7 @@ msgstr "FeatureCommonUser Username"`);
     )
       .toString()
       .split('\n')
-      .filter((v, i) => i > 9)
+      .filter((v, i) => i > 7)
       .join('\n');
     expect(content).toEqual(`msgid "Id"
 msgstr "Id"`);
@@ -349,7 +349,7 @@ msgstr "Id"`);
     )
       .toString()
       .split('\n')
-      .filter((v, i) => i > 10)
+      .filter((v, i) => i > 8)
       .join('\n');
     expect(content).toEqual(`msgid "Id"
 msgstr ""`);
@@ -366,7 +366,7 @@ msgstr ""`);
     )
       .toString()
       .split('\n')
-      .filter((v, i) => i > 9)
+      .filter((v, i) => i > 7)
       .join('\n');
     expect(content).toEqual(`msgid "Id"
 msgstr "Id"`);
@@ -401,7 +401,7 @@ msgstr "Id"`);
     )
       .toString()
       .split('\n')
-      .filter((v, i) => i > 9)
+      .filter((v, i) => i > 7)
       .join('\n');
     expect(content).toEqual(`msgid "ServerUser Id"
 msgstr "ServerUser Id"
@@ -440,7 +440,7 @@ msgstr "ServerUserPassword"`);
     )
       .toString()
       .split('\n')
-      .filter((v, i) => i > 10)
+      .filter((v, i) => i > 8)
       .join('\n');
     expect(content).toEqual(`msgid "ServerUser Id"
 msgstr ""
@@ -463,7 +463,7 @@ msgstr ""`);
     )
       .toString()
       .split('\n')
-      .filter((v, i) => i > 9)
+      .filter((v, i) => i > 7)
       .join('\n');
     expect(content).toEqual(`msgid "ServerUser Id"
 msgstr "ServerUser Id"
@@ -504,7 +504,7 @@ msgstr "ServerUserPassword"`);
     )
       .toString()
       .split('\n')
-      .filter((v, i) => i > 9)
+      .filter((v, i) => i > 7)
       .join('\n');
     expect(content).toEqual(`msgid "CliUser {{Username}}"
 msgstr "CliUser {{Username}}"
@@ -543,7 +543,7 @@ msgstr "CliUser Password"`);
     )
       .toString()
       .split('\n')
-      .filter((v, i) => i > 10)
+      .filter((v, i) => i > 8)
       .join('\n');
     expect(content).toEqual(`msgid "CliUser {{Username}}"
 msgstr ""
@@ -566,7 +566,7 @@ msgstr ""`);
     )
       .toString()
       .split('\n')
-      .filter((v, i) => i > 9)
+      .filter((v, i) => i > 7)
       .join('\n');
     expect(content).toEqual(`msgid "CliUser {{Username}}"
 msgstr "CliUser {{Username}}"
