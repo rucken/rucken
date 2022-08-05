@@ -251,14 +251,28 @@ export class GettextService {
           locale,
           JSON.stringify(newJsonData, null, 4)
         );
+
+        const newPoContent = poContent
+          .toString()
+          .split('\n')
+          .filter(
+            (line) =>
+              !(
+                line.includes('POT-Creation-Date') ||
+                line.includes('PO-Revision-Date')
+              )
+          )
+          .join('\n');
+
         if (!existsSync(dirname(defaultPotFile))) {
           mkdirSync(dirname(defaultPotFile), { recursive: true });
         }
         if (
           !equal(newJsonData, defaultJsonPotData) ||
-          !existsSync(defaultPotFile)
+          !existsSync(defaultPotFile) ||
+          newPoContent !== poContent
         ) {
-          writeFileSync(defaultPotFile, poContent.toString());
+          writeFileSync(defaultPotFile, newPoContent.toString());
         }
       }
 
@@ -266,11 +280,28 @@ export class GettextService {
         locale,
         JSON.stringify(newJsonData, null, 4)
       );
+
+      const newPoContent = poContent
+        .toString()
+        .split('\n')
+        .filter(
+          (line) =>
+            !(
+              line.includes('POT-Creation-Date') ||
+              line.includes('PO-Revision-Date')
+            )
+        )
+        .join('\n');
+
       if (!existsSync(dirname(localePoFile))) {
         mkdirSync(dirname(localePoFile), { recursive: true });
       }
-      if (!equal(newJsonData, localeJsonPoData) || !existsSync(localePoFile)) {
-        writeFileSync(localePoFile, poContent.toString());
+      if (
+        !equal(newJsonData, localeJsonPoData) ||
+        !existsSync(localePoFile) ||
+        newPoContent !== poContent
+      ) {
+        writeFileSync(localePoFile, newPoContent.toString());
       }
 
       if (!existsSync(dirname(localeJsonFile))) {
