@@ -51,37 +51,44 @@ export class TranslateCommands {
     locales: string;
     resetUnusedTranslates?: string;
   }) {
-    this.gettextService.setLogger(`translate: ${GettextService.title}`);
-    this.extracti18nService.setLogger(`translate: ${Extracti18nService.title}`);
-
-    this.extracti18nService.extract(
-      locales ? locales.split(',') : this.extracti18nConfig.locales,
-      this.extracti18nConfig.markers,
+    const resetUnusedTranslatesBoolean =
       (
         resetUnusedTranslates ||
         this.gettextConfig.resetUnusedTranslates ||
         'false'
-      ).toLowerCase() === 'true'
+      ).toLowerCase() === 'true';
+
+    this.extracti18nService.setLogger(`prepare: ${Extracti18nService.title}`);
+    this.gettextService.setLogger(`prepare: ${GettextService.title}`);
+
+    if (resetUnusedTranslatesBoolean) {
+      await this.gettextService.extractTranslatesFromSourcesForLibraries({
+        po2jsonOptions: this.gettextConfig.po2jsonOptions,
+        pattern: this.gettextConfig.gettextExtractorOptions.pattern,
+        locales: locales ? locales.split(',') : this.gettextConfig.locales,
+        defaultLocale: defaultLocale || this.gettextConfig.defaultLocale,
+        markers: this.gettextConfig.markers,
+      });
+    }
+
+    this.extracti18nService.extract(
+      locales ? locales.split(',') : this.extracti18nConfig.locales,
+      this.extracti18nConfig.markers,
+      resetUnusedTranslatesBoolean
     );
 
-    this.gettextService.extractTranslatesFromSourcesForLibraries({
+    await this.gettextService.extractTranslatesFromSourcesForLibraries({
       po2jsonOptions: this.gettextConfig.po2jsonOptions,
       pattern: this.gettextConfig.gettextExtractorOptions.pattern,
       locales: locales ? locales.split(',') : this.gettextConfig.locales,
       defaultLocale: defaultLocale || this.gettextConfig.defaultLocale,
       markers: this.gettextConfig.markers,
-      resetUnusedTranslates:
-        (
-          resetUnusedTranslates ||
-          this.gettextConfig.resetUnusedTranslates ||
-          'false'
-        ).toLowerCase() === 'true',
     });
 
     this.extracti18nService.extract(
       locales ? locales.split(',') : this.extracti18nConfig.locales,
       this.extracti18nConfig.markers,
-      false,
+      resetUnusedTranslatesBoolean,
       true
     );
   }

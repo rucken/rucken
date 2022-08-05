@@ -67,6 +67,13 @@ export class PrepareCommands {
     resetUnusedTranslates?: string;
     updatePackageVersion?: string;
   }) {
+    const resetUnusedTranslatesBoolean =
+      (
+        resetUnusedTranslates ||
+        this.gettextConfig.resetUnusedTranslates ||
+        'false'
+      ).toLowerCase() === 'true';
+
     this.makeTsListService.setLogger(`prepare: ${MakeTsListService.title}`);
     this.makeTsListService.makeTsListHandler({
       indexFileName: this.makeTsListConfig.indexFileName,
@@ -76,43 +83,43 @@ export class PrepareCommands {
     this.versionUpdaterService.setLogger(
       `prepare: ${VersionUpdaterService.title}`
     );
-    this.extracti18nService.setLogger(`prepare: ${Extracti18nService.title}`);
-    this.gettextService.setLogger(`prepare: ${GettextService.title}`);
-
     this.versionUpdaterService.versionUpdaterHandler({
       updatePackageVersion: updatePackageVersion
         ? updatePackageVersion.toUpperCase().trim() === 'TRUE'
         : this.versionUpdaterConfig.updatePackageVersion,
     });
 
+    this.extracti18nService.setLogger(`prepare: ${Extracti18nService.title}`);
+    this.gettextService.setLogger(`prepare: ${GettextService.title}`);
+
+    if (resetUnusedTranslatesBoolean) {
+      await this.gettextService.extractTranslatesFromSourcesForLibraries({
+        po2jsonOptions: this.gettextConfig.po2jsonOptions,
+        pattern: this.gettextConfig.gettextExtractorOptions.pattern,
+        locales: locales ? locales.split(',') : this.gettextConfig.locales,
+        defaultLocale: defaultLocale || this.gettextConfig.defaultLocale,
+        markers: this.gettextConfig.markers,
+      });
+    }
+
     this.extracti18nService.extract(
       locales ? locales.split(',') : this.extracti18nConfig.locales,
       this.extracti18nConfig.markers,
-      (
-        resetUnusedTranslates ||
-        this.gettextConfig.resetUnusedTranslates ||
-        'false'
-      ).toLowerCase() === 'true'
+      resetUnusedTranslatesBoolean
     );
 
-    this.gettextService.extractTranslatesFromSourcesForLibraries({
+    await this.gettextService.extractTranslatesFromSourcesForLibraries({
       po2jsonOptions: this.gettextConfig.po2jsonOptions,
       pattern: this.gettextConfig.gettextExtractorOptions.pattern,
       locales: locales ? locales.split(',') : this.gettextConfig.locales,
       defaultLocale: defaultLocale || this.gettextConfig.defaultLocale,
       markers: this.gettextConfig.markers,
-      resetUnusedTranslates:
-        (
-          resetUnusedTranslates ||
-          this.gettextConfig.resetUnusedTranslates ||
-          'false'
-        ).toLowerCase() === 'true',
     });
 
     this.extracti18nService.extract(
       locales ? locales.split(',') : this.extracti18nConfig.locales,
       this.extracti18nConfig.markers,
-      false,
+      resetUnusedTranslatesBoolean,
       true
     );
   }
