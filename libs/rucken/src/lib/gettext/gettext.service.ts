@@ -61,8 +61,7 @@ export class GettextService {
         this.logger.debug(projectName, projects[projectName].sourceRoot);
         const assetsPath =
           projects[projectName].projectType === 'application' ||
-          (
-            projects[projectName].sourceRoot?.substring(0,5) === 'apps/')
+          projects[projectName].sourceRoot?.substring(0, 5) === 'apps/'
             ? 'assets'
             : '';
         for (let lIdx = 0; lIdx < locales.length; lIdx++) {

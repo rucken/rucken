@@ -4,65 +4,57 @@ All notable changes to this project will be documented in this file. See [standa
 
 ## [4.2.0](https://github.com/rucken/rucken/compare/v4.1.0...v4.2.0) (2022-09-08)
 
-
 ### Features
 
-* update deps and code for support old and new versions of nx ([d76bfa7](https://github.com/rucken/rucken/commit/d76bfa7eef721ee2ed78bad70181adc4dd6d51a5))
+- update deps and code for support old and new versions of nx ([d76bfa7](https://github.com/rucken/rucken/commit/d76bfa7eef721ee2ed78bad70181adc4dd6d51a5))
 
 ## [4.1.0](https://github.com/rucken/rucken/compare/v4.0.1...v4.1.0) (2022-08-05)
 
-
 ### Features
 
-* remove timestamp from pot and po files ([81f70f3](https://github.com/rucken/rucken/commit/81f70f3998b5cae80ee8821124c6854cfc8324b6))
+- remove timestamp from pot and po files ([81f70f3](https://github.com/rucken/rucken/commit/81f70f3998b5cae80ee8821124c6854cfc8324b6))
 
 ### [4.0.1](https://github.com/rucken/rucken/compare/v4.0.0...v4.0.1) (2022-08-05)
 
-
 ### Bug Fixes
 
-* reverted logic used for resetUnusedTranslatesBoolean in prepare and translate, because if use this logic we may reset exists translates in json files ([2f90af5](https://github.com/rucken/rucken/commit/2f90af530ec74a9b142adbc54e8a5881c60080a5))
+- reverted logic used for resetUnusedTranslatesBoolean in prepare and translate, because if use this logic we may reset exists translates in json files ([2f90af5](https://github.com/rucken/rucken/commit/2f90af530ec74a9b142adbc54e8a5881c60080a5))
 
 ## [4.0.0](https://github.com/rucken/rucken/compare/v3.6.3...v4.0.0) (2022-07-27)
 
-
 ### ⚠ BREAKING CHANGES
 
-* new options resetUnusedTranslates enabled as default
+- new options resetUnusedTranslates enabled as default
 
 ### Features
 
-* add new options resetUnusedTranslates for remove words not used in source code ([8e74b19](https://github.com/rucken/rucken/commit/8e74b191de003b664f6b84c3b5039fd994b52713))
-* bump some deps ([9c1de23](https://github.com/rucken/rucken/commit/9c1de239030473d14bb31a521750695798026d88))
+- add new options resetUnusedTranslates for remove words not used in source code ([8e74b19](https://github.com/rucken/rucken/commit/8e74b191de003b664f6b84c3b5039fd994b52713))
+- bump some deps ([9c1de23](https://github.com/rucken/rucken/commit/9c1de239030473d14bb31a521750695798026d88))
 
 ### [3.6.3](https://github.com/rucken/rucken/compare/v3.6.2...v3.6.3) (2022-07-13)
 
-
 ### Bug Fixes
 
-* append @nestjs/core and @nestjs/common to cli deps ([3f580fa](https://github.com/rucken/rucken/commit/3f580faf5e6e5854dd4c5e01288f8d693744f677))
+- append @nestjs/core and @nestjs/common to cli deps ([3f580fa](https://github.com/rucken/rucken/commit/3f580faf5e6e5854dd4c5e01288f8d693744f677))
 
 ### [3.6.2](https://github.com/rucken/rucken/compare/v3.6.1...v3.6.2) (2022-07-13)
 
-
 ### Bug Fixes
 
-* add support get nx projects from rucken config ([2d5061a](https://github.com/rucken/rucken/commit/2d5061a236bab1f69604331d833d93a995afdcf6))
-* lock dependencies ([aaa994e](https://github.com/rucken/rucken/commit/aaa994ee19feca401f1c44eb1dc68ab927fbab27))
+- add support get nx projects from rucken config ([2d5061a](https://github.com/rucken/rucken/commit/2d5061a236bab1f69604331d833d93a995afdcf6))
+- lock dependencies ([aaa994e](https://github.com/rucken/rucken/commit/aaa994ee19feca401f1c44eb1dc68ab927fbab27))
 
 ### [3.6.1](https://github.com/rucken/rucken/compare/v3.6.0...v3.6.1) (2022-04-24)
 
-
 ### Bug Fixes
 
-* change style of imports pg dependencies to lazy stayle ([39ce647](https://github.com/rucken/rucken/commit/39ce647e8d6bafb52fcf74690576f1cc6f521edb))
+- change style of imports pg dependencies to lazy stayle ([39ce647](https://github.com/rucken/rucken/commit/39ce647e8d6bafb52fcf74690576f1cc6f521edb))
 
 ## [3.6.0](https://github.com/rucken/rucken/compare/v3.5.3...v3.6.0) (2022-03-27)
 
-
 ### Features
 
-* add env-replacer ([e727c26](https://github.com/rucken/rucken/commit/e727c26cc1a4eaaef283f990b32211e764fd78c1))
+- add env-replacer ([e727c26](https://github.com/rucken/rucken/commit/e727c26cc1a4eaaef283f990b32211e764fd78c1))
 
 ### [3.5.3](https://github.com/rucken/rucken/compare/v3.5.2...v3.5.3) (2022-03-26)
 

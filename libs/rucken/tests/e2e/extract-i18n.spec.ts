@@ -1,4 +1,4 @@
-import { exists, existsSync, readFileSync } from 'fs';
+import { existsSync, readFileSync } from 'fs';
 import { resolve } from 'path';
 
 describe('Extract-i18n (e2e)', () => {

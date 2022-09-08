@@ -41,8 +41,7 @@ export class MakeTsListService {
       .filter(
         (projectName) =>
           projects[projectName].projectType === 'library' ||
-          (
-            projects[projectName].sourceRoot?.substring(0,5) === 'libs/')
+          projects[projectName].sourceRoot?.substring(0, 5) === 'libs/'
       )
       .filter((key) => !key.includes('-e2e'))
       .forEach((projectName) => {

@@ -52,7 +52,8 @@
     "tsc:lint": "tsc --noEmit -p tsconfig.base.json",
     "lib:build-changelog": "./node_modules/.bin/cp-cli ./CHANGELOG.md ./dist/libs/rucken/CHANGELOG.md",
     "run-to-current": "npm run start -- prepare --locales=en,ru --default-locale=en",
-    "create-readme": "npm run start -- make-ts-list --help && npm run start -- version-updater --help && npm run start -- translate --help && npm run start -- extract-i18n --help && npm run start -- gettext --help && npm run start -- prepare --help && npm run start -- postgres --help && npm run start -- env-replacer --help"
+    "create-readme": "npm run start -- make-ts-list --help && npm run start -- version-updater --help && npm run start -- translate --help && npm run start -- extract-i18n --help && npm run start -- gettext --help && npm run start -- prepare --help && npm run start -- postgres --help && npm run start -- env-replacer --help",
+    "prepare": "husky install"
   },
   "private": true,
   "devDependencies": {
@@ -75,7 +76,9 @@
     "cp-cli": "2.0.0",
     "eslint": "8.15.0",
     "eslint-config-prettier": "8.1.0",
+    "husky": "^8.0.1",
     "jest": "28.1.3",
+    "lint-staged": "^13.0.3",
     "log4js": "6.6.1",
     "nestjs-console": "8.0.0",
     "nx": "14.6.5",
@@ -100,7 +103,8 @@
     "lodash.mergewith": "4.6.2",
     "pg": "8.8.0",
     "pg-promise": "10.12.0",
-    "reflect-metadata": "^0.1.13",
+    "reflect-metadata": "0.1.13",
+    "rxjs": "7.1.0",
     "source-map-support": "0.5.21",
     "tslib": "2.0.0"
   },
@@ -108,5 +112,9 @@
     "scripts": {
       "postchangelog": "npm run run-to-current && npm run lib:build-changelog && git add ."
     }
-  }
+  },
+  "lint-staged": {
+    "*.{js,ts}": "eslint --fix",
+    "*.{js,ts,css,scss,md}": "prettier --ignore-unknown --write"
+}
 }
