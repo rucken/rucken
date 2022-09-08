@@ -2,6 +2,12 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [4.2.1](https://github.com/rucken/rucken/compare/v4.2.0...v4.2.1) (2022-09-08)
+
+### Bug Fixes
+
+- add rxjs in lib dependencies ([6704723](https://github.com/rucken/rucken/commit/67047231343f0eee87c6b6d4ff5189adb9d511e0))
+
 ## [4.2.0](https://github.com/rucken/rucken/compare/v4.1.0...v4.2.0) (2022-09-08)
 
 ### Features
