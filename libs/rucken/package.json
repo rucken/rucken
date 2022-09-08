@@ -54,7 +54,8 @@
         "@ngneat/transloco-keys-manager": "3.4.2",
         "@ngneat/transloco-scoped-libs": "3.0.4",
         "lodash.mergewith": "4.6.2",
-        "connection-string": "4.3.5"
+        "connection-string": "4.3.5",
+        "rxjs": "7.1.0"
     },
     "peerDependencies": {
         "pg": "8.8.0",
