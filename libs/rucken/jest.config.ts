@@ -1,4 +1,5 @@
-module.exports = {
+/* eslint-disable */
+export default {
   displayName: 'rucken',
   preset: '../../jest.preset.js',
   globals: {

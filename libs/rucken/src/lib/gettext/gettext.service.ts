@@ -60,7 +60,11 @@ export class GettextService {
         const projectName = projectNames[pIdx];
         this.logger.debug(projectName, projects[projectName].sourceRoot);
         const assetsPath =
-          projects[projectName].projectType === 'application' ? 'assets' : '';
+          projects[projectName].projectType === 'application' ||
+          (
+            projects[projectName].sourceRoot?.substring(0,5) === 'apps/')
+            ? 'assets'
+            : '';
         for (let lIdx = 0; lIdx < locales.length; lIdx++) {
           const locale = locales[lIdx];
           await this.processLibrary({
@@ -113,6 +117,7 @@ export class GettextService {
   }) {
     // default pot
     const defaultPotFileName = 'template.pot';
+
     const defaultPotFile = resolve(
       sourceRoot,
       assetsPath || '',

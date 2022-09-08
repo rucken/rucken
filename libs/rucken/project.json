@@ -1,10 +1,9 @@
 {
-  "root": "libs/rucken",
   "sourceRoot": "libs/rucken/src",
   "projectType": "library",
   "targets": {
     "build": {
-      "executor": "@nrwl/node:package",
+      "executor": "@nrwl/js:tsc",
       "outputs": ["{options.outputPath}"],
       "options": {
         "outputPath": "dist/libs/rucken",
@@ -25,7 +24,7 @@
       "executor": "@nrwl/jest:jest",
       "outputs": ["coverage/libs/rucken"],
       "options": {
-        "jestConfig": "libs/rucken/jest.config.js",
+        "jestConfig": "libs/rucken/jest.config.ts",
         "passWithNoTests": true
       }
     }

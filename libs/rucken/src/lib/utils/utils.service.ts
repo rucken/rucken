@@ -20,17 +20,25 @@ export class UtilsService {
     }
 
     return Object.keys(workspaceJson.projects)
-      .map((projectName) =>
-        typeof workspaceJson.projects[projectName] === 'string'
-          ? {
-              [projectName]: JSON.parse(
-                readFileSync(
-                  `${workspaceJson.projects[projectName]}/project.json`
-                ).toString()
-              ),
-            }
-          : { [projectName]: workspaceJson.projects[projectName] }
-      )
+      .map((projectName) => {
+        const result =
+          typeof workspaceJson.projects[projectName] === 'string'
+            ? {
+                [projectName]: JSON.parse(
+                  readFileSync(
+                    `${workspaceJson.projects[projectName]}/project.json`
+                  ).toString()
+                ),
+              }
+            : { [projectName]: workspaceJson.projects[projectName] };
+        result[projectName].root =
+          result[projectName].root ||
+          (result[projectName].sourceRoot || '')
+            .split('/')
+            .filter((o, i, a) => i < a.length - 1)
+            .join('/');
+        return result;
+      })
       .reduce((all, cur) => ({ ...all, ...cur }), {});
   }
 

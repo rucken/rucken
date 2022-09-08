@@ -38,7 +38,12 @@ export class MakeTsListService {
     const projects = this.utilsService.getWorkspaceProjects();
 
     Object.keys(projects)
-      .filter((projectName) => projects[projectName].projectType === 'library')
+      .filter(
+        (projectName) =>
+          projects[projectName].projectType === 'library' ||
+          (
+            projects[projectName].sourceRoot?.substring(0,5) === 'libs/')
+      )
       .filter((key) => !key.includes('-e2e'))
       .forEach((projectName) => {
         this.logger.debug(
