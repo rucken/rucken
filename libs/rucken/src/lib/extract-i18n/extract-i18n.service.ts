@@ -41,7 +41,7 @@ export class Extracti18nService {
         .filter(
           (projectName) =>
             projects[projectName].projectType === 'application' ||
-            ( projects[projectName].sourceRoot?.substring(0,5) === 'apps/')
+            projects[projectName].sourceRoot?.substring(0, 5) === 'apps/'
         )
         .forEach((projectName) => {
           this.logger.debug(projectName, projects[projectName].sourceRoot);
@@ -57,7 +57,7 @@ export class Extracti18nService {
         .filter(
           (projectName) =>
             projects[projectName].projectType === 'library' ||
-            ( projects[projectName].sourceRoot?.substring(0,5) === 'libs/')
+            projects[projectName].sourceRoot?.substring(0, 5) === 'libs/'
         )
         .forEach((projectName) => {
           this.logger.debug(projectName, projects[projectName].sourceRoot);
@@ -106,7 +106,7 @@ export class Extracti18nService {
       .filter(
         (projectName) =>
           (projects[projectName].projectType === 'library' ||
-            ( projects[projectName].sourceRoot?.substring(0,5) === 'libs/')) &&
+            projects[projectName].sourceRoot?.substring(0, 5) === 'libs/') &&
           !projectName.includes('server')
       )
       .map((projectName) => projects[projectName].root);
@@ -115,7 +115,7 @@ export class Extracti18nService {
       .filter(
         (projectName) =>
           (projects[projectName].projectType === 'application' ||
-            ( projects[projectName].sourceRoot?.substring(0,5) === 'apps/')) &&
+            projects[projectName].sourceRoot?.substring(0, 5) === 'apps/') &&
           !projectName.includes('server') &&
           !projectName.includes('-ms') &&
           !projectName.includes('e2e')
@@ -160,7 +160,7 @@ export class Extracti18nService {
       .filter(
         (projectName) =>
           (projects[projectName].projectType === 'library' ||
-            ( projects[projectName].sourceRoot?.substring(0,5) === 'libs/')) &&
+            projects[projectName].sourceRoot?.substring(0, 5) === 'libs/') &&
           !projectName.includes('client')
       )
       .map((projectName) => projects[projectName].root);
@@ -169,7 +169,7 @@ export class Extracti18nService {
       .filter(
         (projectName) =>
           (projects[projectName].projectType === 'application' ||
-            ( projects[projectName].sourceRoot?.substring(0,5) === 'apps/')) &&
+            projects[projectName].sourceRoot?.substring(0, 5) === 'apps/') &&
           !projectName.includes('client') &&
           !projectName.includes('e2e')
       )
