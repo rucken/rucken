@@ -21,6 +21,9 @@
         "replace",
         "change"
     ],
+    "scripts": {
+      "postinstall": "npm i nestjs-console"
+    },
     "bugs": {
         "url": "https://github.com/rucken/rucken/issues"
     },
