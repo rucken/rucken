@@ -1,6 +1,6 @@
 {
     "name": "rucken",
-    "version": "4.2.1",
+    "version": "4.3.0",
     "description": "Console nx tools",
     "license": "MIT",
     "author": "EndyKaufman <admin@site15.ru>",
@@ -22,7 +22,7 @@
         "change"
     ],
     "scripts": {
-      "postinstall": "npm i nestjs-console"
+        "postinstall": "npm i nestjs-console"
     },
     "bugs": {
         "url": "https://github.com/rucken/rucken/issues"
