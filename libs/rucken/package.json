@@ -22,7 +22,7 @@
         "change"
     ],
     "scripts": {
-        "postinstall": "npm i nestjs-console"
+        "postinstall": "npm --save --force i nestjs-console"
     },
     "bugs": {
         "url": "https://github.com/rucken/rucken/issues"
