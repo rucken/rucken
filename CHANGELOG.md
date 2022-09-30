@@ -2,6 +2,12 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [4.3.1](https://github.com/rucken/rucken/compare/v4.3.0...v4.3.1) (2022-09-30)
+
+### Bug Fixes
+
+- change logic for postinstall in result npm library ([9527903](https://github.com/rucken/rucken/commit/9527903a03ea3b7b83ef7de01e7a3a52d57d7582))
+
 ## [4.3.0](https://github.com/rucken/rucken/compare/v4.2.1...v4.3.0) (2022-09-29)
 
 ### Features
