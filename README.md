@@ -128,7 +128,7 @@ Options:
 > npx rucken "copy-paste" "--help"
 
 ```sh
-Usage: main copy-paste|cp [options]
+Usage: rucken copy-paste|cp [options]
 
 copy paste source files to destination with singular and plural replace text in file contents and file paths
 
