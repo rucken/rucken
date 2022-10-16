@@ -1,7 +1,7 @@
 {
   "name": "rucken",
   "description": "Console tools and scripts for nx and not only that I (EndyKaufman) use to automate the workflow and speed up the development process",
-  "version": "4.3.1",
+  "version": "4.4.0",
   "license": "MIT",
   "author": "EndyKaufman <admin@site15.ru>",
   "keywords": [

@@ -2,6 +2,12 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [4.4.0](https://github.com/rucken/rucken/compare/v4.3.1...v4.4.0) (2022-10-16)
+
+### Features
+
+- **copy-paste:** copy paste source files to destination with singular and plural replace text in file contents and file paths ([#11](https://github.com/rucken/rucken/issues/11)) ([39c203e](https://github.com/rucken/rucken/commit/39c203ef804402edf2e1ac13ab6bdad4849321ff))
+
 ### [4.3.1](https://github.com/rucken/rucken/compare/v4.3.0...v4.3.1) (2022-09-30)
 
 ### Bug Fixes
