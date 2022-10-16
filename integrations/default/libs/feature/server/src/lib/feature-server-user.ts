@@ -1,6 +1,6 @@
 import { getText } from 'class-validator-multi-lang';
 
-export class FeatureServerUser {
+export class FeatureServerUsers {
   static strings = {
     id: getText('FeatureServerUser Id'),
     username: getText('FeatureServerUser Username'),

@@ -14,13 +14,13 @@ export class MakeTsListCommands {
   ) {}
 
   @Command({
-    alias: 'fl',
+    alias: 'mtsl',
     command: 'make-ts-list',
     description: 'create list of ts files for all nx libraries',
   })
   async makeTsList() {
     this.makeTsListService.setLogger(MakeTsListService.title);
-    this.makeTsListService.makeTsListHandler({
+    await this.makeTsListService.makeTsListHandler({
       indexFileName: this.config.indexFileName,
       excludes: this.config.excludes,
     });

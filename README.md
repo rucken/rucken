@@ -1,6 +1,6 @@
 # rucken
 
-Console nx tools
+Console tools and scripts for nx and not only that I (EndyKaufman) use to automate the workflow and speed up the development process
 
 [![npm version](https://badge.fury.io/js/rucken.svg)](https://badge.fury.io/js/rucken)
 [![monthly downloads](https://badgen.net/npm/dm/rucken)](https://www.npmjs.com/package/rucken)
@@ -10,7 +10,7 @@ Console nx tools
 > npx rucken "make-ts-list" "--help"
 
 ```sh
-Usage: rucken make-ts-list|fl [options]
+Usage: rucken make-ts-list|mtsl [options]
 
 create list of ts files for all nx libraries
 
@@ -122,3 +122,29 @@ recursive replace input value with process environment values
 Options:
   -h, --help  display help for command
 ```
+
+## copy-paste - copy paste source files to destination with singular and plural replace text in file contents and file paths
+
+> npx rucken "copy-paste" "--help"
+
+```sh
+Usage: main copy-paste|cp [options]
+
+copy paste source files to destination with singular and plural replace text in file contents and file paths
+
+Options:
+  -p,--path [strings]             the path with the source code to copy, it uses the current CWD if it is not defined, default: "." (example: ../../src)
+  -f,--find [strings]             source singular text in kebab-case (example: user-role)
+  -fp,--find-plural [strings]     source text in plural in kebab-case, if not defined, it will be automatically detected programmatically (example:
+                                  user-rules)
+  -r,--replace [strings]          destination singular text in kebab-case (example: user-company)
+  -rp,--replace-plural [strings]  destination text in plural in kebab-case, if not defined, it will be automatically detected programmatically (example:
+                                  user-companies)
+  -d,--dest-path [strings]        the path with the destination code to paste, it uses the "path" if it is not defined, default: "." (example: ../../src)
+  -e,--extensions [strings]       extensions of files for copy paste, default: "ts,html,htm,scss,css,txt,json,yaml,yml,xml" (example: py,ini)
+  -h, --help                      display help for command
+```
+
+## License
+
+MIT
