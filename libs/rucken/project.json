@@ -23,13 +23,16 @@
           "@ngneat/transloco-scoped-libs",
           "lodash.mergewith",
           "connection-string",
-          "rxjs"
+          "rxjs",
+          "case-anything",
+          "pluralize"
         ],
         "outputPath": "dist/libs/rucken",
         "tsConfig": "libs/rucken/tsconfig.lib.json",
         "packageJson": "libs/rucken/package.json",
         "main": "libs/rucken/src/index.ts",
-        "assets": ["libs/rucken/*.md"]
+        "assets": ["libs/rucken/*.md"],
+        "updateBuildableProjectDepsInPackageJson": false
       }
     },
     "lint": {

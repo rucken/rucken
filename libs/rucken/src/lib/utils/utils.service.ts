@@ -81,14 +81,15 @@ export class UtilsService {
           '/src/index.ts',
           ''
         );
+        const projectName = kebabCase(key);
         if (existsSync(join(path, 'project.json'))) {
-          projects[kebabCase(path)] = path;
+          projects[projectName] = path;
         } else {
           path = json.compilerOptions.paths[key].replace('/index.ts', '');
           if (existsSync(join(path, 'project.json'))) {
-            projects[kebabCase(path)] = path;
+            projects[projectName] = path;
           } else {
-            projects[kebabCase(path)] = path;
+            projects[projectName] = path;
           }
         }
       } catch (err) {
