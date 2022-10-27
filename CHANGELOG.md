@@ -2,6 +2,12 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [4.4.3](https://github.com/rucken/rucken/compare/v4.4.2...v4.4.3) (2022-10-27)
+
+### Bug Fixes
+
+- add support work with latest nx ([49f444f](https://github.com/rucken/rucken/commit/49f444fe7e9f649e5e2009ac2e392364964e843c))
+
 ### [4.4.2](https://github.com/rucken/rucken/compare/v4.4.1...v4.4.2) (2022-10-27)
 
 ### Bug Fixes
