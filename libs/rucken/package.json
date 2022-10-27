@@ -72,7 +72,7 @@
     },
     "i18n": [
         {
-            "scope": "rucken",
+            "scope": "libs-rucken",
             "path": "src/i18n",
             "strategy": "join"
         }
