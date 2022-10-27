@@ -2,6 +2,12 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [4.4.4](https://github.com/rucken/rucken/compare/v4.4.3...v4.4.4) (2022-10-27)
+
+### Bug Fixes
+
+- set updateBuildableProjectDepsInPackageJson to false ([6e98f14](https://github.com/rucken/rucken/commit/6e98f1401894b40ed4ed97b4c10f3e4407c5708d))
+
 ### [4.4.3](https://github.com/rucken/rucken/compare/v4.4.2...v4.4.3) (2022-10-27)
 
 ### Bug Fixes
