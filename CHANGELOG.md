@@ -2,6 +2,12 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [4.4.2](https://github.com/rucken/rucken/compare/v4.4.1...v4.4.2) (2022-10-27)
+
+### Bug Fixes
+
+- append all need deps to lib ([e083ec3](https://github.com/rucken/rucken/commit/e083ec33b6bd02f85a211cda663dcc68bbc4cc73))
+
 ### [4.4.1](https://github.com/rucken/rucken/compare/v4.4.0...v4.4.1) (2022-10-16)
 
 ### Bug Fixes
