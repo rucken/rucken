@@ -1,80 +1,80 @@
 {
-  "name": "rucken",
-  "version": "4.4.4",
-  "description": "Console tools and scripts for nx and not only that I (EndyKaufman) use to automate the workflow and speed up the development process",
-  "license": "MIT",
-  "author": "EndyKaufman <admin@site15.ru>",
-  "keywords": [
-    "cli",
-    "nx",
-    "workspace",
-    "rucken",
-    "admin",
-    "extract-i18n",
-    "gettext",
-    "translate",
-    "make-ts-list",
-    "index",
-    "version-updater",
-    "postgres",
-    "env",
-    "replace",
-    "change",
-    "copy-paste",
-    "copy",
-    "paste"
-  ],
-  "scripts": {
-    "postinstall": "npm --save --force i nestjs-console"
-  },
-  "bugs": {
-    "url": "https://github.com/rucken/rucken/issues"
-  },
-  "homepage": "https://github.com/rucken/rucken",
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/rucken/rucken.git"
-  },
-  "maintainers": [
-    {
-      "name": "EndyKaufman",
-      "email": "admin@site15.ru"
-    }
-  ],
-  "bin": {
-    "rucken": "./src/main.js"
-  },
-  "dependencies": {
-    "tslib": "2.0.0",
-    "log4js": "6.6.1",
-    "@nestjs/common": "8.2.4",
-    "@nestjs/core": "8.2.4",
-    "nestjs-console": "8.0.0",
-    "recursive-readdir": "2.2.2",
-    "replace-ext": "2.0.0",
-    "sort-paths": "1.1.1",
-    "fast-deep-equal": "3.1.3",
-    "gettext-extractor": "3.5.4",
-    "i18next-conv": "12.1.1",
-    "@rjaros/po2json": "1.0.0-beta-4",
-    "@ngneat/transloco-keys-manager": "3.4.2",
-    "@ngneat/transloco-scoped-libs": "3.0.4",
-    "lodash.mergewith": "4.6.2",
-    "connection-string": "4.3.5",
-    "rxjs": "7.1.0",
-    "source-map-support": "0.5.21",
-    "case-anything": "2.1.10",
-    "pluralize": "8.0.0"
-  },
-  "peerDependencies": {
-    "pg": "8.8.0",
-    "pg-promise": "10.12.0"
-  },
-  "i18n": [
-    {
-      "scope": "rucken",
-      "path": "src/i18n",
-      "strategy": "join"
-    }
-  ]
+    "name": "rucken",
+    "version": "4.4.5",
+    "description": "Console tools and scripts for nx and not only that I (EndyKaufman) use to automate the workflow and speed up the development process",
+    "license": "MIT",
+    "author": "EndyKaufman <admin@site15.ru>",
+    "keywords": [
+        "cli",
+        "nx",
+        "workspace",
+        "rucken",
+        "admin",
+        "extract-i18n",
+        "gettext",
+        "translate",
+        "make-ts-list",
+        "index",
+        "version-updater",
+        "postgres",
+        "env",
+        "replace",
+        "change",
+        "copy-paste",
+        "copy",
+        "paste"
+    ],
+    "scripts": {
+        "postinstall": "npm --save --force i nestjs-console"
+    },
+    "bugs": {
+        "url": "https://github.com/rucken/rucken/issues"
+    },
+    "homepage": "https://github.com/rucken/rucken",
+    "repository": {
+        "type": "git",
+        "url": "git+https://github.com/rucken/rucken.git"
+    },
+    "maintainers": [
+        {
+            "name": "EndyKaufman",
+            "email": "admin@site15.ru"
+        }
+    ],
+    "bin": {
+        "rucken": "./src/main.js"
+    },
+    "dependencies": {
+        "tslib": "2.0.0",
+        "log4js": "6.6.1",
+        "@nestjs/common": "8.2.4",
+        "@nestjs/core": "8.2.4",
+        "nestjs-console": "8.0.0",
+        "recursive-readdir": "2.2.2",
+        "replace-ext": "2.0.0",
+        "sort-paths": "1.1.1",
+        "fast-deep-equal": "3.1.3",
+        "gettext-extractor": "3.5.4",
+        "i18next-conv": "12.1.1",
+        "@rjaros/po2json": "1.0.0-beta-4",
+        "@ngneat/transloco-keys-manager": "3.4.2",
+        "@ngneat/transloco-scoped-libs": "3.0.4",
+        "lodash.mergewith": "4.6.2",
+        "connection-string": "4.3.5",
+        "rxjs": "7.1.0",
+        "source-map-support": "0.5.21",
+        "case-anything": "2.1.10",
+        "pluralize": "8.0.0"
+    },
+    "peerDependencies": {
+        "pg": "8.8.0",
+        "pg-promise": "10.12.0"
+    },
+    "i18n": [
+        {
+            "scope": "rucken",
+            "path": "src/i18n",
+            "strategy": "join"
+        }
+    ]
 }

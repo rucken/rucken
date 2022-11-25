@@ -2,6 +2,12 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [4.4.5](https://github.com/rucken/rucken/compare/v4.4.4...v4.4.5) (2022-11-25)
+
+### Bug Fixes
+
+- revert install nestjs-console after install rucken ([d54893c](https://github.com/rucken/rucken/commit/d54893c6df1bb5da65716771df4630dd0943832f))
+
 ### [4.4.4](https://github.com/rucken/rucken/compare/v4.4.3...v4.4.4) (2022-10-27)
 
 ### Bug Fixes
