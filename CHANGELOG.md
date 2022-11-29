@@ -2,6 +2,12 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [4.4.6](https://github.com/rucken/rucken/compare/v4.4.5...v4.4.6) (2022-11-29)
+
+### Bug Fixes
+
+- added support merge found projects and projects from root rucken file ([0eb254a](https://github.com/rucken/rucken/commit/0eb254a84cd8502e7f07c250bc2ca9614e49175e))
+
 ### [4.4.5](https://github.com/rucken/rucken/compare/v4.4.4...v4.4.5) (2022-11-25)
 
 ### Bug Fixes
