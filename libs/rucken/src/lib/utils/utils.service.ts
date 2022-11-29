@@ -34,11 +34,20 @@ export class UtilsService {
           const projects: Record<string, string> =
             this.collectProjectsFromTsConfig('tsconfig.json');
           workspaceJson = { projects };
-        } else {
-          workspaceJson = this.getRuckenConfig({ workspace: { projects: {} } });
         }
       }
     }
+
+    const ruckenWorkspaceJson = this.getRuckenConfig({
+      workspace: { projects: {} },
+    });
+
+    workspaceJson = {
+      projects: {
+        ...(workspaceJson.projects || {}),
+        ...(ruckenWorkspaceJson.workspace?.projects || {}),
+      },
+    };
 
     return Object.keys(workspaceJson?.projects)
       .map((projectName) => {
