@@ -2,6 +2,12 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [4.4.7](https://github.com/rucken/rucken/compare/v4.4.6...v4.4.7) (2023-03-04)
+
+### Bug Fixes
+
+- add database from rootDatabase ([a24e0a6](https://github.com/rucken/rucken/commit/a24e0a65d751a60f12fc2021bcff345e0cbb7e41))
+
 ### [4.4.6](https://github.com/rucken/rucken/compare/v4.4.5...v4.4.6) (2022-11-29)
 
 ### Bug Fixes
