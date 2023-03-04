@@ -140,6 +140,7 @@ export class PostgresService {
       password: rootDatabase.PASSWORD,
       port: rootDatabase.PORT,
       host: (rootDatabase.HOST || '').split(':')[0],
+      database: rootDatabase.DATABASE
     });
     if (appDatabase.USERNAME !== rootDatabase.USERNAME) {
       try {
@@ -174,6 +175,7 @@ export class PostgresService {
       password: rootDatabase.PASSWORD,
       port: rootDatabase.PORT,
       host: (rootDatabase.HOST || '').split(':')[0],
+      database: rootDatabase.DATABASE
     });
     try {
       if (appDatabase.USERNAME !== rootDatabase.USERNAME) {
@@ -251,6 +253,7 @@ export class PostgresService {
         password: rootDatabase.password,
         port: rootDatabase.port,
         host: (rootDatabase.host || '').split(':')[0],
+        database: rootDatabase.database
       });
     }
     return this.rootDatabaseConnection;
