@@ -29,6 +29,11 @@ export class PostgresCommands {
           'application database url used for create new database (example: postgres://POSTGRES_USER:POSTGRES_PASSWORD@localhost:POSTGRES_PORT/POSTGRES_DATABASE?schema=public)',
       },
       {
+        flags: '-u,--update-app-database [boolean]',
+        description:
+          'rename & change password of existing one database (default: false) (example: postgres://POSTGRES_USER:POSTGRES_PASSWORD@localhost:POSTGRES_PORT/POSTGRES_DATABASE?schema=public)',
+      },
+      {
         flags: '-d,--drop-app-database [boolean]',
         description:
           'drop application database before try create it (default: false)',
@@ -38,10 +43,12 @@ export class PostgresCommands {
   async postgres({
     rootDatabaseUrl,
     appDatabaseUrl,
+    updateAppDatabase,
     dropAppDatabase,
   }: {
     rootDatabaseUrl: string;
     appDatabaseUrl: string;
+    updateAppDatabase?: boolean;
     dropAppDatabase?: boolean;
   }) {
     this.postgresService.setLogger(PostgresService.title);
@@ -49,6 +56,7 @@ export class PostgresCommands {
       dropAppDatabase: dropAppDatabase || this.postgresConfig.dropAppDatabase,
       rootDatabaseUrl,
       appDatabaseUrl,
+      updateAppDatabase,
       extensions: this.postgresConfig.extensions,
     });
   }
