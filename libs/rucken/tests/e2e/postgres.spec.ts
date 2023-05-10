@@ -78,7 +78,7 @@ describe('Postgres (e2e)', () => {
     await client.end();
   });
 
-  it('change password on existing database', async () => {
+  it('rename username and change password on existing database if one (except root)', async () => {
     const result = await execa('npm', [
       'start',
       '--',
@@ -86,15 +86,18 @@ describe('Postgres (e2e)', () => {
       `--root-database-url=postgres://${ROOT_POSTGRES_USER}:${ROOT_POSTGRES_PASSWORD}@${container.getHost()}:${container.getMappedPort(
         5432
       )}/${ROOT_POSTGRES_DB}?schema=public`,
-      `--app-database-url=postgres://${POSTGRES_USER}:${POSTGRES_PASSWORD}@${container.getHost()}:${container.getMappedPort(
+      '--update-app-database',
+      `--app-database-url=postgres://${POSTGRES_USER2}:${POSTGRES_PASSWORD2}@${container.getHost()}:${container.getMappedPort(
         5432
       )}/${POSTGRES_DB}?schema=public`,
     ]);
 
+    expect(result.stderr).toEqual('');
+
     const pgConfig = {
-      user: POSTGRES_USER,
+      user: ROOT_POSTGRES_USER,
       host: container.getHost(),
-      password: POSTGRES_PASSWORD,
+      password: ROOT_POSTGRES_PASSWORD,
       port: container.getMappedPort(5432),
       database: POSTGRES_DB,
       idleTimeoutMillis: 30000,
@@ -104,34 +107,47 @@ describe('Postgres (e2e)', () => {
     await client.connect();
     await client.end();
 
-    expect(result.stderr).toEqual('');
-
-    const result2 = await execa('npm', [
+    await execa('npm', [
       'start',
       '--',
       'postgres',
       `--root-database-url=postgres://${ROOT_POSTGRES_USER}:${ROOT_POSTGRES_PASSWORD}@${container.getHost()}:${container.getMappedPort(
         5432
       )}/${ROOT_POSTGRES_DB}?schema=public`,
-      `--app-database-url=postgres://${POSTGRES_USER}:${POSTGRES_PASSWORD}2@${container.getHost()}:${container.getMappedPort(
+      '--update-app-database',
+      `--app-database-url=postgres://${POSTGRES_USER}:${POSTGRES_PASSWORD}@${container.getHost()}:${container.getMappedPort(
+        5432
+      )}/${POSTGRES_DB}?schema=public`,
+    ]);
+  });
+
+  it('change password on existing database', async () => {
+    const result = await execa('npm', [
+      'start',
+      '--',
+      'postgres',
+      `--root-database-url=postgres://${ROOT_POSTGRES_USER}:${ROOT_POSTGRES_PASSWORD}@${container.getHost()}:${container.getMappedPort(
+        5432
+      )}/${ROOT_POSTGRES_DB}?schema=public`,
+      `--app-database-url=postgres://${POSTGRES_USER}:${POSTGRES_PASSWORD2}@${container.getHost()}:${container.getMappedPort(
         5432
       )}/${POSTGRES_DB}?schema=public`,
     ]);
 
-    expect(result2.stderr).toEqual('');
+    expect(result.stderr).toEqual('');
 
-    const pgConfig2 = {
+    const pgConfig = {
       user: POSTGRES_USER,
       host: container.getHost(),
-      password: `${POSTGRES_PASSWORD}2`,
+      password: POSTGRES_PASSWORD2,
       port: container.getMappedPort(5432),
       database: POSTGRES_DB,
       idleTimeoutMillis: 30000,
     };
 
-    const client2 = new Client(pgConfig2);
-    await client2.connect();
-    await client2.end();
+    const client = new Client(pgConfig);
+    await client.connect();
+    await client.end();
   });
 
   it('duplicate create application database with set command line args ', async () => {
