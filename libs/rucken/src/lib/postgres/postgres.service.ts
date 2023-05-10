@@ -40,13 +40,13 @@ export class PostgresService {
   async postgres({
     rootDatabaseUrl,
     appDatabaseUrl,
-    updateAppDatabase,
+    forceChangeUsername,
     dropAppDatabase,
     extensions,
   }: {
     rootDatabaseUrl: string;
     appDatabaseUrl: string;
-    updateAppDatabase?: boolean;
+    forceChangeUsername?: boolean;
     dropAppDatabase?: boolean;
     extensions: string[];
   }) {
@@ -97,7 +97,7 @@ export class PostgresService {
       if (dropAppDatabase) {
         await this.dropAppDatabaseHandler(rootDatabaseUrl, appDatabaseUrl);
       }
-      if (updateAppDatabase) {
+      if (forceChangeUsername) {
         await this.updateCredentials(rootDatabaseUrl, appDatabaseUrl);
       } else {
         await this.createAppDatabaseHandler(
@@ -116,7 +116,7 @@ export class PostgresService {
               envNxAppDatabaseUrl
             );
           }
-          if (updateAppDatabase) {
+          if (forceChangeUsername) {
             await this.updateCredentials(rootDatabaseUrl, appDatabaseUrl);
           } else {
             await this.createAppDatabaseHandler(
