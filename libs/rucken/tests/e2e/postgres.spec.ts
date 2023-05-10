@@ -86,7 +86,7 @@ describe('Postgres (e2e)', () => {
       `--root-database-url=postgres://${ROOT_POSTGRES_USER}:${ROOT_POSTGRES_PASSWORD}@${container.getHost()}:${container.getMappedPort(
         5432
       )}/${ROOT_POSTGRES_DB}?schema=public`,
-      '--update-app-database',
+      '--force-change-username=true',
       `--app-database-url=postgres://${POSTGRES_USER2}:${POSTGRES_PASSWORD2}@${container.getHost()}:${container.getMappedPort(
         5432
       )}/${POSTGRES_DB}?schema=public`,
@@ -114,7 +114,7 @@ describe('Postgres (e2e)', () => {
       `--root-database-url=postgres://${ROOT_POSTGRES_USER}:${ROOT_POSTGRES_PASSWORD}@${container.getHost()}:${container.getMappedPort(
         5432
       )}/${ROOT_POSTGRES_DB}?schema=public`,
-      '--update-app-database',
+      '--force-change-username=true',
       `--app-database-url=postgres://${POSTGRES_USER}:${POSTGRES_PASSWORD}@${container.getHost()}:${container.getMappedPort(
         5432
       )}/${POSTGRES_DB}?schema=public`,
