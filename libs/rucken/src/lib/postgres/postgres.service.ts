@@ -289,12 +289,10 @@ export class PostgresService {
           `ALTER USER $1:name WITH PASSWORD '${appDatabase.PASSWORD}'`,
           [usename]
         );
-        console.log(appDatabase.USERNAME, usename);
         await db.none(`ALTER USER $1:name RENAME TO $2:name`, [
           usename,
           appDatabase.USERNAME,
         ]);
-        console.log(await db.any('SELECT usename FROM pg_catalog.pg_user'));
         this.logger.info('Credentials have been updated...');
       } else {
         // Throw an error and display the list of users
