@@ -26,12 +26,12 @@ export class PostgresCommands {
       {
         flags: '-a,--app-database-url [strings]',
         description:
-          'application database url used for create new database (example: postgres://POSTGRES_USER:POSTGRES_PASSWORD@localhost:POSTGRES_PORT/POSTGRES_DATABASE?schema=public)',
+          'application database url used for create new database or change password of existing one (example: postgres://POSTGRES_USER:POSTGRES_PASSWORD@localhost:POSTGRES_PORT/POSTGRES_DATABASE?schema=public)',
       },
       {
         flags: '-fcu,--force-change-username [boolean]',
         description:
-          'rename & change password of existing one database (default: false)',
+          'force rename username if exists and change password of existing one database (default: false)',
       },
       {
         flags: '-d,--drop-app-database [boolean]',
