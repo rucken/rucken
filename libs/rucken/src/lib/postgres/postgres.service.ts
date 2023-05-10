@@ -140,7 +140,7 @@ export class PostgresService {
       password: rootDatabase.PASSWORD,
       port: rootDatabase.PORT,
       host: (rootDatabase.HOST || '').split(':')[0],
-      database: rootDatabase.DATABASE
+      database: rootDatabase.DATABASE,
     });
     if (appDatabase.USERNAME !== rootDatabase.USERNAME) {
       try {
@@ -175,7 +175,7 @@ export class PostgresService {
       password: rootDatabase.PASSWORD,
       port: rootDatabase.PORT,
       host: (rootDatabase.HOST || '').split(':')[0],
-      database: rootDatabase.DATABASE
+      database: rootDatabase.DATABASE,
     });
     try {
       if (appDatabase.USERNAME !== rootDatabase.USERNAME) {
@@ -186,6 +186,14 @@ export class PostgresService {
           if (!String(err).includes('already exists')) {
             this.logger.error(err, err.stack);
             throw err;
+          } else {
+            this.logger.debug(
+              `ALTERING PASSWORD OF ${appDatabase.USERNAME} to '${appDatabase.PASSWORD}'`
+            );
+            await db.none(
+              `ALTER USER $1:name WITH PASSWORD '${appDatabase.PASSWORD}'`,
+              [appDatabase.USERNAME]
+            );
           }
         }
 
@@ -253,7 +261,7 @@ export class PostgresService {
         password: rootDatabase.password,
         port: rootDatabase.port,
         host: (rootDatabase.host || '').split(':')[0],
-        database: rootDatabase.database
+        database: rootDatabase.database,
       });
     }
     return this.rootDatabaseConnection;
