@@ -31,7 +31,7 @@ export class PostgresCommands {
       {
         flags: '-u,--update-app-database [boolean]',
         description:
-          'rename & change password of existing one database (default: false) (example: postgres://POSTGRES_USER:POSTGRES_PASSWORD@localhost:POSTGRES_PORT/POSTGRES_DATABASE?schema=public)',
+          'rename & change password of existing one database (default: false)',
       },
       {
         flags: '-d,--drop-app-database [boolean]',
