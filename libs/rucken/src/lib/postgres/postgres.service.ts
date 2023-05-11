@@ -102,14 +102,14 @@ export class PostgresService {
 
       if (forceChangeUsername) {
         await this.forceChangeUsername(rootDatabaseUrl, appDatabaseUrl);
-      } else {
-        await this.createAppDatabaseHandler(
-          rootDatabaseUrl,
-          appDatabaseUrl,
-          extensions,
-          forceChangePassword
-        );
       }
+
+      await this.createAppDatabaseHandler(
+        rootDatabaseUrl,
+        appDatabaseUrl,
+        extensions,
+        forceChangePassword
+      );
     } else {
       if (envNxAppDatabaseUrls.length > 0) {
         for (let i = 0; i < envNxAppDatabaseUrls.length; i++) {
@@ -123,14 +123,14 @@ export class PostgresService {
 
           if (forceChangeUsername) {
             await this.forceChangeUsername(rootDatabaseUrl, appDatabaseUrl);
-          } else {
-            await this.createAppDatabaseHandler(
-              rootDatabaseUrl,
-              envNxAppDatabaseUrl,
-              extensions,
-              forceChangePassword
-            );
           }
+
+          await this.createAppDatabaseHandler(
+            rootDatabaseUrl,
+            envNxAppDatabaseUrl,
+            extensions,
+            forceChangePassword
+          );
 
           await this.applyPermissionsHandler(
             rootDatabaseUrl,
@@ -296,36 +296,31 @@ export class PostgresService {
       database: rootDatabase.DATABASE,
     });
 
-    try {
-      // Get a list of users
-      const users = await db.any('SELECT usename FROM pg_catalog.pg_user'); // replace with actual SQL command to get users
-      const nonRootUsers = users.filter(
-        ({ usename }) => rootDatabase.USERNAME !== usename
+    // Get a list of users
+    const users = await db.any('SELECT usename FROM pg_catalog.pg_user'); // replace with actual SQL command to get users
+    const nonRootUsers = users.filter(
+      ({ usename }) => rootDatabase.USERNAME !== usename
+    );
+    // Verify that there is only one non-root user
+    if (nonRootUsers.length === 1) {
+      const { usename } = nonRootUsers[0];
+      await db.none(`ALTER USER $1:name RENAME TO $2:name`, [
+        usename,
+        appDatabase.USERNAME,
+      ]);
+      await db.none(
+        `ALTER USER $1:name WITH PASSWORD '${appDatabase.PASSWORD}'`,
+        [appDatabase.USERNAME]
       );
-      // Verify that there is only one non-root user
-      if (nonRootUsers.length === 1) {
-        const { usename } = nonRootUsers[0];
-        await db.none(`ALTER USER $1:name RENAME TO $2:name`, [
-          usename,
-          appDatabase.USERNAME,
-        ]);
-        await db.none(
-          `ALTER USER $1:name WITH PASSWORD '${appDatabase.PASSWORD}'`,
-          [appDatabase.USERNAME]
-        );
-        this.logger.info('Username have been updated...');
-      } else {
-        this.logger.error(
-          'There are multiple non-root users in the database: ',
-          nonRootUsers
-        );
-        throw new Error(
-          'Cannot update credentials: multiple non-root users exist'
-        );
-      }
-    } catch (err) {
-      this.logger.error('Error updating credentials: ', err);
-      throw err;
+      this.logger.info('Username have been updated...');
+    } else {
+      this.logger.error(
+        'There are multiple non-root users in the database: ',
+        nonRootUsers
+      );
+      throw new Error(
+        'Cannot update credentials: multiple non-root users exist'
+      );
     }
   }
 
