@@ -41,12 +41,14 @@ export class PostgresService {
     rootDatabaseUrl,
     appDatabaseUrl,
     forceChangeUsername,
+    forceChangePassword,
     dropAppDatabase,
     extensions,
   }: {
     rootDatabaseUrl: string;
     appDatabaseUrl: string;
     forceChangeUsername?: boolean;
+    forceChangePassword?: boolean;
     dropAppDatabase?: boolean;
     extensions: string[];
   }) {
@@ -97,13 +99,15 @@ export class PostgresService {
       if (dropAppDatabase) {
         await this.dropAppDatabaseHandler(rootDatabaseUrl, appDatabaseUrl);
       }
+
       if (forceChangeUsername) {
-        await this.updateCredentials(rootDatabaseUrl, appDatabaseUrl);
+        await this.forceChangeUsername(rootDatabaseUrl, appDatabaseUrl);
       } else {
         await this.createAppDatabaseHandler(
           rootDatabaseUrl,
           appDatabaseUrl,
-          extensions
+          extensions,
+          forceChangePassword
         );
       }
     } else {
@@ -116,15 +120,18 @@ export class PostgresService {
               envNxAppDatabaseUrl
             );
           }
+
           if (forceChangeUsername) {
-            await this.updateCredentials(rootDatabaseUrl, appDatabaseUrl);
+            await this.forceChangeUsername(rootDatabaseUrl, appDatabaseUrl);
           } else {
             await this.createAppDatabaseHandler(
               rootDatabaseUrl,
               envNxAppDatabaseUrl,
-              extensions
+              extensions,
+              forceChangePassword
             );
           }
+
           await this.applyPermissionsHandler(
             rootDatabaseUrl,
             envNxAppDatabaseUrl
@@ -173,7 +180,8 @@ export class PostgresService {
   async createAppDatabaseHandler(
     rootDatabaseUrl: string,
     appDatabaseUrl: string,
-    extensions: string[]
+    extensions: string[],
+    forceChangePassword?: boolean
   ): Promise<void> {
     this.logger.info('Start create database...');
     const rootDatabase = this.parseDatabaseUrl(rootDatabaseUrl);
@@ -197,13 +205,9 @@ export class PostgresService {
             this.logger.error(err, err.stack);
             throw err;
           } else {
-            this.logger.debug(
-              `ALTERING PASSWORD OF ${appDatabase.USERNAME} to '${appDatabase.PASSWORD}'`
-            );
-            await db.none(
-              `ALTER USER $1:name WITH PASSWORD '${appDatabase.PASSWORD}'`,
-              [appDatabase.USERNAME]
-            );
+            if (forceChangePassword) {
+              await this.forceChangePassword(rootDatabaseUrl, appDatabaseUrl);
+            }
           }
         }
 
@@ -258,13 +262,32 @@ export class PostgresService {
     this.logger.info('End of create database...');
   }
 
-  async updateCredentials(rootDatabaseUrl: string, appDatabaseUrl: string) {
+  async forceChangePassword(rootDatabaseUrl: string, appDatabaseUrl: string) {
+    const rootDatabase = this.parseDatabaseUrl(rootDatabaseUrl);
+    const appDatabase = this.parseDatabaseUrl(appDatabaseUrl);
+    const db = this.getRootDbConnection({
+      username: rootDatabase.USERNAME,
+      password: rootDatabase.PASSWORD,
+      port: rootDatabase.PORT,
+      host: (rootDatabase.HOST || '').split(':')[0],
+      database: rootDatabase.DATABASE,
+    });
+
+    this.logger.debug(
+      `ALTERING PASSWORD OF ${appDatabase.USERNAME} to '${appDatabase.PASSWORD}'`
+    );
+    await db.none(
+      `ALTER USER $1:name WITH PASSWORD '${appDatabase.PASSWORD}'`,
+      [appDatabase.USERNAME]
+    );
+  }
+
+  async forceChangeUsername(rootDatabaseUrl: string, appDatabaseUrl: string) {
     const rootDatabase = this.parseDatabaseUrl(rootDatabaseUrl);
     const appDatabase = this.parseDatabaseUrl(appDatabaseUrl);
 
-    this.logger.info('Start updating credentials...');
+    this.logger.info('Start updating username...');
 
-    // Connect to the database
     const db = this.getRootDbConnection({
       username: rootDatabase.USERNAME,
       password: rootDatabase.PASSWORD,
@@ -277,25 +300,21 @@ export class PostgresService {
       // Get a list of users
       const users = await db.any('SELECT usename FROM pg_catalog.pg_user'); // replace with actual SQL command to get users
       const nonRootUsers = users.filter(
-        ({ usename }) => !['root', 'postgres'].includes(usename)
+        ({ usename }) => rootDatabase.USERNAME !== usename
       );
-
       // Verify that there is only one non-root user
       if (nonRootUsers.length === 1) {
-        // Update the credentials for this user
         const { usename } = nonRootUsers[0];
-        // Update the usename (username)
-        await db.none(
-          `ALTER USER $1:name WITH PASSWORD '${appDatabase.PASSWORD}'`,
-          [usename]
-        );
         await db.none(`ALTER USER $1:name RENAME TO $2:name`, [
           usename,
           appDatabase.USERNAME,
         ]);
-        this.logger.info('Credentials have been updated...');
+        await db.none(
+          `ALTER USER $1:name WITH PASSWORD '${appDatabase.PASSWORD}'`,
+          [appDatabase.USERNAME]
+        );
+        this.logger.info('Username have been updated...');
       } else {
-        // Throw an error and display the list of users
         this.logger.error(
           'There are multiple non-root users in the database: ',
           nonRootUsers
