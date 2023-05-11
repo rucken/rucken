@@ -2,6 +2,12 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [4.5.0](https://github.com/rucken/rucken/compare/v4.4.6...v4.5.0) (2023-05-11)
+
+### Features
+
+- append changing username or password for application database ([cb2cd44](https://github.com/rucken/rucken/commit/cb2cd449fdd26e3e7b1d80897e7c5dd09bf980dc))
+
 ### [4.4.7](https://github.com/rucken/rucken/compare/v4.4.6...v4.4.7) (2023-03-04)
 
 ### Bug Fixes
