@@ -78,7 +78,7 @@ describe('Postgres (e2e)', () => {
     await client.end();
   });
 
-  it('rename username and change password on existing database if one (except root)', async () => {
+  it('rename username on existing database if one (except root)', async () => {
     const result = await execa('npm', [
       'start',
       '--',
@@ -87,7 +87,7 @@ describe('Postgres (e2e)', () => {
         5432
       )}/${ROOT_POSTGRES_DB}?schema=public`,
       '--force-change-username=true',
-      `--app-database-url=postgres://${POSTGRES_USER2}:${POSTGRES_PASSWORD2}@${container.getHost()}:${container.getMappedPort(
+      `--app-database-url=postgres://APP_TEST_NAME:${POSTGRES_PASSWORD}@${container.getHost()}:${container.getMappedPort(
         5432
       )}/${POSTGRES_DB}?schema=public`,
     ]);
@@ -95,9 +95,9 @@ describe('Postgres (e2e)', () => {
     expect(result.stderr).toEqual('');
 
     const pgConfig = {
-      user: ROOT_POSTGRES_USER,
+      user: 'APP_TEST_NAME',
       host: container.getHost(),
-      password: ROOT_POSTGRES_PASSWORD,
+      password: POSTGRES_PASSWORD,
       port: container.getMappedPort(5432),
       database: POSTGRES_DB,
       idleTimeoutMillis: 30000,
@@ -107,6 +107,7 @@ describe('Postgres (e2e)', () => {
     await client.connect();
     await client.end();
 
+    // rename is back for the rest
     await execa('npm', [
       'start',
       '--',
@@ -129,6 +130,7 @@ describe('Postgres (e2e)', () => {
       `--root-database-url=postgres://${ROOT_POSTGRES_USER}:${ROOT_POSTGRES_PASSWORD}@${container.getHost()}:${container.getMappedPort(
         5432
       )}/${ROOT_POSTGRES_DB}?schema=public`,
+      '--force-change-password=true',
       `--app-database-url=postgres://${POSTGRES_USER}:${POSTGRES_PASSWORD2}@${container.getHost()}:${container.getMappedPort(
         5432
       )}/${POSTGRES_DB}?schema=public`,
@@ -148,6 +150,19 @@ describe('Postgres (e2e)', () => {
     const client = new Client(pgConfig);
     await client.connect();
     await client.end();
+
+    await execa('npm', [
+      'start',
+      '--',
+      'postgres',
+      `--root-database-url=postgres://${ROOT_POSTGRES_USER}:${ROOT_POSTGRES_PASSWORD}@${container.getHost()}:${container.getMappedPort(
+        5432
+      )}/${ROOT_POSTGRES_DB}?schema=public`,
+      '--force-change-password=true',
+      `--app-database-url=postgres://${POSTGRES_USER}:${POSTGRES_PASSWORD}@${container.getHost()}:${container.getMappedPort(
+        5432
+      )}/${POSTGRES_DB}?schema=public`,
+    ]);
   });
 
   it('duplicate create application database with set command line args ', async () => {

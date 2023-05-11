@@ -29,9 +29,14 @@ export class PostgresCommands {
           'application database url used for create new database or change password of existing one (example: postgres://POSTGRES_USER:POSTGRES_PASSWORD@localhost:POSTGRES_PORT/POSTGRES_DATABASE?schema=public)',
       },
       {
-        flags: '-fcu,--force-change-username [boolean]',
+        flags: '-fu,--force-change-username [boolean]',
         description:
-          'force rename username if exists and change password of existing one database (default: false)',
+          'force rename username if one exists in database excluding root (default: false)',
+      },
+      {
+        flags: '-fp,--force-change-password [boolean]',
+        description:
+          'force change password of specified app-database-url (default: false)',
       },
       {
         flags: '-d,--drop-app-database [boolean]',
@@ -44,11 +49,13 @@ export class PostgresCommands {
     rootDatabaseUrl,
     appDatabaseUrl,
     forceChangeUsername,
+    forceChangePassword,
     dropAppDatabase,
   }: {
     rootDatabaseUrl: string;
     appDatabaseUrl: string;
     forceChangeUsername?: boolean;
+    forceChangePassword?: boolean;
     dropAppDatabase?: boolean;
   }) {
     this.postgresService.setLogger(PostgresService.title);
@@ -57,6 +64,7 @@ export class PostgresCommands {
       rootDatabaseUrl,
       appDatabaseUrl,
       forceChangeUsername,
+      forceChangePassword,
       extensions: this.postgresConfig.extensions,
     });
   }
