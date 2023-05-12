@@ -199,7 +199,7 @@ export class PostgresService {
       if (appDatabase.USERNAME !== rootDatabase.USERNAME) {
         try {
           this.logger.debug(`CREATE DATABASE ${appDatabase.DATABASE}`);
-          await db.none(`CREATE DATABASE $1:name`, [appDatabase.DATABASE]);
+          await db.none('CREATE DATABASE $1:name', [appDatabase.DATABASE]);
         } catch (err) {
           if (!String(err).includes('already exists')) {
             this.logger.error(err, err.stack);
