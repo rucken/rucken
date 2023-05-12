@@ -297,15 +297,22 @@ export class PostgresService {
     });
 
     // Get a list of users
-    const users = await db.any('SELECT usename FROM pg_catalog.pg_user'); // replace with actual SQL command to get users
-    const nonRootUsers = users.filter(
-      ({ usename }) => rootDatabase.USERNAME !== usename
-    );
+    const users = await db.any(`
+    select d.datname, (select string_agg(u.usename, ',' order by u.usename) 
+    from pg_user u where has_database_privilege(u.usename, d.datname, 'CREATE')) 
+    as allowed_users from pg_database d order by d.datname`);
+    const curDb = users.find(({ datname }) => datname === appDatabase.DATABASE);
+
+    if (!curDb) throw new Error('Cannot find database');
+
+    const nonRootUsers = curDb.allowed_users
+      .split(',')
+      .filter((user) => user !== rootDatabase.USERNAME);
+
     // Verify that there is only one non-root user
     if (nonRootUsers.length === 1) {
-      const { usename } = nonRootUsers[0];
       await db.none(`ALTER USER $1:name RENAME TO $2:name`, [
-        usename,
+        nonRootUsers[0],
         appDatabase.USERNAME,
       ]);
       await db.none(

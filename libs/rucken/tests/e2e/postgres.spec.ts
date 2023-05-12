@@ -424,4 +424,40 @@ describe('Postgres (e2e)', () => {
     await client2.connect();
     await client2.end();
   });
+
+  it('change username on existing database with multiple users', async () => {
+    function createDbUser(username: string) {
+      return execa('npm', [
+        'start',
+        '--',
+        'postgres',
+        `--root-database-url=postgres://${ROOT_POSTGRES_USER}:${ROOT_POSTGRES_PASSWORD}@${container.getHost()}:${container.getMappedPort(
+          5432
+        )}/${ROOT_POSTGRES_DB}?schema=public`,
+        `--app-database-url=postgres://${username}:${POSTGRES_PASSWORD2}@${container.getHost()}:${container.getMappedPort(
+          5432
+        )}/${POSTGRES_DB}_TEST?schema=public`,
+      ]);
+    }
+
+    const createdDbUserResult = await createDbUser('TEST_USER_1');
+    expect(createdDbUserResult.stderr).toEqual('');
+    const createdDbUserResult2 = await createDbUser('TEST_USER_2');
+    expect(createdDbUserResult2.stderr).toEqual('');
+
+    const result = await execa('npm', [
+      'start',
+      '--',
+      'postgres',
+      `--root-database-url=postgres://${ROOT_POSTGRES_USER}:${ROOT_POSTGRES_PASSWORD}@${container.getHost()}:${container.getMappedPort(
+        5432
+      )}/${ROOT_POSTGRES_DB}?schema=public`,
+      '--force-change-username=true',
+      `--app-database-url=postgres://TEST_USER_3:${POSTGRES_PASSWORD2}@${container.getHost()}:${container.getMappedPort(
+        5432
+      )}/${POSTGRES_DB}_TEST?schema=public`,
+    ]).catch((err) => `${err}`);
+
+    expect(result).toContain('multiple non-root users');
+  });
 });
