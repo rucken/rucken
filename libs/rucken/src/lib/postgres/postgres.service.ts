@@ -293,7 +293,7 @@ export class PostgresService {
       password: rootDatabase.PASSWORD,
       port: rootDatabase.PORT,
       host: (rootDatabase.HOST || '').split(':')[0],
-      database: rootDatabase.DATABASE,
+      database: appDatabase.DATABASE,
     });
 
     // Get a list of users
