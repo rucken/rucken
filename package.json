@@ -1,7 +1,7 @@
 {
   "name": "rucken",
   "description": "Console tools and scripts for nx and not only that I (EndyKaufman) use to automate the workflow and speed up the development process",
-  "version": "4.4.7",
+  "version": "4.5.0",
   "license": "MIT",
   "author": "EndyKaufman <admin@site15.ru>",
   "keywords": [
@@ -45,7 +45,7 @@
     "build": "npm run nx -- build rucken && ./scripts/add-header-to-rucken.js && npm run lib:build-changelog",
     "release": "standard-version -a",
     "publish": "npm publish ./dist/libs/rucken",
-    "create-release": "npm run test && npm run build && npm run release && git push --follow-tags origin develop",
+    "create-release": "npm run test && npm run build && npm run release && git push --follow-tags origin master",
     "test:integrations-e2e": "npm run nx -- test rucken --skip-nx-cache --json --outputFile=jest.result.json --testLocationInResults",
     "test:integrations-prepare": "sh ./integrations/scripts/prepare-application.sh",
     "test:integrations-run": "npm run test:integrations-e2e",
