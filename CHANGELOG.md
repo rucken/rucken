@@ -2,6 +2,34 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [4.6.0](https://github.com/rucken/rucken/compare/v4.5.0...v4.6.0) (2023-05-12)
+
+### Features
+
+- change password on database create ([4752d8b](https://github.com/rucken/rucken/commit/4752d8ba5cb0ebcabe9f43160fce307b674fc8db))
+- seperate flags for use case ([e335681](https://github.com/rucken/rucken/commit/e3356811f4849635746f6e3ad046879bd28bbabd))
+- user name & pass replace in one in db ([c72c462](https://github.com/rucken/rucken/commit/c72c46275d42a41dd6adca1f492be5f64f0e40b2))
+
+### Bug Fixes
+
+- both flags work together ([b018b73](https://github.com/rucken/rucken/commit/b018b731f4a68e672ceaa65e16592811086552d3))
+- desc ([1c4c83f](https://github.com/rucken/rucken/commit/1c4c83f0a75e100deb0fa8213205e9158b52f243))
+- description of flags ([679b89d](https://github.com/rucken/rucken/commit/679b89d18360b80a37204202f99e62db2bf51e0b))
+- downgrade version bump ([1a2d42b](https://github.com/rucken/rucken/commit/1a2d42bd3d28c2a3bd394548c8bdafd552e8a5a0))
+- flag name ([64d9001](https://github.com/rucken/rucken/commit/64d9001f1ec76e9320edd40366df4b084c506e38))
+- remove console log ([edb7924](https://github.com/rucken/rucken/commit/edb79241add0376f932bcb416e66081a45f420c6))
+- rename flag ([071c61c](https://github.com/rucken/rucken/commit/071c61c8751e435bc85336817b74ed315a8b0d5c))
+- revert ([4fd9800](https://github.com/rucken/rucken/commit/4fd98004d5da0321343ac65fd2a32a4f25c1ba80))
+- root connects to app database not root db ([#17](https://github.com/rucken/rucken/issues/17)) ([80972ad](https://github.com/rucken/rucken/commit/80972ade8f300da33aaa90e76752a976025fdd67))
+- update query for search multiple users ([#18](https://github.com/rucken/rucken/issues/18)) ([43d8a2c](https://github.com/rucken/rucken/commit/43d8a2c25dfab919be8d9cefe93a22fc08dbd11e))
+- wrong desc ([b6eaf7c](https://github.com/rucken/rucken/commit/b6eaf7c56f18c6c6237ac33b0aed212252f43695))
+
+### [4.4.7](https://github.com/rucken/rucken/compare/v4.4.6...v4.4.7) (2023-03-04)
+
+### Bug Fixes
+
+- add database from rootDatabase ([a24e0a6](https://github.com/rucken/rucken/commit/a24e0a65d751a60f12fc2021bcff345e0cbb7e41))
+
 ## [4.5.0](https://github.com/rucken/rucken/compare/v4.4.6...v4.5.0) (2023-05-11)
 
 ### Features
