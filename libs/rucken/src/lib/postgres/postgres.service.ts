@@ -307,6 +307,9 @@ export class PostgresService {
       );
 
       if (!curDb) {
+        this.logger.warn(
+          `"${appDatabase.DATABASE}" does not exist! force change username was not applied`
+        );
         return;
       }
 
