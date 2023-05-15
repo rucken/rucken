@@ -293,45 +293,58 @@ export class PostgresService {
       password: rootDatabase.PASSWORD,
       port: rootDatabase.PORT,
       host: (rootDatabase.HOST || '').split(':')[0],
-      database: appDatabase.DATABASE,
+      database: rootDatabase.DATABASE,
     });
 
-    // Get a list of users
-    const users = await db.any(`
-    select d.datname, (select string_agg(u.usename, ',' order by u.usename) 
-    from pg_user u where has_database_privilege(u.usename, d.datname, 'CREATE')) 
-    as allowed_users from pg_database d order by d.datname`);
-    const curDb = users.find(({ datname }) => datname === appDatabase.DATABASE);
+    try {
+      // Get a list of users
+      const users = await db.any(`
+      select d.datname, (select string_agg(u.usename, ',' order by u.usename) 
+      from pg_user u where has_database_privilege(u.usename, d.datname, 'CREATE')) 
+      as allowed_users from pg_database d order by d.datname`);
+      const curDb = users.find(
+        ({ datname }) => datname === appDatabase.DATABASE
+      );
 
-    if (!curDb) throw new Error('Cannot find database');
-
-    const nonRootUsers = curDb.allowed_users
-      .split(',')
-      .filter((user) => user !== rootDatabase.USERNAME);
-
-    // Verify that there is only one non-root user
-    if (nonRootUsers.length === 1) {
-      if (nonRootUsers[0] === appDatabase.USERNAME) {
+      if (!curDb) {
+        this.logger.warn(
+          `"${appDatabase.DATABASE}" does not exist! force change username was not applied`
+        );
         return;
       }
 
-      await db.none(`ALTER USER $1:name RENAME TO $2:name`, [
-        nonRootUsers[0],
-        appDatabase.USERNAME,
-      ]);
-      await db.none(
-        `ALTER USER $1:name WITH PASSWORD '${appDatabase.PASSWORD}'`,
-        [appDatabase.USERNAME]
-      );
-      this.logger.info('Username have been updated...');
-    } else {
-      this.logger.error(
-        'There are multiple non-root users in the database: ',
-        nonRootUsers
-      );
-      throw new Error(
-        'Cannot update credentials: multiple non-root users exist'
-      );
+      const nonRootUsers = curDb.allowed_users
+        .split(',')
+        .filter((user) => user !== rootDatabase.USERNAME);
+
+      // Verify that there is only one non-root user
+      if (nonRootUsers.length === 1) {
+        if (nonRootUsers[0] === appDatabase.USERNAME) {
+          return;
+        }
+
+        await db.none(`ALTER USER $1:name RENAME TO $2:name`, [
+          nonRootUsers[0],
+          appDatabase.USERNAME,
+        ]);
+        await db.none(
+          `ALTER USER $1:name WITH PASSWORD '${appDatabase.PASSWORD}'`,
+          [appDatabase.USERNAME]
+        );
+        this.logger.info('Username have been updated...');
+      } else {
+        this.logger.error(
+          'There are multiple non-root users in the database: ',
+          nonRootUsers
+        );
+        throw new Error(
+          'Cannot update credentials: multiple non-root users exist'
+        );
+      }
+    } catch (error) {
+      if (!String(error).includes('does not exist')) {
+        throw error;
+      }
     }
   }
 
