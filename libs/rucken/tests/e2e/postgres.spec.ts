@@ -50,6 +50,23 @@ describe('Postgres (e2e)', () => {
     await client.end();
   });
 
+  it('rename if user does not exist', async () => {
+    const result = await execa('npm', [
+      'start',
+      '--',
+      'postgres',
+      `--root-database-url=postgres://${ROOT_POSTGRES_USER}:${ROOT_POSTGRES_PASSWORD}@${container.getHost()}:${container.getMappedPort(
+        5432
+      )}/${ROOT_POSTGRES_DB}?schema=public`,
+      '--force-change-username=true',
+      `--app-database-url=postgres://${POSTGRES_USER}:${POSTGRES_PASSWORD}@${container.getHost()}:${container.getMappedPort(
+        5432
+      )}/${POSTGRES_DB}?schema=public`,
+    ]);
+
+    expect(result.stderr).toEqual('');
+  });
+
   it('create application database with set command line args ', async () => {
     const result = await execa('npm', [
       'start',
