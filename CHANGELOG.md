@@ -2,6 +2,12 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [4.6.1](https://github.com/rucken/rucken/compare/v4.6.0...v4.6.1) (2023-05-15)
+
+### Bug Fixes
+
+- ignore duplicate username change ([#19](https://github.com/rucken/rucken/issues/19)) ([65ccf41](https://github.com/rucken/rucken/commit/65ccf41747006569dba776a35ca8993c36750d6c))
+
 ## [4.6.0](https://github.com/rucken/rucken/compare/v4.5.0...v4.6.0) (2023-05-12)
 
 ### Features
