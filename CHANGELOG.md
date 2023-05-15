@@ -2,6 +2,12 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [4.6.2](https://github.com/rucken/rucken/compare/v4.6.1...v4.6.2) (2023-05-15)
+
+### Bug Fixes
+
+- no error if db does not exist ([#20](https://github.com/rucken/rucken/issues/20)) ([219c60d](https://github.com/rucken/rucken/commit/219c60db1a63ad118f9c7a8587faf378322d0be4))
+
 ### [4.6.1](https://github.com/rucken/rucken/compare/v4.6.0...v4.6.1) (2023-05-15)
 
 ### Bug Fixes
