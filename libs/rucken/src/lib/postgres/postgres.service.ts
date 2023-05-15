@@ -306,7 +306,9 @@ export class PostgresService {
         ({ datname }) => datname === appDatabase.DATABASE
       );
 
-      if (!curDb) return;
+      if (!curDb) {
+        return;
+      }
 
       const nonRootUsers = curDb.allowed_users
         .split(',')
