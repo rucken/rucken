@@ -311,7 +311,9 @@ export class PostgresService {
 
     // Verify that there is only one non-root user
     if (nonRootUsers.length === 1) {
-      if (nonRootUsers[0] === appDatabase.USERNAME) return;
+      if (nonRootUsers[0] === appDatabase.USERNAME) {
+        return;
+      }
 
       await db.none(`ALTER USER $1:name RENAME TO $2:name`, [
         nonRootUsers[0],
