@@ -84,29 +84,31 @@ export class UtilsService {
   private collectProjectsFromTsConfig(tsconfigFile: string) {
     const json = JSON.parse(readFileSync(tsconfigFile).toString());
     const projects: Record<string, string> = {};
-    Object.keys(json.compilerOptions.paths || {}).map((key) => {
-      try {
-        let path = json.compilerOptions.paths[key][0].replace(
-          '/src/index.ts',
-          ''
-        );
-        const projectName = kebabCase(key);
-        if (existsSync(join(path, 'project.json'))) {
-          projects[projectName] = path;
-        } else {
-          path = (
-            Array.isArray(json.compilerOptions.paths[key])
-              ? json.compilerOptions.paths[key][0]
-              : json.compilerOptions.paths[key]
-          ).replace('/index.ts', '');
-          projects[projectName] = path;
+    Object.keys(json.compilerOptions.paths || {})
+      .filter((key) => !key.includes('*'))
+      .map((key) => {
+        try {
+          let path = json.compilerOptions.paths[key][0].replace(
+            '/src/index.ts',
+            ''
+          );
+          const projectName = kebabCase(key);
+          if (existsSync(join(path, 'project.json'))) {
+            projects[projectName] = path;
+          } else {
+            path = (
+              Array.isArray(json.compilerOptions.paths[key])
+                ? json.compilerOptions.paths[key][0]
+                : json.compilerOptions.paths[key]
+            ).replace('/index.ts', '');
+            projects[projectName] = path;
+          }
+        } catch (err) {
+          this.getLogger().log(JSON.stringify({ json, key }));
+          this.getLogger().error(err, err.stack);
+          throw err;
         }
-      } catch (err) {
-        this.getLogger().log(JSON.stringify({ json, key }));
-        this.getLogger().error(err, err.stack);
-        throw err;
-      }
-    });
+      });
     return projects;
   }
 
