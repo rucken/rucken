@@ -2,6 +2,12 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [4.6.3](https://github.com/rucken/rucken/compare/v4.6.2...v4.6.3) (2023-07-20)
+
+### Bug Fixes
+
+- update for correct work in nest-cli project ([075faa3](https://github.com/rucken/rucken/commit/075faa35a0106a9458f8b8e8ce679dddc135c684))
+
 ### [4.6.2](https://github.com/rucken/rucken/compare/v4.6.1...v4.6.2) (2023-05-15)
 
 ### Bug Fixes
