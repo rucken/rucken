@@ -2,6 +2,12 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [4.6.4](https://github.com/rucken/rucken/compare/v4.6.3...v4.6.4) (2023-07-20)
+
+### Bug Fixes
+
+- append ignore compilerOptions.paths with \* ([a7ac185](https://github.com/rucken/rucken/commit/a7ac185d679a8daf4bf08abb4a2fed9cd928accd))
+
 ### [4.6.3](https://github.com/rucken/rucken/compare/v4.6.2...v4.6.3) (2023-07-20)
 
 ### Bug Fixes
