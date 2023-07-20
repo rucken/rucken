@@ -94,12 +94,12 @@ export class UtilsService {
         if (existsSync(join(path, 'project.json'))) {
           projects[projectName] = path;
         } else {
-          path = json.compilerOptions.paths[key].replace('/index.ts', '');
-          if (existsSync(join(path, 'project.json'))) {
-            projects[projectName] = path;
-          } else {
-            projects[projectName] = path;
-          }
+          path = (
+            Array.isArray(json.compilerOptions.paths[key])
+              ? json.compilerOptions.paths[key][0]
+              : json.compilerOptions.paths[key]
+          ).replace('/index.ts', '');
+          projects[projectName] = path;
         }
       } catch (err) {
         this.getLogger().log(JSON.stringify({ json, key }));
