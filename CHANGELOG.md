@@ -2,6 +2,12 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [4.7.0](https://github.com/rucken/rucken/compare/v4.6.4...v4.7.0) (2024-03-28)
+
+### Features
+
+- **copy-paste:** add support correct generate new files path names ([8d5516f](https://github.com/rucken/rucken/commit/8d5516f776d0f53068f10b72551a7f0a21a879af))
+
 ### [4.6.4](https://github.com/rucken/rucken/compare/v4.6.3...v4.6.4) (2023-07-20)
 
 ### Bug Fixes
