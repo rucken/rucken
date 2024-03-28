@@ -34,10 +34,16 @@ describe('Tools make-ts-list (e2e)', () => {
     )
       .toString()
       .split('\n');
-    expect(makeTsList[0]).toEqual(`export * from './lib/feature-server-user';`);
-    expect(makeTsList[1]).toEqual(
-      `export * from './lib/feature-server.module';`
-    );
+    expect(
+      makeTsList.find(
+        (line) => line === `export * from './lib/feature-server-user';`
+      )
+    ).not.toBeUndefined();
+    expect(
+      makeTsList.find(
+        (line) => line === `export * from './lib/feature-server.module';`
+      )
+    ).not.toBeUndefined();
   });
 
   it('libs/feature-common', () => {

@@ -23,13 +23,13 @@ import pluralize from 'pluralize';
 import recursive from 'recursive-readdir';
 import sortPaths from 'sort-paths';
 import { UtilsService } from '../utils/utils.service';
+import { createHash } from 'crypto';
 
 @Injectable()
 export class CopyPasteService {
   public static title = 'copy-paste';
 
   private logger: Logger;
-  private dictionaries: { from: string; to: string }[];
 
   setLogger(command: string): void {
     this.logger = getLogger(command);
@@ -114,7 +114,7 @@ export class CopyPasteService {
     if (destPath && destPath[0] === '.' && path[0] !== '.') {
       destPath = resolve(join(destPath, basename(path)));
     } else {
-      if (destPath && destPath[0] === '/' && path[0] !== '/') {
+      if (destPath && destPath[0] === sep && path[0] !== sep) {
         destPath = resolve(join(dirname(path), basename(destPath)));
       } else {
         if (!destPath || !existsSync(resolve(destPath))) {
@@ -124,30 +124,95 @@ export class CopyPasteService {
     }
     extensions = extensions.map((extension) => extension.toUpperCase());
     path = resolve(path);
+
+    let allResultReplacedTexts: {
+      from: string;
+      to: string;
+      toMd5?: string;
+    }[] = [];
+
+    // collect all filepaths
     let files = await recursive(path);
     files = sortPaths(files, sep);
-    for (let findex = 0; findex < files.length; findex++) {
-      const file = files[findex];
+
+    for (const file of files) {
       const fileExt = file.split('.').pop().toUpperCase();
       if (extensions.includes(fileExt)) {
-        const destFile = this.replace({
+        const { resultReplacedTexts } = this.replace({
           text: file.replace(path, destPath),
           find,
           findPlural,
           replace,
           replacePlural,
           cases,
+          mode: 'filepath',
+        });
+        allResultReplacedTexts = [
+          ...allResultReplacedTexts,
+          ...resultReplacedTexts,
+        ];
+      }
+    }
+
+    // create md5 hash for replaced string
+    for (const allResultReplacedText of allResultReplacedTexts) {
+      allResultReplacedText.toMd5 = createHash('md5')
+        .update(allResultReplacedText.to)
+        .digest('hex');
+    }
+
+    // replace content
+    for (const file of files) {
+      const fileExt = file.split('.').pop().toUpperCase();
+      if (extensions.includes(fileExt)) {
+        for (const allResultReplacedText of allResultReplacedTexts) {
+          destPath = destPath.replace(
+            new RegExp(allResultReplacedText.from, 'g'),
+            allResultReplacedText.toMd5
+          );
+        }
+
+        const { newText: destFile } = this.replace({
+          text: file.replace(path, destPath),
+          find,
+          findPlural,
+          replace,
+          replacePlural,
+          cases,
+          mode: 'filepath',
         });
 
-        const content = readFileSync(file).toString();
-        const destContent = this.replace({
+        for (const allResultReplacedText of allResultReplacedTexts) {
+          destPath = destPath.replace(
+            new RegExp(allResultReplacedText.toMd5, 'g'),
+            allResultReplacedText.to
+          );
+        }
+
+        let content = readFileSync(file).toString();
+        for (const allResultReplacedText of allResultReplacedTexts) {
+          content = content.replace(
+            new RegExp(`${sep}${allResultReplacedText.from}`, 'g'),
+            allResultReplacedText.toMd5
+          );
+        }
+
+        let { newText: destContent } = this.replace({
           text: content,
           find,
           findPlural,
           replace,
           replacePlural,
           cases,
+          mode: 'content',
         });
+
+        for (const allResultReplacedText of allResultReplacedTexts) {
+          destContent = destContent.replace(
+            new RegExp(allResultReplacedText.toMd5, 'g'),
+            `${sep}${allResultReplacedText.to}`
+          );
+        }
 
         if (file !== destFile) {
           this.logger.log(
@@ -169,6 +234,7 @@ export class CopyPasteService {
     replace,
     replacePlural,
     cases,
+    mode,
   }: {
     text: string;
     find: string;
@@ -176,87 +242,106 @@ export class CopyPasteService {
     replace: string;
     replacePlural: string;
     cases: string[];
+    mode: 'content' | 'filepath';
   }) {
-    if (!this.dictionaries) {
-      this.dictionaries = [];
-      const functions = [
-        // 🐪 camelCase
-        cases.includes('camelCase') ? camelCase : undefined,
-        // 🐫 PascalCase
-        cases.includes('pascalCase') ? pascalCase : undefined,
-        // 🐫 UpperCamelCase
-        cases.includes('upperCamelCase') ? upperCamelCase : undefined,
-        //🥙 kebab-case
-        cases.includes('kebabCase') ? kebabCase : undefined,
-        // 🐍 snake_case
-        cases.includes('snakeCase') ? snakeCase : undefined,
-        // 📣 CONSTANT_CASE
-        cases.includes('constantCase') ? constantCase : undefined,
-        // 🚂 Train-Case
-        cases.includes('trainCase') ? trainCase : undefined,
-        // 🕊 Ada_Case
-        cases.includes('adaCase') ? adaCase : undefined,
-        // 👔 COBOL-CASE
-        cases.includes('cobolCase') ? cobolCase : undefined,
-        // 📍 Dot.notation
-        cases.includes('dotNotation') ? dotNotation : undefined,
-        // 📂 Path/case
-        cases.includes('pathCase') ? pathCase : undefined,
-        // 🛰 Space case
-        cases.includes('spaceCase') ? spaceCase : undefined,
-        // 🏛 Capital Case
-        cases.includes('capitalCase') ? capitalCase : undefined,
-        // 🔡 lower case
-        cases.includes('lowerCase') ? lowerCase : undefined,
-        // 🔠 UPPER CASE
-        cases.includes('upperCase') ? upperCase : undefined,
-      ].filter(Boolean);
-      // plural
-      for (let index = 0; index < functions.length; index++) {
-        const func = (
-          string: string,
-          options?: {
-            keepSpecialCharacters?: boolean;
-            keep?: string[];
-          }
-        ) => functions[index](camelCase(string), options);
-
-        const from = func(findPlural, { keepSpecialCharacters: true });
-        const to = func(replacePlural, { keepSpecialCharacters: true });
-        if (!this.dictionaries.find((d) => d.from === from)) {
-          this.dictionaries.push({ from, to });
-        }
-      }
-      // singular
-      for (let index = 0; index < functions.length; index++) {
-        const func = (
-          string: string,
-          options?: {
-            keepSpecialCharacters?: boolean;
-            keep?: string[];
-          }
-        ) => functions[index](camelCase(string), options);
-
-        const from = func(find, { keepSpecialCharacters: true });
-        const to = func(replace, { keepSpecialCharacters: true });
-        if (!this.dictionaries.find((d) => d.from === from)) {
-          this.dictionaries.push({ from, to });
-        }
-      }
-      this.logger.debug(`dictionaries: ${JSON.stringify(this.dictionaries)}`);
-    }
     let newText = text;
-    for (let index = 0; index < this.dictionaries.length; index++) {
-      const dictionary = this.dictionaries[index];
-      newText = newText.replace(
+    const functions =
+      mode === 'filepath'
+        ? [
+            //🥙 kebab-case
+            cases.includes('kebabCase') ? kebabCase : undefined,
+          ]
+        : [
+            // 🐪 camelCase
+            cases.includes('camelCase') ? camelCase : undefined,
+            // 🐫 PascalCase
+            cases.includes('pascalCase') ? pascalCase : undefined,
+            // 🐫 UpperCamelCase
+            cases.includes('upperCamelCase') ? upperCamelCase : undefined,
+            //🥙 kebab-case
+            cases.includes('kebabCase') ? kebabCase : undefined,
+            // 🐍 snake_case
+            cases.includes('snakeCase') ? snakeCase : undefined,
+            // 📣 CONSTANT_CASE
+            cases.includes('constantCase') ? constantCase : undefined,
+            // 🚂 Train-Case
+            cases.includes('trainCase') ? trainCase : undefined,
+            // 🕊 Ada_Case
+            cases.includes('adaCase') ? adaCase : undefined,
+            // 👔 COBOL-CASE
+            cases.includes('cobolCase') ? cobolCase : undefined,
+            // 📍 Dot.notation
+            cases.includes('dotNotation') ? dotNotation : undefined,
+            // 📂 Path/case
+            cases.includes('pathCase') ? pathCase : undefined,
+            // 🛰 Space case
+            cases.includes('spaceCase') ? spaceCase : undefined,
+            // 🏛 Capital Case
+            cases.includes('capitalCase') ? capitalCase : undefined,
+            // 🔡 lower case
+            cases.includes('lowerCase') ? lowerCase : undefined,
+            // 🔠 UPPER CASE
+            cases.includes('upperCase') ? upperCase : undefined,
+          ].filter(Boolean);
+    const resultReplacedTexts: { from: string; to: string }[] = [];
+    // plural
+    for (const item of functions) {
+      const func = (
+        string: string,
+        options?: {
+          keepSpecialCharacters?: boolean;
+          keep?: string[];
+        }
+      ) =>
+        mode === 'filepath'
+          ? item(string, options)
+          : item(camelCase(string), options);
+
+      const from = func(findPlural, { keepSpecialCharacters: true });
+      const to = func(replacePlural, { keepSpecialCharacters: true });
+
+      const replacedText = newText.replace(
         new RegExp(
           // eslint-disable-next-line no-useless-escape
-          dictionary.from.replace(/[-\/\\^$*+?.()|[\]{}]/g, '\\$&'),
+          from.replace(/[-\/\\^$*+?.()|[\]{}]/g, '\\$&'),
           'g'
         ),
-        dictionary.to
+        to
       );
+      if (newText !== replacedText) {
+        resultReplacedTexts.push({ from, to });
+      }
+      newText = replacedText;
     }
-    return newText;
+    // singular
+    for (const item of functions) {
+      const func = (
+        string: string,
+        options?: {
+          keepSpecialCharacters?: boolean;
+          keep?: string[];
+        }
+      ) =>
+        mode === 'filepath'
+          ? item(string, options)
+          : item(camelCase(string), options);
+
+      const from = func(find, { keepSpecialCharacters: true });
+      const to = func(replace, { keepSpecialCharacters: true });
+
+      const replacedText = newText.replace(
+        new RegExp(
+          // eslint-disable-next-line no-useless-escape
+          from.replace(/[-\/\\^$*+?.()|[\]{}]/g, '\\$&'),
+          'g'
+        ),
+        to
+      );
+      if (newText !== replacedText) {
+        resultReplacedTexts.push({ from, to });
+      }
+      newText = replacedText;
+    }
+    return { newText, resultReplacedTexts };
   }
 }
