@@ -2,6 +2,12 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [4.8.0](https://github.com/rucken/rucken/compare/v4.7.1...v4.8.0) (2024-03-29)
+
+### Features
+
+- **copy-paste:** add support correct replace long text with two or more words, when word for find include in replace options ([c8dbfa2](https://github.com/rucken/rucken/commit/c8dbfa2642f4bbff4633ac23c86ea1db716ce165))
+
 ### [4.7.1](https://github.com/rucken/rucken/compare/v4.7.0...v4.7.1) (2024-03-28)
 
 ### Bug Fixes
