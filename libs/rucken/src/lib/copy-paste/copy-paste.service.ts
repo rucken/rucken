@@ -16,6 +16,7 @@ import {
   upperCamelCase,
   upperCase,
 } from 'case-anything';
+import { createHash } from 'crypto';
 import { existsSync, mkdirSync, readFileSync, writeFileSync } from 'fs';
 import { getLogger, Logger } from 'log4js';
 import { basename, dirname, join, resolve, sep } from 'path';
@@ -23,7 +24,6 @@ import pluralize from 'pluralize';
 import recursive from 'recursive-readdir';
 import sortPaths from 'sort-paths';
 import { UtilsService } from '../utils/utils.service';
-import { createHash } from 'crypto';
 
 @Injectable()
 export class CopyPasteService {
@@ -135,6 +135,176 @@ export class CopyPasteService {
     let files = await recursive(path);
     files = sortPaths(files, sep);
 
+    allResultReplacedTexts = this.collectFilepaths(
+      files,
+      extensions,
+      path,
+      destPath,
+      find,
+      findPlural,
+      replace,
+      replacePlural,
+      cases,
+      allResultReplacedTexts
+    );
+
+    // replace content
+    for (const file of files) {
+      const fileExt = file.split('.').pop().toUpperCase();
+      if (extensions.includes(fileExt)) {
+        const { destFile } = this.getDestFile(
+          allResultReplacedTexts,
+          destPath,
+          file,
+          path,
+          find,
+          findPlural,
+          replace,
+          replacePlural,
+          cases
+        );
+
+        const content = readFileSync(file).toString();
+
+        const destContent = this.getDestContent(
+          content,
+          allResultReplacedTexts,
+          find,
+          findPlural,
+          replace,
+          replacePlural,
+          cases
+        );
+
+        if (file !== destFile) {
+          this.logger.log(
+            `${file}(${content.length}) => ${destFile}(${destContent.length})`
+          );
+          if (!existsSync(dirname(destFile))) {
+            mkdirSync(dirname(destFile), { recursive: true });
+          }
+          writeFileSync(destFile, destContent);
+        }
+      }
+    }
+  }
+
+  private getDestContent(
+    content: string,
+    allResultReplacedTexts: { from: string; to: string; toMd5?: string }[],
+    find: string,
+    findPlural: string,
+    replace: string,
+    replacePlural: string,
+    cases: string[]
+  ) {
+    let destContent = content;
+    // first we should replace all paths
+    for (const allResultReplacedText of allResultReplacedTexts) {
+      destContent = destContent.replace(
+        new RegExp(`${sep}${allResultReplacedText.from}`, 'g'),
+        `${sep}${allResultReplacedText.toMd5}`
+      );
+    }
+
+    // collect replace markers
+    const result = this.replace({
+      text: destContent,
+      find,
+      findPlural,
+      replace,
+      replacePlural,
+      cases,
+      mode: 'content',
+    });
+    destContent = result.newText;
+    const resultReplacedTexts = result.resultReplacedTexts;
+
+    // replace all markers to replaced text for paths
+    for (const allResultReplacedText of allResultReplacedTexts) {
+      destContent = destContent.replace(
+        new RegExp(`${sep}${allResultReplacedText.toMd5}`, 'g'),
+        `${sep}${allResultReplacedText.to}`
+      );
+    }
+    // replace all markers to replaced text for content
+    for (const allResultReplacedText of allResultReplacedTexts) {
+      destContent = destContent.replace(
+        new RegExp(allResultReplacedText.toMd5, 'g'),
+        allResultReplacedText.to
+      );
+    }
+    // replace markers to replaced text for content
+    for (const allResultReplacedText of resultReplacedTexts) {
+      destContent = destContent.replace(
+        new RegExp(allResultReplacedText.toMd5, 'g'),
+        allResultReplacedText.to
+      );
+    }
+    return destContent;
+  }
+
+  private getDestFile(
+    allResultReplacedTexts: { from: string; to: string; toMd5?: string }[],
+    destPath: string,
+    file: string,
+    path: string,
+    find: string,
+    findPlural: string,
+    replace: string,
+    replacePlural: string,
+    cases: string[]
+  ) {
+    for (const allResultReplacedText of allResultReplacedTexts) {
+      destPath = destPath.replace(
+        new RegExp(`${sep}${allResultReplacedText.from}`, 'g'),
+        `${sep}${allResultReplacedText.toMd5}`
+      );
+    }
+
+    const result = this.replace({
+      text: file.replace(path, destPath),
+      find,
+      findPlural,
+      replace,
+      replacePlural,
+      cases,
+      mode: 'filepath',
+    });
+    const filesResultReplacedTexts = result.resultReplacedTexts;
+    let destFile = result.newText;
+
+    for (const allResultReplacedText of allResultReplacedTexts) {
+      destPath = destPath.replace(
+        new RegExp(`${sep}${allResultReplacedText.toMd5}`, 'g'),
+        `${sep}${allResultReplacedText.to}`
+      );
+    }
+    for (const allResultReplacedText of filesResultReplacedTexts) {
+      destFile = destFile.replace(
+        new RegExp(allResultReplacedText.toMd5, 'g'),
+        allResultReplacedText.to
+      );
+    }
+    return { destFile };
+  }
+
+  private collectFilepaths(
+    files: string[],
+    extensions: string[],
+    path: string,
+    destPath: string,
+    find: string,
+    findPlural: string,
+    replace: string,
+    replacePlural: string,
+    cases: string[],
+    allResultReplacedTexts: {
+      from: string;
+      to: string;
+      toMd5?: string;
+    }[]
+  ) {
     for (const file of files) {
       const fileExt = file.split('.').pop().toUpperCase();
       if (extensions.includes(fileExt)) {
@@ -153,78 +323,7 @@ export class CopyPasteService {
         ];
       }
     }
-
-    // create md5 hash for replaced string
-    for (const allResultReplacedText of allResultReplacedTexts) {
-      allResultReplacedText.toMd5 = createHash('md5')
-        .update(allResultReplacedText.to)
-        .digest('hex');
-    }
-
-    // replace content
-    for (const file of files) {
-      const fileExt = file.split('.').pop().toUpperCase();
-      if (extensions.includes(fileExt)) {
-        for (const allResultReplacedText of allResultReplacedTexts) {
-          destPath = destPath.replace(
-            new RegExp(allResultReplacedText.from, 'g'),
-            allResultReplacedText.toMd5
-          );
-        }
-
-        const { newText: destFile } = this.replace({
-          text: file.replace(path, destPath),
-          find,
-          findPlural,
-          replace,
-          replacePlural,
-          cases,
-          mode: 'filepath',
-        });
-
-        for (const allResultReplacedText of allResultReplacedTexts) {
-          destPath = destPath.replace(
-            new RegExp(allResultReplacedText.toMd5, 'g'),
-            allResultReplacedText.to
-          );
-        }
-
-        let content = readFileSync(file).toString();
-        for (const allResultReplacedText of allResultReplacedTexts) {
-          content = content.replace(
-            new RegExp(`${sep}${allResultReplacedText.from}`, 'g'),
-            allResultReplacedText.toMd5
-          );
-        }
-
-        let { newText: destContent } = this.replace({
-          text: content,
-          find,
-          findPlural,
-          replace,
-          replacePlural,
-          cases,
-          mode: 'content',
-        });
-
-        for (const allResultReplacedText of allResultReplacedTexts) {
-          destContent = destContent.replace(
-            new RegExp(allResultReplacedText.toMd5, 'g'),
-            `${sep}${allResultReplacedText.to}`
-          );
-        }
-
-        if (file !== destFile) {
-          this.logger.log(
-            `${file}(${content.length}) => ${destFile}(${destContent.length})`
-          );
-          if (!existsSync(dirname(destFile))) {
-            mkdirSync(dirname(destFile), { recursive: true });
-          }
-          writeFileSync(destFile, destContent);
-        }
-      }
-    }
+    return allResultReplacedTexts;
   }
 
   replace({
@@ -283,7 +382,8 @@ export class CopyPasteService {
             // 🔠 UPPER CASE
             cases.includes('upperCase') ? upperCase : undefined,
           ].filter(Boolean);
-    const resultReplacedTexts: { from: string; to: string }[] = [];
+    const resultReplacedTexts: { from: string; to: string; toMd5: string }[] =
+      [];
     // plural
     for (const item of functions) {
       const func = (
@@ -299,6 +399,7 @@ export class CopyPasteService {
 
       const from = func(findPlural, { keepSpecialCharacters: true });
       const to = func(replacePlural, { keepSpecialCharacters: true });
+      const toMd5 = createHash('md5').update(to).digest('hex');
 
       const replacedText = newText.replace(
         new RegExp(
@@ -306,10 +407,10 @@ export class CopyPasteService {
           from.replace(/[-\/\\^$*+?.()|[\]{}]/g, '\\$&'),
           'g'
         ),
-        to
+        toMd5
       );
       if (newText !== replacedText) {
-        resultReplacedTexts.push({ from, to });
+        resultReplacedTexts.push({ from, to, toMd5 });
       }
       newText = replacedText;
     }
@@ -328,6 +429,7 @@ export class CopyPasteService {
 
       const from = func(find, { keepSpecialCharacters: true });
       const to = func(replace, { keepSpecialCharacters: true });
+      const toMd5 = createHash('md5').update(to).digest('hex');
 
       const replacedText = newText.replace(
         new RegExp(
@@ -335,10 +437,10 @@ export class CopyPasteService {
           from.replace(/[-\/\\^$*+?.()|[\]{}]/g, '\\$&'),
           'g'
         ),
-        to
+        toMd5
       );
       if (newText !== replacedText) {
-        resultReplacedTexts.push({ from, to });
+        resultReplacedTexts.push({ from, to, toMd5 });
       }
       newText = replacedText;
     }

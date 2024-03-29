@@ -38,6 +38,7 @@ npm run rucken -- prepare --locales=en,ru --default-locale=en
 npm run rucken -- copy-paste --find=server-user --replace=server-company --path=./libs/feature --dest-path=/test
 npm run rucken -- copy-paste --find=server-user --replace=server-company --path=./libs/feature
 npm run rucken -- copy-paste --find=admin --replace=my-company --path=./libs/feature
+npm run rucken -- copy-paste --find=new --replace=new-user --path=./libs/feature/server-duplicate
 tsc --noEmit -p tsconfig.base.json
 npm run nx -- run-many --target=build --all
 
