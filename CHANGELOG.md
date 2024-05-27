@@ -2,6 +2,12 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [4.8.1](https://github.com/rucken/rucken/compare/v4.8.0...v4.8.1) (2024-05-27)
+
+### Bug Fixes
+
+- updates for correct work copy-paste and make-ts-list on Windows ([2e44b56](https://github.com/rucken/rucken/commit/2e44b56c4f3fc218034cc6b995ddaa234d3e1ef0))
+
 ## [4.8.0](https://github.com/rucken/rucken/compare/v4.7.1...v4.8.0) (2024-03-29)
 
 ### Features
