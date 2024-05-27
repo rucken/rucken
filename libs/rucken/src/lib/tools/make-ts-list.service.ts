@@ -76,7 +76,7 @@ export class MakeTsListService {
     files = sortPaths(files, sep);
     const list: string[] = [];
     for (let findex = 0; findex < files.length; findex++) {
-      const file = files[findex];
+      const file = files[findex].split(sep).join('/');
       let localFile = replaceExt(
         file.replace(path, '').replace(new RegExp(`\\${sep}`, 'g'), '/'),
         ''

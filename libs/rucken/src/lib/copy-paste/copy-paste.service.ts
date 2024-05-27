@@ -149,7 +149,8 @@ export class CopyPasteService {
     );
 
     // replace content
-    for (const file of files) {
+    for (let file of files) {
+      file = file.split(sep).join('/');
       const fileExt = file.split('.').pop().toUpperCase();
       if (extensions.includes(fileExt)) {
         const { destFile } = this.getDestFile(
@@ -305,7 +306,8 @@ export class CopyPasteService {
       toMd5?: string;
     }[]
   ) {
-    for (const file of files) {
+    for (let file of files) {
+      file = file.split(sep).join('/');
       const fileExt = file.split('.').pop().toUpperCase();
       if (extensions.includes(fileExt)) {
         const { resultReplacedTexts } = this.replace({
