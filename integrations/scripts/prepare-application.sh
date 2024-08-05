@@ -39,6 +39,7 @@ npm run rucken -- copy-paste --find=server-user --replace=server-company --path=
 npm run rucken -- copy-paste --find=server-user --replace=server-company --path=./libs/feature
 npm run rucken -- copy-paste --find=admin --replace=my-company --path=./libs/feature
 npm run rucken -- copy-paste --find=new --replace=new-user --path=./libs/feature/server-duplicate
+npm run rucken -- copy-paste --find=README --replace=README --path=./libs/copy-paste-glob --dest-path=./libs/copy-paste-glob-new --glob-rules=**/README.md --extensions=MD
 tsc --noEmit -p tsconfig.base.json
 npm run nx -- run-many --target=build --all
 

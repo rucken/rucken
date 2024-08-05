@@ -57,8 +57,10 @@ Usage: rucken extract-i18n [options]
 translate marker extractor (use: transloco-keys-manager + transloco-scoped-libs)
 
 Options:
-  -l,--locales [strings]  list of available languages (example: ru,en)
-  -h, --help              display help for command
+  -l,--locales [strings]                    list of available languages (example: ru,en)
+  -rut,--reset-unused-translates [boolean]  remove all translates if they not found in source code (default: true)
+                                            (default: "true")
+  -h, --help                                display help for command
 ```
 
 ## gettext - translate marker extractor
@@ -102,12 +104,15 @@ Usage: rucken postgres [options]
 postgres application database creator
 
 Options:
-  -r,--root-database-url [strings]  database url for connect as root user (example:
-                                    postgres://ROOT_POSTGRES_USER:ROOT_POSTGRES_PASSWORD@localhost:POSTGRES_PORT/postgres?schema=public)
-  -a,--app-database-url [strings]   application database url used for create new database (example:
-                                    postgres://POSTGRES_USER:POSTGRES_PASSWORD@localhost:POSTGRES_PORT/POSTGRES_DATABASE?schema=public)
-  -d,--drop-app-database [boolean]  drop application database before try create it (default: false)
-  -h, --help                        display help for command
+  -r,--root-database-url [strings]       database url for connect as root user (example:
+                                         postgres://ROOT_POSTGRES_USER:ROOT_POSTGRES_PASSWORD@localhost:POSTGRES_PORT/postgres?schema=public)
+  -a,--app-database-url [strings]        application database url used for create new database (example:
+                                         postgres://POSTGRES_USER:POSTGRES_PASSWORD@localhost:POSTGRES_PORT/POSTGRES_DATABASE?schema=public)
+  -fu,--force-change-username [boolean]  force rename username if one exists in database for app-database-url
+                                         excluding root (default: false)
+  -fp,--force-change-password [boolean]  force change password of specified app-database-url (default: false)
+  -d,--drop-app-database [boolean]       drop application database before try create it (default: false)
+  -h, --help                             display help for command
 ```
 
 ## env-replacer - recursive replace input value with process environment values
@@ -133,15 +138,19 @@ Usage: rucken copy-paste|cp [options]
 copy paste source files to destination with singular and plural replace text in file contents and file paths
 
 Options:
-  -p,--path [strings]             the path with the source code to copy, it uses the current CWD if it is not defined, default: "." (example: ../../src)
+  -p,--path [strings]             the path with the source code to copy, it uses the current CWD if it is not
+                                  defined, default: "." (example: ../../src)
   -f,--find [strings]             source singular text in kebab-case (example: user-role)
-  -fp,--find-plural [strings]     source text in plural in kebab-case, if not defined, it will be automatically detected programmatically (example:
-                                  user-rules)
+  -fp,--find-plural [strings]     source text in plural in kebab-case, if not defined, it will be automatically
+                                  detected programmatically (example: user-rules)
   -r,--replace [strings]          destination singular text in kebab-case (example: user-company)
-  -rp,--replace-plural [strings]  destination text in plural in kebab-case, if not defined, it will be automatically detected programmatically (example:
-                                  user-companies)
-  -d,--dest-path [strings]        the path with the destination code to paste, it uses the "path" if it is not defined, default: "." (example: ../../src)
-  -e,--extensions [strings]       extensions of files for copy paste, default: "ts,html,htm,scss,css,txt,json,yaml,yml,xml" (example: py,ini)
+  -rp,--replace-plural [strings]  destination text in plural in kebab-case, if not defined, it will be automatically
+                                  detected programmatically (example: user-companies)
+  -d,--dest-path [strings]        the path with the destination code to paste, it uses the "path" if it is not
+                                  defined, default: "." (example: ../../src)
+  -e,--extensions [strings]       extensions of files for copy paste, default:
+                                  "ts,html,htm,scss,css,txt,json,yaml,yml,xml" (example: py,ini)
+  -gr,--glob-rules [strings]      match files using the patterns the shell uses
   -h, --help                      display help for command
 ```
 

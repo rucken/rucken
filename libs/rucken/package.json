@@ -45,6 +45,7 @@
         "rucken": "./src/main.js"
     },
     "dependencies": {
+        "glob": "11.0.0",
         "tslib": "2.0.0",
         "log4js": "6.6.1",
         "@nestjs/common": "^9",

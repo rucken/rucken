@@ -56,6 +56,10 @@ export class CopyPasteCommands {
         description:
           'extensions of files for copy paste, default: "ts,html,htm,scss,css,txt,json,yaml,yml,xml" (example: py,ini)',
       },
+      {
+        flags: '-gr,--glob-rules [strings]',
+        description: 'match files using the patterns the shell uses',
+      },
     ],
   })
   async copyPaste({
@@ -66,6 +70,7 @@ export class CopyPasteCommands {
     replacePlural,
     destPath,
     extensions,
+    globRules,
   }: {
     path?: string;
     find: string;
@@ -74,6 +79,7 @@ export class CopyPasteCommands {
     replacePlural?: string;
     destPath?: string;
     extensions?: string;
+    globRules?: string;
   }) {
     this.copyPasteService.setLogger(CopyPasteService.title);
     await this.copyPasteService.copyPasteHandler({
@@ -87,6 +93,7 @@ export class CopyPasteCommands {
         .split(',')
         .map((s) => s.trim()),
       cases: this.config.cases,
+      globRules,
     });
   }
 }

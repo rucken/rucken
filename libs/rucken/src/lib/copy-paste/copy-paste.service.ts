@@ -24,6 +24,7 @@ import pluralize from 'pluralize';
 import recursive from 'recursive-readdir';
 import sortPaths from 'sort-paths';
 import { UtilsService } from '../utils/utils.service';
+import { glob } from 'glob';
 
 @Injectable()
 export class CopyPasteService {
@@ -45,6 +46,7 @@ export class CopyPasteService {
     destPath,
     extensions,
     cases,
+    globRules,
   }: {
     path?: string;
     find: string;
@@ -54,6 +56,7 @@ export class CopyPasteService {
     destPath?: string;
     extensions: string[];
     cases: string[];
+    globRules?: string;
   }) {
     this.logger.info('Start copy past files...');
     this.logger.debug(
@@ -66,6 +69,7 @@ export class CopyPasteService {
         destPath,
         extensions,
         cases,
+        globRules,
       })}`
     );
 
@@ -78,6 +82,7 @@ export class CopyPasteService {
       destPath,
       extensions,
       cases,
+      globRules,
     });
 
     this.logger.info('End of copy paste files...');
@@ -92,6 +97,7 @@ export class CopyPasteService {
     destPath,
     extensions,
     cases,
+    globRules,
   }: {
     path?: string;
     find: string;
@@ -101,6 +107,7 @@ export class CopyPasteService {
     destPath?: string;
     extensions: string[];
     cases: string[];
+    globRules?: string;
   }) {
     if (!findPlural) {
       findPlural = pluralize(find);
@@ -117,8 +124,16 @@ export class CopyPasteService {
       if (destPath && destPath[0] === sep && path[0] !== sep) {
         destPath = resolve(join(dirname(path), basename(destPath)));
       } else {
-        if (!destPath || !existsSync(resolve(destPath))) {
-          destPath = resolve(path);
+        if (
+          destPath?.startsWith('.') &&
+          dirname(destPath) == dirname(path) &&
+          destPath !== path
+        ) {
+          destPath = resolve(destPath);
+        } else {
+          if (!destPath || !existsSync(resolve(destPath))) {
+            destPath = resolve(path);
+          }
         }
       }
     }
@@ -132,7 +147,9 @@ export class CopyPasteService {
     }[] = [];
 
     // collect all filepaths
-    let files = await recursive(path);
+    let files = globRules
+      ? await glob(join(path, globRules))
+      : await recursive(path);
     files = sortPaths(files, sep);
 
     allResultReplacedTexts = this.collectFilepaths(

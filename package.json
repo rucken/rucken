@@ -98,6 +98,7 @@
     "typescript": "4.7.4"
   },
   "dependencies": {
+    "glob": "11.0.0",
     "@nestjs/common": "^9",
     "@nestjs/core": "^9",
     "@rjaros/po2json": "1.0.0-beta-4",
