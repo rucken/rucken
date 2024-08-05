@@ -2,6 +2,12 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [4.9.1](https://github.com/rucken/rucken/compare/v4.9.0...v4.9.1) (2024-08-05)
+
+### Bug Fixes
+
+- **copy-paste:** add support \* for any extensions ([e3a6457](https://github.com/rucken/rucken/commit/e3a6457b0f3d597ce1b9f5c6d5405f07ccf0b881))
+
 ## [4.9.0](https://github.com/rucken/rucken/compare/v4.8.1...v4.9.0) (2024-08-05)
 
 ### Features
