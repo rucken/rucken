@@ -169,7 +169,7 @@ export class CopyPasteService {
     for (let file of files) {
       file = file.split(sep).join('/');
       const fileExt = file.split('.').pop().toUpperCase();
-      if (extensions.includes(fileExt)) {
+      if (extensions[0] === '*' || extensions.includes(fileExt)) {
         const { destFile } = this.getDestFile(
           allResultReplacedTexts,
           destPath,
@@ -326,7 +326,7 @@ export class CopyPasteService {
     for (let file of files) {
       file = file.split(sep).join('/');
       const fileExt = file.split('.').pop().toUpperCase();
-      if (extensions.includes(fileExt)) {
+      if (extensions[0] === '*' || extensions.includes(fileExt)) {
         const { resultReplacedTexts } = this.replace({
           text: file.replace(path, destPath),
           find,
