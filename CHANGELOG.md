@@ -2,6 +2,12 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [4.9.0](https://github.com/rucken/rucken/compare/v4.8.1...v4.9.0) (2024-08-05)
+
+### Features
+
+- **copy-paste:** add glob-rules options for ([560165f](https://github.com/rucken/rucken/commit/560165f38fce624d2c258922498df7a6842417d0))
+
 ### [4.8.1](https://github.com/rucken/rucken/compare/v4.8.0...v4.8.1) (2024-05-27)
 
 ### Bug Fixes
