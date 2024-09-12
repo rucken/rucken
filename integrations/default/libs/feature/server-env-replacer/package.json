@@ -1,5 +1,5 @@
 {
-  "name": "@app/feature-server-duplicate",
+  "name": "@app/server-env-replacer",
   "version": "1.0.0",
   "dependencies": {
     "rxjs": "1.0.0"
