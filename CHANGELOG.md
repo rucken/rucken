@@ -2,6 +2,12 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [4.10.4](https://github.com/rucken/rucken/compare/v4.10.3...v4.10.4) (2024-09-12)
+
+### Bug Fixes
+
+- add support replace in other case, not only kebab in file path ([#22](https://github.com/rucken/rucken/issues/22)) ([c1bffdb](https://github.com/rucken/rucken/commit/c1bffdbdee17b13833077a1ecfb4829975e5a35c))
+
 ### [4.10.3](https://github.com/rucken/rucken/compare/v4.10.2...v4.10.3) (2024-09-12)
 
 ### Bug Fixes
