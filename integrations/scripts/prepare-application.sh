@@ -48,7 +48,6 @@ npm run rucken -- copy-paste --find=README --replace=README --path=./libs/copy-p
 
 export APP_VERSION='42'
 npm run rucken -- copy-paste --find=new --replace=new1-user --path=./libs/feature/server-env-replacer --replace-envs=true
-npm run rucken -- copy-paste --find=new --replace=new2-user --path=./libs/feature/server-env-replacer --replace-envs=\$\{key\}
 
 tsc --noEmit -p tsconfig.base.json
 npm run nx -- run-many --target=build --all
