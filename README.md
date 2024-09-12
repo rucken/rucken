@@ -147,7 +147,7 @@ Options:
   -d,--dest-path [strings]        the path with the destination code to paste, it uses the "path" if it is not defined, default: "." (example: ../../src)
   -e,--extensions [strings]       extensions of files for copy paste, default: "ts,html,htm,scss,css,txt,json,yaml,yml,xml,js.esm,sh" (example: py,ini)
   -gr,--glob-rules [strings]      match files using the patterns the shell uses
-  -er,--env-replacer [strings]    do you need to replace environment variables when copying, you can specify a template, the default template is %key%
+  -re,--replace-envs [strings]    do you need to replace environment variables when copying, you can specify a template, the default template is %key%
                                   (examples: "true", "%key%", "${key}")
   -h, --help                      display help for command
 ```

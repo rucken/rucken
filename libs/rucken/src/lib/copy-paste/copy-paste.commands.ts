@@ -61,7 +61,7 @@ export class CopyPasteCommands {
         description: 'match files using the patterns the shell uses',
       },
       {
-        flags: '-er,--env-replacer [strings]',
+        flags: '-re,--replace-envs [strings]',
         description:
           'do you need to replace environment variables when copying, you can specify a template, the default template is %key% (examples: "true", "%key%", "${key}")',
       },
@@ -76,7 +76,7 @@ export class CopyPasteCommands {
     destPath,
     extensions,
     globRules,
-    envReplacer,
+    replaceEnvs,
   }: {
     path?: string;
     find: string;
@@ -86,7 +86,7 @@ export class CopyPasteCommands {
     destPath?: string;
     extensions?: string;
     globRules?: string;
-    envReplacer?: string;
+    replaceEnvs?: string;
   }) {
     this.copyPasteService.setLogger(CopyPasteService.title);
     await this.copyPasteService.copyPasteHandler({
@@ -101,10 +101,10 @@ export class CopyPasteCommands {
         .map((s) => s.trim()),
       cases: this.config.cases,
       globRules,
-      envReplacer: envReplacer
-        ? envReplacer.includes('key')
-          ? envReplacer
-          : this.config.envReplacerKeyPattern
+      replaceEnvs: replaceEnvs
+        ? replaceEnvs.includes('key')
+          ? replaceEnvs
+          : this.config.replaceEnvsKeyPattern
         : undefined,
     });
   }

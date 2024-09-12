@@ -49,7 +49,7 @@ export class CopyPasteService {
     extensions,
     cases,
     globRules,
-    envReplacer,
+    replaceEnvs,
   }: {
     path?: string;
     find: string;
@@ -60,7 +60,7 @@ export class CopyPasteService {
     extensions: string[];
     cases: string[];
     globRules?: string;
-    envReplacer?: string;
+    replaceEnvs?: string;
   }) {
     this.logger.info('Start copy past files...');
     this.logger.debug(
@@ -74,7 +74,7 @@ export class CopyPasteService {
         extensions,
         cases,
         globRules,
-        envReplacer,
+        replaceEnvs,
       })}`
     );
 
@@ -88,7 +88,7 @@ export class CopyPasteService {
       extensions,
       cases,
       globRules,
-      envReplacer,
+      replaceEnvs,
     });
 
     this.logger.info('End of copy paste files...');
@@ -104,7 +104,7 @@ export class CopyPasteService {
     extensions,
     cases,
     globRules,
-    envReplacer,
+    replaceEnvs,
   }: {
     path?: string;
     find: string;
@@ -115,7 +115,7 @@ export class CopyPasteService {
     extensions: string[];
     cases: string[];
     globRules?: string;
-    envReplacer?: string;
+    replaceEnvs?: string;
   }) {
     if (!findPlural) {
       findPlural = pluralize(find);
@@ -203,10 +203,10 @@ export class CopyPasteService {
         );
 
         console.log(process.env);
-        console.log({ envReplacer });
-        if (envReplacer) {
+        console.log({ replaceEnvs });
+        if (replaceEnvs) {
           const findStrings = Object.entries(process.env).map(([key]) =>
-            envReplacer.replace('key', key)
+            replaceEnvs.replace('key', key)
           );
           const replaceStrings = Object.entries(process.env).map(
             ([key, value]) => this.utilsService.replaceEnv(value)
