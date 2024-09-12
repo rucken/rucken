@@ -2,6 +2,12 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [4.10.0](https://github.com/rucken/rucken/compare/v4.9.1...v4.10.0) (2024-09-12)
+
+### Features
+
+- added the ability to replace environment variables when running the "copy-paste" command ([2f4649c](https://github.com/rucken/rucken/commit/2f4649c59a1246e43256fa1361c83077a4570443))
+
 ### [4.9.1](https://github.com/rucken/rucken/compare/v4.9.0...v4.9.1) (2024-08-05)
 
 ### Bug Fixes
