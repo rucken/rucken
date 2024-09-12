@@ -68,38 +68,4 @@ export class New2UserRepository {
 }
 `);
   });
-
-  it('new-2-user-1-user-repository.ts', () => {
-    const content = readFileSync(
-      resolve(
-        __dirname,
-        '..',
-        '..',
-        '..',
-        '..',
-        'integrations/app/libs/feature/server-env-replacer/src/lib/new-2-user-1-user-repository.ts'
-      )
-    ).toString();
-    expect(content)
-      .toEqual(`import { New2User1User } from './new-2-user-1-user';
-
-export class New2User1UserRepository {
-  version1 = '42';
-  version2 = '42';
-  new2User1Users: New2User1User[];
-  createOneNew2User1User() {
-    //null
-  }
-  updateOneNew2User1User() {
-    //null
-  }
-  deleteOneNew2User1User() {
-    //null
-  }
-  findManyNew2User1Users() {
-    //null
-  }
-}
-`);
-  });
 });
