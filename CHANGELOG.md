@@ -2,6 +2,12 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [4.10.2](https://github.com/rucken/rucken/compare/v4.10.1...v4.10.2) (2024-09-12)
+
+### Bug Fixes
+
+- update fixture for tests ([a9bfc2d](https://github.com/rucken/rucken/commit/a9bfc2d56f76978bd8edfee2b50d496f8093bd7c))
+
 ### [4.10.1](https://github.com/rucken/rucken/compare/v4.10.0...v4.10.1) (2024-09-12)
 
 ## [4.10.0](https://github.com/rucken/rucken/compare/v4.9.1...v4.10.0) (2024-09-12)
