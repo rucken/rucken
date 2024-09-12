@@ -49,6 +49,9 @@ npm run rucken -- copy-paste --find=README --replace=README --path=./libs/copy-p
 export APP_VERSION='42'
 npm run rucken -- copy-paste --find=new --replace=new1-user --path=./libs/feature/server-env-replacer --replace-envs=true
 
+export START_ENV_VARIABLE="examples:"
+npm run rucken -- copy-paste --find=cat-dog --replace=human-ufo --path=./libs/cat-dog --replace-envs=true
+
 tsc --noEmit -p tsconfig.base.json
 npm run nx -- run-many --target=build --all
 
