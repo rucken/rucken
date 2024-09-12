@@ -32,6 +32,8 @@ export class CopyPasteService {
 
   private logger: Logger;
 
+  constructor(private readonly utilsService: UtilsService) {}
+
   setLogger(command: string): void {
     this.logger = getLogger(command);
     this.logger.level = UtilsService.logLevel();
@@ -47,6 +49,7 @@ export class CopyPasteService {
     extensions,
     cases,
     globRules,
+    envReplacer,
   }: {
     path?: string;
     find: string;
@@ -57,6 +60,7 @@ export class CopyPasteService {
     extensions: string[];
     cases: string[];
     globRules?: string;
+    envReplacer?: string;
   }) {
     this.logger.info('Start copy past files...');
     this.logger.debug(
@@ -70,6 +74,7 @@ export class CopyPasteService {
         extensions,
         cases,
         globRules,
+        envReplacer,
       })}`
     );
 
@@ -83,6 +88,7 @@ export class CopyPasteService {
       extensions,
       cases,
       globRules,
+      envReplacer,
     });
 
     this.logger.info('End of copy paste files...');
@@ -98,6 +104,7 @@ export class CopyPasteService {
     extensions,
     cases,
     globRules,
+    envReplacer,
   }: {
     path?: string;
     find: string;
@@ -108,6 +115,7 @@ export class CopyPasteService {
     extensions: string[];
     cases: string[];
     globRules?: string;
+    envReplacer?: string;
   }) {
     if (!findPlural) {
       findPlural = pluralize(find);
@@ -170,7 +178,7 @@ export class CopyPasteService {
       file = file.split(sep).join('/');
       const fileExt = file.split('.').pop().toUpperCase();
       if (extensions[0] === '*' || extensions.includes(fileExt)) {
-        const { destFile } = this.getDestFile(
+        let { destFile } = this.getDestFile(
           allResultReplacedTexts,
           destPath,
           file,
@@ -184,7 +192,7 @@ export class CopyPasteService {
 
         const content = readFileSync(file).toString();
 
-        const destContent = this.getDestContent(
+        let destContent = this.getDestContent(
           content,
           allResultReplacedTexts,
           find,
@@ -193,6 +201,22 @@ export class CopyPasteService {
           replacePlural,
           cases
         );
+
+        if (envReplacer) {
+          const findStrings = Object.entries(process.env).map(([key]) =>
+            envReplacer.replace('key', key)
+          );
+          const replaceStrings = Object.entries(process.env).map(
+            ([key, value]) => this.utilsService.replaceEnv(value)
+          );
+
+          for (let index = 0; index < findStrings.length; index++) {
+            const findString = findStrings[index];
+            const replaceString = replaceStrings[index];
+            destFile = destFile.split(findString).join(replaceString);
+            destContent = destContent.split(findString).join(replaceString);
+          }
+        }
 
         if (file !== destFile) {
           this.logger.log(

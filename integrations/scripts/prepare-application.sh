@@ -30,16 +30,26 @@ npm i --force
 npm install --save class-validator-multi-lang --force
 npm install --save-dev ./lib/rucken-0.0.0.tgz @ngneat/transloco-keys-manager --force
 npm run nx -- format
+
 npm run rucken -- make-ts-list
+
 npm run rucken -- version-updater
+
 npm run rucken -- translate --locales=en,ru --default-locale=en
+
 npm run rucken -- prepare --locales=en,ru --default-locale=en
 npm run rucken -- prepare --locales=en,ru --default-locale=en
+
 npm run rucken -- copy-paste --find=server-user --replace=server-company --path=./libs/feature --dest-path=/test
 npm run rucken -- copy-paste --find=server-user --replace=server-company --path=./libs/feature
 npm run rucken -- copy-paste --find=admin --replace=my-company --path=./libs/feature
 npm run rucken -- copy-paste --find=new --replace=new-user --path=./libs/feature/server-duplicate
 npm run rucken -- copy-paste --find=README --replace=README --path=./libs/copy-paste-glob --dest-path=./libs/copy-paste-glob-new --glob-rules=**/README.md --extensions=MD
+
+export APP_VERSION='42'
+npm run rucken -- copy-paste --find=new --replace=new1-user --path=./libs/feature/server-env-replacer --env-replacer=true
+npm run rucken -- copy-paste --find=new --replace=new2-user --path=./libs/feature/server-env-replacer --env-replacer=$\{key\}
+
 tsc --noEmit -p tsconfig.base.json
 npm run nx -- run-many --target=build --all
 

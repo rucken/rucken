@@ -54,11 +54,16 @@ export class CopyPasteCommands {
       {
         flags: '-e,--extensions [strings]',
         description:
-          'extensions of files for copy paste, default: "ts,html,htm,scss,css,txt,json,yaml,yml,xml" (example: py,ini)',
+          'extensions of files for copy paste, default: "ts,html,htm,scss,css,txt,json,yaml,yml,xml,js.esm,sh" (example: py,ini)',
       },
       {
         flags: '-gr,--glob-rules [strings]',
         description: 'match files using the patterns the shell uses',
+      },
+      {
+        flags: '-er,--env-replacer [strings]',
+        description:
+          'do you need to replace environment variables when copying, you can specify a template, the default template is %key% (examples: "true", "%key%", "${key}")',
       },
     ],
   })
@@ -71,6 +76,7 @@ export class CopyPasteCommands {
     destPath,
     extensions,
     globRules,
+    envReplacer,
   }: {
     path?: string;
     find: string;
@@ -80,6 +86,7 @@ export class CopyPasteCommands {
     destPath?: string;
     extensions?: string;
     globRules?: string;
+    envReplacer?: string;
   }) {
     this.copyPasteService.setLogger(CopyPasteService.title);
     await this.copyPasteService.copyPasteHandler({
@@ -94,6 +101,11 @@ export class CopyPasteCommands {
         .map((s) => s.trim()),
       cases: this.config.cases,
       globRules,
+      envReplacer: envReplacer
+        ? envReplacer.includes('key')
+          ? envReplacer
+          : this.config.envReplacerKeyPattern
+        : undefined,
     });
   }
 }

@@ -138,19 +138,17 @@ Usage: rucken copy-paste|cp [options]
 copy paste source files to destination with singular and plural replace text in file contents and file paths
 
 Options:
-  -p,--path [strings]             the path with the source code to copy, it uses the current CWD if it is not
-                                  defined, default: "." (example: ../../src)
+  -p,--path [strings]             the path with the source code to copy, it uses the current CWD if it is not defined, default: "." (example: ../../src)
   -f,--find [strings]             source singular text in kebab-case (example: user-role)
-  -fp,--find-plural [strings]     source text in plural in kebab-case, if not defined, it will be automatically
-                                  detected programmatically (example: user-rules)
+  -fp,--find-plural [strings]     source text in plural in kebab-case, if not defined, it will be automatically detected programmatically (example: user-rules)
   -r,--replace [strings]          destination singular text in kebab-case (example: user-company)
-  -rp,--replace-plural [strings]  destination text in plural in kebab-case, if not defined, it will be automatically
-                                  detected programmatically (example: user-companies)
-  -d,--dest-path [strings]        the path with the destination code to paste, it uses the "path" if it is not
-                                  defined, default: "." (example: ../../src)
-  -e,--extensions [strings]       extensions of files for copy paste, default:
-                                  "ts,html,htm,scss,css,txt,json,yaml,yml,xml" (example: py,ini)
+  -rp,--replace-plural [strings]  destination text in plural in kebab-case, if not defined, it will be automatically detected programmatically (example:
+                                  user-companies)
+  -d,--dest-path [strings]        the path with the destination code to paste, it uses the "path" if it is not defined, default: "." (example: ../../src)
+  -e,--extensions [strings]       extensions of files for copy paste, default: "ts,html,htm,scss,css,txt,json,yaml,yml,xml,js.esm,sh" (example: py,ini)
   -gr,--glob-rules [strings]      match files using the patterns the shell uses
+  -er,--env-replacer [strings]    do you need to replace environment variables when copying, you can specify a template, the default template is %key%
+                                  (examples: "true", "%key%", "${key}")
   -h, --help                      display help for command
 ```
 

@@ -2,12 +2,13 @@ export interface CopyPasteConfig {
   copyPaste: {
     extensions: string;
     cases: string[];
+    envReplacerKeyPattern: string;
   };
 }
 
 export const DEFAULT_COPY_PASTE_CONFIG: CopyPasteConfig = {
   copyPaste: {
-    extensions: 'ts,html,htm,scss,css,txt,json,yaml,yml,xml',
+    extensions: 'ts,html,htm,scss,css,txt,json,yaml,yml,xml,js.esm,sh',
     cases: [
       // 🐪 camelCase
       'camelCase',
@@ -40,5 +41,6 @@ export const DEFAULT_COPY_PASTE_CONFIG: CopyPasteConfig = {
       // 🔠 UPPER CASE
       'upperCase',
     ],
+    envReplacerKeyPattern: '%key%',
   },
 };

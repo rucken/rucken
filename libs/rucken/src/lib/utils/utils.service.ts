@@ -135,7 +135,11 @@ export class UtilsService {
       .replace('-ms', '');
   }
 
-  replaceEnv(command: string | undefined, depth = 10): string {
+  replaceEnv(
+    command: string | undefined,
+    envReplacerKeyPattern = '$key',
+    depth = 10
+  ): string {
     if (!command) {
       return command;
     }
@@ -149,11 +153,15 @@ export class UtilsService {
           .join('<br/>')
           .split(`\${${key}}`)
           .join(process.env[key])
-          .split(`$${key}`)
+          .split(envReplacerKeyPattern.replace('key', key))
           .join(process.env[key]))
     );
     if (command !== newCommand && newCommand.includes('$') && depth > 0) {
-      newCommand = this.replaceEnv(newCommand, depth - 1);
+      newCommand = this.replaceEnv(
+        newCommand,
+        envReplacerKeyPattern,
+        depth - 1
+      );
     }
     return newCommand || '';
   }
