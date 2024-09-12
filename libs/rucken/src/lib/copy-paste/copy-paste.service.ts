@@ -202,6 +202,8 @@ export class CopyPasteService {
           cases
         );
 
+        console.log(process.env);
+        console.log({ envReplacer });
         if (envReplacer) {
           const findStrings = Object.entries(process.env).map(([key]) =>
             envReplacer.replace('key', key)
