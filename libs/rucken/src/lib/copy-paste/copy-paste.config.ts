@@ -2,7 +2,7 @@ export interface CopyPasteConfig {
   copyPaste: {
     extensions: string;
     cases: string[];
-    envReplacerKeyPattern: string;
+    replaceEnvsKeyPattern: string;
   };
 }
 
@@ -41,6 +41,6 @@ export const DEFAULT_COPY_PASTE_CONFIG: CopyPasteConfig = {
       // 🔠 UPPER CASE
       'upperCase',
     ],
-    envReplacerKeyPattern: '%key%',
+    replaceEnvsKeyPattern: '%key%',
   },
 };

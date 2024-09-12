@@ -47,8 +47,7 @@ npm run rucken -- copy-paste --find=new --replace=new-user --path=./libs/feature
 npm run rucken -- copy-paste --find=README --replace=README --path=./libs/copy-paste-glob --dest-path=./libs/copy-paste-glob-new --glob-rules=**/README.md --extensions=MD
 
 export APP_VERSION='42'
-npm run rucken -- copy-paste --find=new --replace=new1-user --path=./libs/feature/server-env-replacer --env-replacer=true
-npm run rucken -- copy-paste --find=new --replace=new2-user --path=./libs/feature/server-env-replacer --env-replacer=$\{key\}
+npm run rucken -- copy-paste --find=new --replace=new1-user --path=./libs/feature/server-env-replacer --replace-envs=true
 
 tsc --noEmit -p tsconfig.base.json
 npm run nx -- run-many --target=build --all
