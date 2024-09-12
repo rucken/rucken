@@ -1,0 +1,24 @@
+%START_ENV_VARIABLE%
+catDog
+CatDogg
+cat-dog
+cat_dog
+CAT_DOG
+Cat-Dog
+Cat_Dog
+CAT-DOG
+cat Dog
+Cat Dog
+cat dog
+CAT DOG
+catDogs
+CatDogss
+cat-dogs
+cat_dogs
+CAT_DOGS
+Cat-Dogs
+Cat_Dogs
+CAT-DOGS
+cat Dogs
+Cat Dogs
+cat dog

@@ -321,6 +321,10 @@ export class CopyPasteService {
         new RegExp(`${sep}${allResultReplacedText.toMd5}`, 'g'),
         `${sep}${allResultReplacedText.to}`
       );
+      destFile = destFile.replace(
+        new RegExp(allResultReplacedText.toMd5, 'g'),
+        allResultReplacedText.to
+      );
     }
     for (const allResultReplacedText of filesResultReplacedTexts) {
       destFile = destFile.replace(
@@ -392,7 +396,35 @@ export class CopyPasteService {
         ? [
             //🥙 kebab-case
             cases.includes('kebabCase') ? kebabCase : undefined,
-          ]
+            // 🐫 UpperCamelCase
+            cases.includes('upperCamelCase') ? upperCamelCase : undefined,
+            // 🐍 snake_case
+            cases.includes('snakeCase') ? snakeCase : undefined,
+            // 🐪 camelCase
+            cases.includes('camelCase') ? camelCase : undefined,
+            // 🐫 PascalCase
+            cases.includes('pascalCase') ? pascalCase : undefined,
+            // 📣 CONSTANT_CASE
+            cases.includes('constantCase') ? constantCase : undefined,
+            // 🚂 Train-Case
+            cases.includes('trainCase') ? trainCase : undefined,
+            // 🕊 Ada_Case
+            cases.includes('adaCase') ? adaCase : undefined,
+            // 👔 COBOL-CASE
+            cases.includes('cobolCase') ? cobolCase : undefined,
+            // 📍 Dot.notation
+            cases.includes('dotNotation') ? dotNotation : undefined,
+            // 🛰 Space case
+            cases.includes('spaceCase') ? spaceCase : undefined,
+            // 🏛 Capital Case
+            cases.includes('capitalCase') ? capitalCase : undefined,
+            // 🔡 lower case
+            cases.includes('lowerCase') ? lowerCase : undefined,
+            // 🔠 UPPER CASE
+            cases.includes('upperCase') ? upperCase : undefined,
+            // 📂 Path/case
+            cases.includes('pathCase') ? pathCase : undefined,
+          ].filter((func) => Boolean(Boolean) && typeof func === 'function')
         : [
             // 🐪 camelCase
             cases.includes('camelCase') ? camelCase : undefined,
@@ -424,7 +456,7 @@ export class CopyPasteService {
             cases.includes('lowerCase') ? lowerCase : undefined,
             // 🔠 UPPER CASE
             cases.includes('upperCase') ? upperCase : undefined,
-          ].filter(Boolean);
+          ].filter((func) => Boolean(Boolean) && typeof func === 'function');
     const resultReplacedTexts: { from: string; to: string; toMd5: string }[] =
       [];
     // plural
@@ -437,7 +469,7 @@ export class CopyPasteService {
         }
       ) =>
         mode === 'filepath'
-          ? item(string, options)
+          ? item(camelCase(string), options)
           : item(camelCase(string), options);
 
       const from = func(findPlural, { keepSpecialCharacters: true });
@@ -446,8 +478,10 @@ export class CopyPasteService {
 
       const replacedText = newText.replace(
         new RegExp(
-          // eslint-disable-next-line no-useless-escape
-          from.replace(/[-\/\\^$*+?.()|[\]{}]/g, '\\$&'),
+          mode === 'filepath'
+            ? from
+            : // eslint-disable-next-line no-useless-escape
+              from.replace(/[-\/\\^$*+?.()|[\]{}]/g, '\\$&'),
           'g'
         ),
         toMd5
@@ -467,7 +501,7 @@ export class CopyPasteService {
         }
       ) =>
         mode === 'filepath'
-          ? item(string, options)
+          ? item(camelCase(string), options)
           : item(camelCase(string), options);
 
       const from = func(find, { keepSpecialCharacters: true });
@@ -476,8 +510,10 @@ export class CopyPasteService {
 
       const replacedText = newText.replace(
         new RegExp(
-          // eslint-disable-next-line no-useless-escape
-          from.replace(/[-\/\\^$*+?.()|[\]{}]/g, '\\$&'),
+          mode === 'filepath'
+            ? from
+            : // eslint-disable-next-line no-useless-escape
+              from.replace(/[-_\/\\^$*+?.()|[\]{}]/g, '\\$&'),
           'g'
         ),
         toMd5
