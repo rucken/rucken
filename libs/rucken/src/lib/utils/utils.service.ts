@@ -45,7 +45,7 @@ export class UtilsService {
 
     for (let index = 0; index < files.length; index++) {
       const project = JSON.parse(readFileSync(files[index]).toString());
-      if (project.name) {
+      if (project.name && project.sourceRoot) {
         projects[project.name] = project;
       }
     }

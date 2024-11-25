@@ -46,14 +46,16 @@ export class MakeTsListService {
       .filter((key) => !key.includes('-e2e'));
     for (let index = 0; index < projectNames.length; index++) {
       const projectName = projectNames[index];
-      this.logger.debug(
-        `Process library "${projectName}" in ${projects[projectName].sourceRoot}`
-      );
-      await this.processLibrary({
-        path: projects[projectName].sourceRoot,
-        indexFileName,
-        excludes,
-      });
+      if (projects[projectName].sourceRoot) {
+        this.logger.debug(
+          `Process library "${projectName}" in ${projects[projectName].sourceRoot}`
+        );
+        await this.processLibrary({
+          path: projects[projectName].sourceRoot,
+          indexFileName,
+          excludes,
+        });
+      }
     }
     this.logger.info('End of create list files...');
   }

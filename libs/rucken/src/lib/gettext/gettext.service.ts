@@ -66,26 +66,28 @@ export class GettextService {
             : '';
         for (let lIdx = 0; lIdx < locales.length; lIdx++) {
           const locale = locales[lIdx];
-          await this.processLibrary({
-            po2jsonOptions,
-            pattern,
-            sourceRoot: projects[projectName].sourceRoot,
-            defaultLocale,
-            marker: '',
-            locale,
-            assetsPath,
-          });
-          for (let mIdx = 0; mIdx < markers.length; mIdx++) {
-            const marker = markers[mIdx];
+          if (projects[projectName].sourceRoot) {
             await this.processLibrary({
               po2jsonOptions,
               pattern,
               sourceRoot: projects[projectName].sourceRoot,
               defaultLocale,
-              marker,
+              marker: '',
               locale,
               assetsPath,
             });
+            for (let mIdx = 0; mIdx < markers.length; mIdx++) {
+              const marker = markers[mIdx];
+              await this.processLibrary({
+                po2jsonOptions,
+                pattern,
+                sourceRoot: projects[projectName].sourceRoot,
+                defaultLocale,
+                marker,
+                locale,
+                assetsPath,
+              });
+            }
           }
         }
       }
