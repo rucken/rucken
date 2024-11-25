@@ -2,6 +2,12 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [4.11.3](https://github.com/rucken/rucken/compare/v4.11.2...v4.11.3) (2024-11-25)
+
+### Bug Fixes
+
+- check sourceRoot option in project files ([e2a4523](https://github.com/rucken/rucken/commit/e2a452358c735fd3251ab64e4cf83f9ab58280d7))
+
 ### [4.11.2](https://github.com/rucken/rucken/compare/v4.11.1...v4.11.2) (2024-11-25)
 
 ### Bug Fixes
