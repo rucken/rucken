@@ -2,6 +2,12 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [4.11.2](https://github.com/rucken/rucken/compare/v4.11.1...v4.11.2) (2024-11-25)
+
+### Bug Fixes
+
+- update for correct work withy new gettext-parser ([85997e7](https://github.com/rucken/rucken/commit/85997e751e020012240b93736d77a249fb6cad83))
+
 ### [4.11.1](https://github.com/rucken/rucken/compare/v4.11.0...v4.11.1) (2024-11-25)
 
 ### Bug Fixes
