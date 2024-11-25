@@ -2,6 +2,12 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [4.11.0](https://github.com/rucken/rucken/compare/v4.10.4...v4.11.0) (2024-11-25)
+
+### Features
+
+- remove @rjaros/po2json, i18next-conv and append gettext-converter, gettext-extractor, gettext-parser and node-gettext ([74fb587](https://github.com/rucken/rucken/commit/74fb58766c42b3d37c93647078b3e5503ebff968))
+
 ### [4.10.4](https://github.com/rucken/rucken/compare/v4.10.3...v4.10.4) (2024-09-12)
 
 ### Bug Fixes
