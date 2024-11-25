@@ -1,6 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { kebabCase } from 'case-anything';
 import { existsSync, readFileSync } from 'fs';
+import { globSync } from 'glob';
 import mergeWith from 'lodash.mergewith';
 import { getLogger } from 'log4js';
 import { join } from 'path';
@@ -38,14 +39,26 @@ export class UtilsService {
       }
     }
 
+    const files = globSync('./**/**/project.json');
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    const projects: any = {};
+
+    for (let index = 0; index < files.length; index++) {
+      const project = JSON.parse(readFileSync(files[index]).toString());
+      if (project.name) {
+        projects[project.name] = project;
+      }
+    }
+
     const ruckenWorkspaceJson = this.getRuckenConfig({
       workspace: { projects: {} },
     });
 
     workspaceJson = {
       projects: {
-        ...(workspaceJson.projects || {}),
+        ...(workspaceJson?.projects || {}),
         ...(ruckenWorkspaceJson.workspace?.projects || {}),
+        ...(projects || {}),
       },
     };
 

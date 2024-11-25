@@ -1,5 +1,4 @@
 import { Injectable } from '@nestjs/common';
-import { parseFileSync } from '@rjaros/po2json';
 import equal from 'fast-deep-equal';
 import {
   existsSync,
@@ -9,10 +8,11 @@ import {
   writeFileSync,
 } from 'fs';
 import { GettextExtractor, JsExtractors } from 'gettext-extractor';
-import { i18nextToPo, i18nextToPot } from 'i18next-conv';
 import { getLogger, Logger } from 'log4js';
 import { dirname, resolve } from 'path';
 import { UtilsService } from '../utils/utils.service';
+import { i18nextToPo, i18nextToPot } from './i18next-conv';
+import { parseFileSync } from './po2json';
 
 @Injectable()
 export class GettextService {

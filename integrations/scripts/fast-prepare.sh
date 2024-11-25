@@ -1,26 +1,10 @@
 #!/bin/bash
-rm -rf ./integrations/app
-mkdir ./integrations/app
 cd ./integrations
-npx --yes create-nx-workspace@14.6.5 --name=app --preset=empty --interactive=false --nx-cloud=false
 cd ../
 node ./integrations/scripts/path-files.js
 cd ./integrations/app
-npm i --force
-npm install --save-dev @nrwl/angular@14.6.5 @nrwl/nest@14.6.5 @nrwl/node@14.6.5 --force
-npm install --save @ngneat/transloco @ngneat/transloco-locale
-npm run nx -- g @nrwl/nest:app server
-npm run nx -- g @nrwl/angular:app client --style=scss --routing=true
-npm run nx -- g @nrwl/node:app cli
-npm run nx -- g @nrwl/nest:lib feature/server
-npm run nx -- g @nrwl/angular:lib feature/client
-npm run nx -- g @nrwl/node:lib feature/common
-npm run nx -- g @nrwl/workspace:remove client-e2e
 cd ../../
-node ./integrations/scripts/path-files.js
 cp -Rf ./integrations/default/* ./integrations/app
-rm -rf ./integrations/app/lib
-mkdir ./integrations/app/lib
 cp -Rf ./dist/libs/rucken/* ./integrations/app/lib
 npx --yes replace-json-property ./integrations/app/lib/package.json version 0.0.0
 cd ./integrations/app/lib

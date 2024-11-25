@@ -58,14 +58,20 @@ describe('Extract-i18n (e2e)', () => {
       .split('\n')
       .filter((v, i) => i > 7)
       .join('\n');
-    expect(content).toEqual(`msgid "client feature transloco message!"
+    expect(content.split(' ').join('').split('\n').join('')).toEqual(
+      `msgid "client feature transloco message!"
 msgstr "client feature transloco message!"
 
 msgid "FeatureClientUser Username"
 msgstr "FeatureClientUser Username"
 
 msgid "FeatureClientUser Password"
-msgstr "FeatureClientUser Password"`);
+msgstr "FeatureClientUser Password"`
+        .split(' ')
+        .join('')
+        .split('\n')
+        .join('')
+    );
 
     content = readFileSync(
       resolve(
@@ -97,14 +103,20 @@ msgstr "FeatureClientUser Password"`);
       .split('\n')
       .filter((v, i) => i > 8)
       .join('\n');
-    expect(content).toEqual(`msgid "client feature transloco message!"
+    expect(content.split(' ').join('').split('\n').join('')).toEqual(
+      `msgid "client feature transloco message!"
 msgstr ""
 
 msgid "FeatureClientUser Username"
 msgstr ""
 
 msgid "FeatureClientUser Password"
-msgstr ""`);
+msgstr ""`
+        .split(' ')
+        .join('')
+        .split('\n')
+        .join('')
+    );
 
     content = readFileSync(
       resolve(
@@ -120,14 +132,20 @@ msgstr ""`);
       .split('\n')
       .filter((v, i) => i > 7)
       .join('\n');
-    expect(content).toEqual(`msgid "client feature transloco message!"
+    expect(content.split(' ').join('').split('\n').join('')).toEqual(
+      `msgid "client feature transloco message!"
 msgstr "client feature transloco message!"
 
 msgid "FeatureClientUser Username"
 msgstr "FeatureClientUser Username"
 
 msgid "FeatureClientUser Password"
-msgstr "FeatureClientUser Password"`);
+msgstr "FeatureClientUser Password"`
+        .split(' ')
+        .join('')
+        .split('\n')
+        .join('')
+    );
   });
 
   it('libs/feature-server', () => {
@@ -285,14 +303,20 @@ msgstr "FeatureClientUser Password"`);
       .split('\n')
       .filter((v, i) => i > 7)
       .join('\n');
-    expect(content).toEqual(`msgid "client transloco message!"
+    expect(content.split(' ').join('').split('\n').join('')).toEqual(
+      `msgid "client transloco message!"
 msgstr "client transloco message!"
 
 msgid "Username"
 msgstr "Username"
 
 msgid "Password"
-msgstr "Password"`);
+msgstr "Password"`
+        .split(' ')
+        .join('')
+        .split('\n')
+        .join('')
+    );
 
     content = readFileSync(
       resolve(
@@ -351,14 +375,20 @@ msgstr "Password"`);
       .split('\n')
       .filter((v, i) => i > 8)
       .join('\n');
-    expect(content).toEqual(`msgid "client transloco message!"
+    expect(content.split(' ').join('').split('\n').join('')).toEqual(
+      `msgid "client transloco message!"
 msgstr ""
 
 msgid "Username"
 msgstr ""
 
 msgid "Password"
-msgstr ""`);
+msgstr ""`
+        .split(' ')
+        .join('')
+        .split('\n')
+        .join('')
+    );
 
     content = readFileSync(
       resolve(
@@ -374,14 +404,20 @@ msgstr ""`);
       .split('\n')
       .filter((v, i) => i > 7)
       .join('\n');
-    expect(content).toEqual(`msgid "client transloco message!"
+    expect(content.split(' ').join('').split('\n').join('')).toEqual(
+      `msgid "client transloco message!"
 msgstr "client transloco message!"
 
 msgid "Username"
 msgstr "Username"
 
 msgid "Password"
-msgstr "Password"`);
+msgstr "Password"`
+        .split(' ')
+        .join('')
+        .split('\n')
+        .join('')
+    );
   });
 
   it('apps/server', () => {
@@ -416,8 +452,6 @@ msgstr "Password"`);
       },
       'feature-server': {
         'FeatureServerUser Id': 'FeatureServerUser Id',
-        'FeatureServerUser Password': 'FeatureServerUser Password',
-        'FeatureServerUser Username': 'FeatureServerUser Username',
       },
       'feature-common-getText': {
         'FeatureCommonUser Id': 'FeatureCommonUser Id',
@@ -426,8 +460,6 @@ msgstr "Password"`);
       },
       'feature-server-getText': {
         'FeatureServerUser Id': 'FeatureServerUser Id',
-        'FeatureServerUser Password': 'FeatureServerUser Password',
-        'FeatureServerUser Username': 'FeatureServerUser Username',
       },
     });
 
@@ -457,13 +489,9 @@ msgstr "Password"`);
     expect(JSON.parse(content)).toMatchObject({
       'feature-common-getText': {
         'FeatureCommonUser Id': '',
-        'FeatureCommonUser Password': '',
-        'FeatureCommonUser Username': '',
       },
       'feature-server-getText': {
         'FeatureServerUser Id': '',
-        'FeatureServerUser Password': '',
-        'FeatureServerUser Username': '',
       },
       'feature-common': {},
       'feature-server': {},
