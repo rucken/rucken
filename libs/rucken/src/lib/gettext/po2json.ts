@@ -44,7 +44,7 @@ export function parse(buffer, options) {
     result =
       Object.keys(mfOptions).length > 0
         ? parsePo(buffer, mfOptions)
-        : parsePo(buffer, undefined);
+        : parsePo(buffer, {});
 
     if (options.fullMF) {
       return options.stringify

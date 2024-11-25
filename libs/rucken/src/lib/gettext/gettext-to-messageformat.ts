@@ -118,7 +118,7 @@ const getMessageFormat = (
 
 const convert = (parse, input, options) => {
   options = Object.assign({}, defaultOptions, options);
-  const { headers, translations } = parse(input, options.defaultCharset);
+  const { headers, translations } = parse(input, options);
   if (!options.pluralFunction) {
     options.pluralFunction = getPluralFunction(headers['Plural-Forms']);
   }
@@ -141,9 +141,9 @@ const convert = (parse, input, options) => {
 };
 
 export function parseMo(input, options) {
-  return convert(mo.parse, input, options);
+  return convert(mo.parse, input, options || {});
 }
 
 export function parsePo(input, options) {
-  return convert(po.parse, input, options);
+  return convert(po.parse, input, options || {});
 }
