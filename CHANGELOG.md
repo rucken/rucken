@@ -2,6 +2,12 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [4.11.5](https://github.com/rucken/rucken/compare/v4.11.4...v4.11.5) (2024-12-01)
+
+### Bug Fixes
+
+- remove prepare special chars ([e644ada](https://github.com/rucken/rucken/commit/e644adaeb56ad35a224fc7529655b5efb5c13c15))
+
 ### [4.11.4](https://github.com/rucken/rucken/compare/v4.11.3...v4.11.4) (2024-12-01)
 
 ### Bug Fixes
