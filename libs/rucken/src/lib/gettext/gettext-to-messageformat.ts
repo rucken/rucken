@@ -56,10 +56,10 @@ const defaultOptions = {
   pluralFunction: null,
   pluralVariablePattern: /%(?:\((\w+)\))?\w/,
   replacements: [
-    {
-      pattern: /[\\{}#]/g,
-      replacement: '\\$&',
-    },
+    // {
+    //   pattern: /[\\{}#]/g,
+    //   replacement: '\\$&',
+    // },
     {
       pattern: /%(\d+)(?:\$\w)?/g,
       replacement: (_, n) => `{${n - 1}}`,

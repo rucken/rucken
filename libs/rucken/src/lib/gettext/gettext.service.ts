@@ -239,12 +239,12 @@ export class GettextService {
 
     // если язык не дефолт и у него перевод равен ключу, то сносим перевод
     Object.keys(newJsonData).forEach((key) => {
-      if (newJsonData[key] && String(newJsonData[key]).includes('\\{')) {
-        newJsonData[key] = String(newJsonData[key]).split('\\{').join('{');
-      }
-      if (newJsonData[key] && String(newJsonData[key]).includes('\\}')) {
-        newJsonData[key] = String(newJsonData[key]).split('\\}').join('}');
-      }
+      // if (newJsonData[key] && String(newJsonData[key]).includes('\\{')) {
+      //   newJsonData[key] = String(newJsonData[key]).split('\\{').join('{');
+      // }
+      // if (newJsonData[key] && String(newJsonData[key]).includes('\\}')) {
+      //   newJsonData[key] = String(newJsonData[key]).split('\\}').join('}');
+      // }
       if (newJsonData[key] === key && locale !== defaultLocale) {
         newJsonData[key] = '';
       }

@@ -127,7 +127,7 @@ msgstr "FeatureClientUser Id"`
     expect(content.split(' ').join('').split('\n').join('')).toEqual(
       `{
     "FeatureServerUser 'Password'": "FeatureServerUser 'Password'",
-    "FeatureServerUser \\"Username\\"": "FeatureServerUser \\"Username\\"",
+    "FeatureServerUser \\"Username #1\\"": "FeatureServerUser \\"Username #1\\"",
     "FeatureServerUser Id": "FeatureServerUser Id"
 }`
         .split(' ')
@@ -154,8 +154,8 @@ msgstr "FeatureClientUser Id"`
       `msgid "FeatureServerUser 'Password'"
 msgstr "FeatureServerUser 'Password'"
 
-msgid "FeatureServerUser \\"Username\\""
-msgstr "FeatureServerUser \\"Username\\""
+msgid "FeatureServerUser \\"Username #1\\""
+msgstr "FeatureServerUser \\"Username #1\\""
 
 msgid "FeatureServerUser Id"
 msgstr "FeatureServerUser Id"`
@@ -178,7 +178,7 @@ msgstr "FeatureServerUser Id"`
     expect(content.split(' ').join('').split('\n').join('')).toEqual(
       `{
     "FeatureServerUser 'Password'": "",
-    "FeatureServerUser \\"Username\\"": "",
+    "FeatureServerUser \\"Username #1\\"": "",
     "FeatureServerUser Id": ""
 }`
         .split(' ')
@@ -205,7 +205,7 @@ msgstr "FeatureServerUser Id"`
       `msgid "FeatureServerUser 'Password'"
 msgstr ""
 
-msgid "FeatureServerUser \\"Username\\""
+msgid "FeatureServerUser \\"Username #1\\""
 msgstr ""
 
 msgid "FeatureServerUser Id"
@@ -234,8 +234,8 @@ msgstr ""`
       `msgid "FeatureServerUser 'Password'"
 msgstr "FeatureServerUser 'Password'"
 
-msgid "FeatureServerUser \\"Username\\""
-msgstr "FeatureServerUser \\"Username\\""
+msgid "FeatureServerUser \\"Username #1\\""
+msgstr "FeatureServerUser \\"Username #1\\""
 
 msgid "FeatureServerUser Id"
 msgstr "FeatureServerUser Id"`

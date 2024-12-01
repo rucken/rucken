@@ -67,7 +67,7 @@ export class MyCompanyRepository {
 export class FeatureServerCompanies {
   static strings = {
     id: getText('FeatureServerCompany Id'),
-    username: getText('FeatureServerCompany "Username"'),
+    username: getText('FeatureServerCompany "Username #1"'),
     password: getText("FeatureServerCompany 'Password'"),
   };
 }
@@ -91,7 +91,7 @@ export class FeatureServerCompanies {
 export class FeatureServerCompanies {
   static strings = {
     id: getText('FeatureServerCompany Id'),
-    username: getText('FeatureServerCompany "Username"'),
+    username: getText('FeatureServerCompany "Username #1"'),
     password: getText("FeatureServerCompany 'Password'"),
   };
 }
