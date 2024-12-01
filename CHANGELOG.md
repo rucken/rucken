@@ -2,6 +2,12 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [4.11.4](https://github.com/rucken/rucken/compare/v4.11.3...v4.11.4) (2024-12-01)
+
+### Bug Fixes
+
+- update custrom logic for replace "\\{" to "{" ([a8a5cde](https://github.com/rucken/rucken/commit/a8a5cdefd499e92100d224a40ea6f96000084eba))
+
 ### [4.11.3](https://github.com/rucken/rucken/compare/v4.11.2...v4.11.3) (2024-11-25)
 
 ### Bug Fixes
