@@ -2,6 +2,12 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [4.12.0](https://github.com/rucken/rucken/compare/v4.11.5...v4.12.0) (2024-12-20)
+
+### Features
+
+- append options for change clientProjectNameParts, e2eProjectNameParts and serverProjectNameParts in Extracti18nService.extract ([047406b](https://github.com/rucken/rucken/commit/047406b3b7b0dc3556fce630b5b07e68b2443d19))
+
 ### [4.11.5](https://github.com/rucken/rucken/compare/v4.11.4...v4.11.5) (2024-12-01)
 
 ### Bug Fixes
