@@ -54,6 +54,15 @@ export class PrepareCommands {
         flags: '-upv,--update-package-version [boolean]',
         description: 'update package version (default: true)',
       },
+      {
+        flags: '-epnp,--e2e-project-name-parts [string]',
+      },
+      {
+        flags: '-cpnp,--client-project-name-parts [string]',
+      },
+      {
+        flags: '-spnp,--server-project-name-parts [string]',
+      },
     ],
   })
   async prepare({
@@ -61,11 +70,17 @@ export class PrepareCommands {
     locales,
     resetUnusedTranslates,
     updatePackageVersion,
+    clientProjectNameParts,
+    e2eProjectNameParts,
+    serverProjectNameParts,
   }: {
     defaultLocale: string;
     locales: string;
     resetUnusedTranslates?: string;
     updatePackageVersion?: string;
+    clientProjectNameParts?: string;
+    e2eProjectNameParts?: string;
+    serverProjectNameParts?: string;
   }) {
     const resetUnusedTranslatesBoolean =
       (
@@ -102,11 +117,20 @@ export class PrepareCommands {
       });
     }
 
-    this.extracti18nService.extract(
-      locales ? locales.split(',') : this.extracti18nConfig.locales,
-      this.extracti18nConfig.markers,
-      resetUnusedTranslatesBoolean
-    );
+    this.extracti18nService.extract({
+      locales: locales ? locales.split(',') : this.extracti18nConfig.locales,
+      markers: this.extracti18nConfig.markers,
+      resetUnusedTranslates: resetUnusedTranslatesBoolean,
+      clientProjectNameParts:
+        clientProjectNameParts?.split(',') ||
+        this.extracti18nConfig.clientProjectNameParts,
+      e2eProjectNameParts:
+        e2eProjectNameParts?.split(',') ||
+        this.extracti18nConfig.e2eProjectNameParts,
+      serverProjectNameParts:
+        serverProjectNameParts?.split(',') ||
+        this.extracti18nConfig.serverProjectNameParts,
+    });
 
     await this.gettextService.extractTranslatesFromSourcesForLibraries({
       po2jsonOptions: this.gettextConfig.po2jsonOptions,
@@ -116,11 +140,20 @@ export class PrepareCommands {
       markers: this.gettextConfig.markers,
     });
 
-    this.extracti18nService.extract(
-      locales ? locales.split(',') : this.extracti18nConfig.locales,
-      this.extracti18nConfig.markers,
-      resetUnusedTranslatesBoolean,
-      true
-    );
+    this.extracti18nService.extract({
+      locales: locales ? locales.split(',') : this.extracti18nConfig.locales,
+      markers: this.extracti18nConfig.markers,
+      resetUnusedTranslates: resetUnusedTranslatesBoolean,
+      noExtract: true,
+      clientProjectNameParts:
+        clientProjectNameParts?.split(',') ||
+        this.extracti18nConfig.clientProjectNameParts,
+      e2eProjectNameParts:
+        e2eProjectNameParts?.split(',') ||
+        this.extracti18nConfig.e2eProjectNameParts,
+      serverProjectNameParts:
+        serverProjectNameParts?.split(',') ||
+        this.extracti18nConfig.serverProjectNameParts,
+    });
   }
 }

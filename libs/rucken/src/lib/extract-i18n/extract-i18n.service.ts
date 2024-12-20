@@ -18,17 +18,33 @@ export class Extracti18nService {
     this.logger.level = UtilsService.logLevel();
   }
 
-  public extract(
-    locales: string[],
-    markers: string[],
-    resetUnusedTranslates: boolean,
-    noExtract?: boolean
-  ): void {
+  public extract({
+    locales,
+    markers,
+    resetUnusedTranslates,
+    noExtract,
+    serverProjectNameParts,
+    clientProjectNameParts,
+    e2eProjectNameParts,
+  }: {
+    locales: string[];
+    markers: string[];
+    resetUnusedTranslates: boolean;
+    noExtract?: boolean;
+    serverProjectNameParts: string[];
+    clientProjectNameParts: string[];
+    e2eProjectNameParts: string[];
+  }): void {
     this.logger.info('Start create translate files...');
     this.logger.debug(
       `Config: ${JSON.stringify({
         locales,
         markers,
+        resetUnusedTranslates,
+        noExtract,
+        serverProjectNameParts,
+        clientProjectNameParts,
+        e2eProjectNameParts,
       })}`
     );
     try {
@@ -70,9 +86,19 @@ export class Extracti18nService {
             noExtract
           );
         });
-      this.collectServerToTranslocoConfig(projects, locales);
+      this.collectServerToTranslocoConfig({
+        projects,
+        locales,
+        clientProjectNameParts,
+        e2eProjectNameParts,
+      });
 
-      this.collectClientToTranslocoConfig(projects, locales);
+      this.collectClientToTranslocoConfig({
+        projects,
+        locales,
+        serverProjectNameParts,
+        e2eProjectNameParts,
+      });
 
       this.logger.info('End of create translate files...');
     } catch (error) {
@@ -95,11 +121,18 @@ export class Extracti18nService {
     }
   }
 
-  collectClientToTranslocoConfig(
+  collectClientToTranslocoConfig({
+    projects,
+    locales,
+    serverProjectNameParts,
+    e2eProjectNameParts,
+  }: {
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    projects: any,
-    locales: string[]
-  ) {
+    projects: any;
+    locales: string[];
+    serverProjectNameParts: string[];
+    e2eProjectNameParts: string[];
+  }) {
     const translocoConfigFilepath = resolve('transloco.config.json');
 
     const scopedLibs = Object.keys(projects)
@@ -107,7 +140,9 @@ export class Extracti18nService {
         (projectName) =>
           (projects[projectName].projectType === 'library' ||
             projects[projectName].sourceRoot?.substring(0, 5) === 'libs/') &&
-          !projectName.includes('server')
+          !serverProjectNameParts.find((serverProjectNamePart) =>
+            projectName.includes(serverProjectNamePart)
+          )
       )
       .map((projectName) => projects[projectName].root);
 
@@ -116,9 +151,12 @@ export class Extracti18nService {
         (projectName) =>
           (projects[projectName].projectType === 'application' ||
             projects[projectName].sourceRoot?.substring(0, 5) === 'apps/') &&
-          !projectName.includes('server') &&
-          !projectName.includes('-ms') &&
-          !projectName.includes('e2e')
+          !serverProjectNameParts.find((serverProjectNamePart) =>
+            projectName.includes(serverProjectNamePart)
+          ) &&
+          !e2eProjectNameParts.find((e2eProjectNamePart) =>
+            projectName.includes(e2eProjectNamePart)
+          )
       )
       .map((projectName) => projects[projectName].sourceRoot);
 
@@ -149,11 +187,18 @@ export class Extracti18nService {
     });
   }
 
-  collectServerToTranslocoConfig(
+  collectServerToTranslocoConfig({
+    projects,
+    locales,
+    clientProjectNameParts,
+    e2eProjectNameParts,
+  }: {
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    projects: any,
-    locales: string[]
-  ) {
+    projects: any;
+    locales: string[];
+    clientProjectNameParts: string[];
+    e2eProjectNameParts: string[];
+  }) {
     const translocoConfigFilepath = resolve('transloco.config.json');
 
     const scopedLibs = Object.keys(projects)
@@ -161,7 +206,9 @@ export class Extracti18nService {
         (projectName) =>
           (projects[projectName].projectType === 'library' ||
             projects[projectName].sourceRoot?.substring(0, 5) === 'libs/') &&
-          !projectName.includes('client')
+          !clientProjectNameParts.find((clientProjectNamePart) =>
+            projectName.includes(clientProjectNamePart)
+          )
       )
       .map((projectName) => projects[projectName].root);
 
@@ -170,8 +217,12 @@ export class Extracti18nService {
         (projectName) =>
           (projects[projectName].projectType === 'application' ||
             projects[projectName].sourceRoot?.substring(0, 5) === 'apps/') &&
-          !projectName.includes('client') &&
-          !projectName.includes('e2e')
+          !clientProjectNameParts.find((clientProjectNamePart) =>
+            projectName.includes(clientProjectNamePart)
+          ) &&
+          !e2eProjectNameParts.find((e2eProjectNamePart) =>
+            projectName.includes(e2eProjectNamePart)
+          )
       )
       .map((projectName) => projects[projectName].sourceRoot);
 
