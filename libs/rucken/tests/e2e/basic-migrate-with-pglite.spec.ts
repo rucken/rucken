@@ -1,7 +1,7 @@
 import execa from 'execa';
+import { setTimeout } from 'node:timers/promises';
 import { Client } from 'pg';
 import { getPostgres, Pg } from '../unit/utils/get-postgres';
-import { setTimeout } from 'node:timers/promises';
 
 describe('Basic migrate with pglite (e2e)', () => {
   jest.setTimeout(5 * 60 * 1000);
@@ -31,6 +31,7 @@ describe('Basic migrate with pglite (e2e)', () => {
       '--locations=./libs/rucken/tests/e2e/basic-migrate-with-pglite-and-migration-files',
     ]);
     expect(result.stderr).toEqual('');
+    await setTimeout(10000);
   });
 
   it('check entities and data from migrations', async () => {
