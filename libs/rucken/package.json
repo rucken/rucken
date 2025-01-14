@@ -42,11 +42,12 @@
         }
     ],
     "bin": {
-        "rucken": "./src/main.js"
+        "rucken": "./index.js"
     },
     "dependencies": {
+        "crc-32": "1.2.2",
         "glob": "11.0.0",
-        "tslib": "2.0.0",
+        "tslib": "^2.3.0",
         "log4js": "6.9.1",
         "@nestjs/common": "^9",
         "@nestjs/core": "^9",

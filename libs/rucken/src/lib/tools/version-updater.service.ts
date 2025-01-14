@@ -1,8 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { readFileSync, writeFileSync } from 'fs';
 import { getLogger, Logger } from 'log4js';
-import { resolve } from 'path';
-import { UtilsService } from '../utils/utils.service';
+import { PACKAGE_JSON, UtilsService } from '../utils/utils.service';
 
 @Injectable()
 export class VersionUpdaterService {
@@ -29,7 +28,7 @@ export class VersionUpdaterService {
       })}`
     );
 
-    const rootConfigPath = resolve('package.json');
+    const rootConfigPath = this.utilsService.resolveFilePath(PACKAGE_JSON);
     const projects = this.utilsService.getWorkspaceProjects();
 
     Object.keys(projects)

@@ -4,12 +4,23 @@ import { existsSync, readFileSync } from 'fs';
 import { globSync } from 'glob';
 import mergeWith from 'lodash.mergewith';
 import { getLogger } from 'log4js';
-import { join } from 'path';
+import { join, resolve } from 'path';
+
+export const WORKSPACE_JSON = 'workspace.json';
+export const TSCONFIG_BASE_JSON = 'tsconfig.base.json';
+export const TSCONFIG_JSON = 'tsconfig.json';
+export const PROJECT_JSON = 'project.json';
+export const PACKAGE_JSON = 'package.json';
+export const RUCKEN_JSON = 'rucken.json';
+export const TRANSLOCO_CONFIG_JSON = 'transloco.config.json';
+export const TRANSLOCO_CONFIG_JS = 'transloco.config.js';
 
 @Injectable()
 export class UtilsService {
   public static logLevel = () =>
-    (process.env['DEBUG'] === '*' ? 'all' : process.env['DEBUG']) || 'error';
+    (process.env['DEBUG'] === '*'
+      ? 'all'
+      : process.env['RUCKEN_LOG_LEVEL'] || process.env['DEBUG']) || 'info';
 
   getLogger() {
     const logger = getLogger(UtilsService.name);
@@ -17,29 +28,51 @@ export class UtilsService {
     return logger;
   }
 
+  resolveFilePath(filename: string, dirname?: string) {
+    if (!dirname && existsSync(filename)) {
+      return resolve(filename);
+    }
+    if (!dirname && existsSync(join(process.cwd(), filename))) {
+      return resolve(join(process.cwd(), filename));
+    }
+    if (dirname && existsSync(join(dirname, filename))) {
+      return resolve(join(dirname, filename));
+    }
+
+    if (dirname) {
+      return resolve(join(dirname, filename));
+    } else {
+      return resolve(filename);
+    }
+  }
+
   getWorkspaceProjects(workspaceFile?: string) {
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     let workspaceJson: any;
     if (!workspaceFile) {
-      workspaceFile = 'workspace.json';
+      workspaceFile = this.resolveFilePath(WORKSPACE_JSON);
+    } else {
+      workspaceFile = this.resolveFilePath(workspaceFile);
     }
     if (existsSync(workspaceFile)) {
       workspaceJson = JSON.parse(readFileSync(workspaceFile).toString());
     } else {
-      if (existsSync('tsconfig.base.json')) {
+      const tsconfigBaseJson = this.resolveFilePath(TSCONFIG_BASE_JSON);
+      if (existsSync(tsconfigBaseJson)) {
         const projects: Record<string, string> =
-          this.collectProjectsFromTsConfig('tsconfig.base.json');
+          this.collectProjectsFromTsConfig(tsconfigBaseJson);
         workspaceJson = { projects };
       } else {
-        if (existsSync('tsconfig.json')) {
+        const tsconfigJson = this.resolveFilePath(TSCONFIG_BASE_JSON);
+        if (existsSync(tsconfigJson)) {
           const projects: Record<string, string> =
-            this.collectProjectsFromTsConfig('tsconfig.json');
+            this.collectProjectsFromTsConfig(tsconfigJson);
           workspaceJson = { projects };
         }
       }
     }
 
-    const files = globSync('./**/**/project.json');
+    const files = globSync(`./**/**/${PROJECT_JSON}`);
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     const projects: any = {};
 
@@ -106,7 +139,8 @@ export class UtilsService {
             ''
           );
           const projectName = kebabCase(key);
-          if (existsSync(join(path, 'project.json'))) {
+
+          if (existsSync(join(path, PROJECT_JSON))) {
             projects[projectName] = path;
           } else {
             path = (
@@ -127,7 +161,9 @@ export class UtilsService {
 
   getRuckenConfig<T>(defaultValue: T, configFile?: string): T {
     if (!configFile) {
-      configFile = 'rucken.json';
+      configFile = this.resolveFilePath(RUCKEN_JSON);
+    } else {
+      configFile = this.resolveFilePath(configFile);
     }
     if (!existsSync(configFile)) {
       return defaultValue;
@@ -136,6 +172,7 @@ export class UtilsService {
       const config = JSON.parse(readFileSync(configFile).toString());
       return mergeWith(defaultValue, config);
     } catch (error) {
+      this.getLogger().warn(error);
       return defaultValue;
     }
   }

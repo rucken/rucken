@@ -3,7 +3,12 @@ import { spawnSync } from 'child_process';
 import { existsSync, mkdirSync, readFileSync, writeFileSync } from 'fs';
 import { getLogger, Logger } from 'log4js';
 import { dirname, resolve } from 'path';
-import { UtilsService } from '../utils/utils.service';
+import {
+  PACKAGE_JSON,
+  TRANSLOCO_CONFIG_JS,
+  TRANSLOCO_CONFIG_JSON,
+  UtilsService,
+} from '../utils/utils.service';
 
 @Injectable()
 export class Extracti18nService {
@@ -108,14 +113,15 @@ export class Extracti18nService {
   }
 
   private createTtranslocoConfigJS() {
-    const translocoConfigJsFilepath = resolve('transloco.config.js');
+    const translocoConfigJsFilepath =
+      this.utilsService.resolveFilePath(TRANSLOCO_CONFIG_JS);
     if (!existsSync(translocoConfigJsFilepath)) {
-      this.logger.info('Process create transloco.config.js...');
+      this.logger.info(`Process create ${TRANSLOCO_CONFIG_JS}...`);
       writeFileSync(
         translocoConfigJsFilepath,
         [
           `const { readFileSync, existsSync } = require('fs');`,
-          `module.exports = existsSync('transloco.config.json') ? JSON.parse(readFileSync('transloco.config.json').toString()) : {};`,
+          `module.exports = existsSync('${TRANSLOCO_CONFIG_JSON}') ? JSON.parse(readFileSync('${TRANSLOCO_CONFIG_JSON}').toString()) : {};`,
         ].join('\n')
       );
     }
@@ -133,7 +139,9 @@ export class Extracti18nService {
     serverProjectNameParts: string[];
     e2eProjectNameParts: string[];
   }) {
-    const translocoConfigFilepath = resolve('transloco.config.json');
+    const translocoConfigFilepath = this.utilsService.resolveFilePath(
+      TRANSLOCO_CONFIG_JSON
+    );
 
     const scopedLibs = Object.keys(projects)
       .filter(
@@ -199,7 +207,9 @@ export class Extracti18nService {
     clientProjectNameParts: string[];
     e2eProjectNameParts: string[];
   }) {
-    const translocoConfigFilepath = resolve('transloco.config.json');
+    const translocoConfigFilepath = this.utilsService.resolveFilePath(
+      TRANSLOCO_CONFIG_JSON
+    );
 
     const scopedLibs = Object.keys(projects)
       .filter(
@@ -296,7 +306,10 @@ export class Extracti18nService {
         `${resolve(sourceRoot)}/i18n`,
       ]);
     }
-    const packageJsonFilePath = resolve(root, 'package.json');
+    const packageJsonFilePath = this.utilsService.resolveFilePath(
+      PACKAGE_JSON,
+      root
+    );
     try {
       const packageJson = existsSync(packageJsonFilePath)
         ? JSON.parse(readFileSync(packageJsonFilePath).toString())

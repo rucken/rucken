@@ -140,7 +140,7 @@ export class PostgresService {
       }
     }
 
-    this.closeRootDbConnection();
+    await this.closeRootDbConnection();
   }
 
   async dropAppDatabaseHandler(

@@ -7,6 +7,7 @@ import { PostgresModule } from './postgres/postgres.module';
 import { PrepareModule } from './prepare/prepare.module';
 import { ToolsModule } from './tools/tools.module';
 import { TranslateModule } from './translate/translate.module';
+import { MigrateModule } from './migrate/migrate.module';
 
 @Module({
   imports: [
@@ -18,6 +19,7 @@ import { TranslateModule } from './translate/translate.module';
     PostgresModule.forRoot(),
     EnvReplacerModule.forRoot(),
     CopyPasteModule.forRoot(),
+    MigrateModule.forRoot(),
   ],
 })
 export class AppModule {}

@@ -42,11 +42,11 @@
   "scripts": {
     "nx": "nx",
     "start": "node ./dist/libs/rucken/src/main.js",
-    "build": "npm run nx -- build rucken && cross-env ./scripts/add-header-to-rucken.js && npm run lib:build-changelog",
+    "build": "npm run nx -- build rucken && npm run lib:build-changelog",
     "release": "standard-version -a",
     "publish": "npm publish ./dist/libs/rucken",
     "create-release": "npm run test && npm run build && npm run release && git push --follow-tags origin master",
-    "test:integrations-e2e": "npm run nx -- test rucken --skip-nx-cache --json --outputFile=jest.result.json --testLocationInResults",
+    "test:integrations-e2e": "export NODE_OPTIONS=--experimental-vm-modules && npm run nx -- test rucken --skip-nx-cache --json --outputFile=jest.result.json --detectOpenHandles --testLocationInResults",
     "test:fast-prepare": "cross-env ./integrations/scripts/fast-prepare.sh",
     "test:integrations-prepare": "cross-env ./integrations/scripts/prepare-application.sh",
     "test:integrations-run": "npm run test:integrations-e2e",
@@ -56,11 +56,15 @@
     "tsc:lint": "tsc --noEmit -p tsconfig.base.json",
     "lib:build-changelog": "cross-env ./node_modules/.bin/cp-cli ./CHANGELOG.md ./dist/libs/rucken/CHANGELOG.md",
     "run-to-current": "npm run start -- prepare --locales=en,ru --default-locale=en",
-    "create-readme": "npm run start -- make-ts-list --help && npm run start -- version-updater --help && npm run start -- translate --help && npm run start -- extract-i18n --help && npm run start -- gettext --help && npm run start -- prepare --help && npm run start -- postgres --help && npm run start -- env-replacer --help && npm run start -- copy-paste --help",
-    "prepare": "husky install"
+    "create-readme": "npm run start -- make-ts-list --help && npm run start -- version-updater --help && npm run start -- translate --help && npm run start -- extract-i18n --help && npm run start -- gettext --help && npm run start -- prepare --help && npm run start -- postgres --help && npm run start -- env-replacer --help && npm run start -- copy-paste --help && npm run start -- migrate --help",
+    "prepare": "husky install",
+    "test:unit": "node --experimental-vm-modules 'node_modules/.bin/jest' './libs/rucken/tests/unit' -c './libs/rucken/jest.config.ts' --detectOpenHandles"
   },
   "private": true,
   "devDependencies": {
+    "@electric-sql/pglite": "0.2.15",
+    "@nestjs/testing": "^9",
+    "@nestjs/platform-express": "^9",
     "@ngneat/transloco-keys-manager": "^3.4.2",
     "@ngneat/transloco-scoped-libs": "3.0.4",
     "@nrwl/cli": "14.6.5",
@@ -70,7 +74,7 @@
     "@nrwl/linter": "14.6.5",
     "@nrwl/node": "14.6.5",
     "@nrwl/workspace": "14.6.5",
-    "@types/jest": "28.1.8",
+    "@types/jest": "29.5.13",
     "@types/node": "18.7.1",
     "@types/pg": "8.6.5",
     "@types/pluralize": "0.0.29",
@@ -83,7 +87,7 @@
     "eslint": "8.15.0",
     "eslint-config-prettier": "8.1.0",
     "husky": "8.0.1",
-    "jest": "28.1.3",
+    "jest": "29.7.0",
     "lint-staged": "13.0.3",
     "log4js": "6.9.1",
     "nestjs-console": "9.0.0",
@@ -94,11 +98,12 @@
     "sort-paths": "1.1.1",
     "standard-version": "9.5.0",
     "testcontainers": "8.13.1",
-    "ts-jest": "28.0.8",
+    "ts-jest": "29.1.0",
     "ts-node": "10.9.1",
     "typescript": "4.7.4"
   },
   "dependencies": {
+    "crc-32": "1.2.2",
     "@nestjs/common": "^9",
     "@nestjs/core": "^9",
     "case-anything": "2.1.10",
@@ -117,7 +122,7 @@
     "reflect-metadata": "0.1.13",
     "rxjs": "7.1.0",
     "source-map-support": "0.5.21",
-    "tslib": "2.0.0"
+    "tslib": "^2.3.0"
   },
   "standard-version": {
     "scripts": {

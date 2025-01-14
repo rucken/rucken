@@ -90,6 +90,7 @@ export class PrepareCommands {
       ).toLowerCase() === 'true';
 
     this.makeTsListService.setLogger(`prepare: ${MakeTsListService.title}`);
+
     await this.makeTsListService.makeTsListHandler({
       indexFileName: this.makeTsListConfig.indexFileName,
       excludes: this.makeTsListConfig.excludes,

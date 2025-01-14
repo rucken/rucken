@@ -4,7 +4,9 @@
   "targets": {
     "build": {
       "executor": "@nrwl/js:tsc",
-      "outputs": ["{options.outputPath}"],
+      "outputs": [
+        "{options.outputPath}"
+      ],
       "options": {
         "externalDependencies": [
           "tslib",
@@ -32,20 +34,29 @@
         "tsConfig": "libs/rucken/tsconfig.lib.json",
         "packageJson": "libs/rucken/package.json",
         "main": "libs/rucken/src/index.ts",
-        "assets": ["libs/rucken/*.md"],
+        "assets": [
+          "libs/rucken/*.md",
+          "libs/rucken/*.js"
+        ],
         "updateBuildableProjectDepsInPackageJson": false
       }
     },
     "lint": {
       "executor": "@nrwl/linter:eslint",
-      "outputs": ["{options.outputFile}"],
+      "outputs": [
+        "{options.outputFile}"
+      ],
       "options": {
-        "lintFilePatterns": ["libs/rucken/**/*.ts"]
+        "lintFilePatterns": [
+          "libs/rucken/**/*.ts"
+        ]
       }
     },
     "test": {
       "executor": "@nrwl/jest:jest",
-      "outputs": ["coverage/libs/rucken"],
+      "outputs": [
+        "coverage/libs/rucken"
+      ],
       "options": {
         "jestConfig": "libs/rucken/jest.config.ts",
         "passWithNoTests": true
