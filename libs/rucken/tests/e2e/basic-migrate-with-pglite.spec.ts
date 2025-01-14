@@ -1,6 +1,4 @@
 import execa from 'execa';
-import { setTimeout } from 'node:timers/promises';
-import { Client } from 'pg';
 import { getPostgres, Pg } from '../unit/utils/get-postgres';
 
 describe('Basic migrate with pglite (e2e)', () => {
@@ -15,13 +13,6 @@ describe('Basic migrate with pglite (e2e)', () => {
     await pg.teardown();
   });
 
-  it('check database', async () => {
-    const client = new Client({ connectionString: pg.connectionString });
-    await client.connect();
-    await client.end();
-    await setTimeout(1000);
-  });
-
   it('apply migrations', async () => {
     const result = await execa('npm', [
       'start',
@@ -31,13 +22,10 @@ describe('Basic migrate with pglite (e2e)', () => {
       '--locations=./libs/rucken/tests/e2e/basic-migrate-with-pglite-and-migration-files',
     ]);
     expect(result.stderr).toEqual('');
-    await setTimeout(10000);
   });
 
   it('check entities and data from migrations', async () => {
-    const client = new Client({ connectionString: pg.connectionString });
-    await client.connect();
-    const result = await client.query('select * from "AppUserCategory"');
+    const result = await pg.pool.query('select * from "AppUserCategory"');
     expect(result.rows).toMatchObject([
       {
         // id: '430aa2ab-14d7-4fbe-9b6d-f5e267c88376',
@@ -51,7 +39,5 @@ describe('Basic migrate with pglite (e2e)', () => {
         // updatedAt: 2025-01-14T03:15:10.367Z
       },
     ]);
-    await client.end();
-    await setTimeout(1000);
   });
 });
