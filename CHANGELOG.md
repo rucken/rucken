@@ -2,6 +2,12 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [4.13.0](https://github.com/rucken/rucken/compare/v4.12.0...v4.13.0) (2025-01-14)
+
+### Features
+
+- append new command "migrate", database migration tool, NodeJS version of Java migration tool - flyway, supported databases: PostrgeSQL ([f11d0bf](https://github.com/rucken/rucken/commit/f11d0bf3daa5b2d3cb9c00eed6779538425dda86))
+
 ## [4.12.0](https://github.com/rucken/rucken/compare/v4.11.5...v4.12.0) (2024-12-20)
 
 ### Features
