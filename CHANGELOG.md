@@ -2,6 +2,12 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [4.13.1](https://github.com/rucken/rucken/compare/v4.13.0...v4.13.1) (2025-01-14)
+
+### Bug Fixes
+
+- update fixture files for tests ([e3738ba](https://github.com/rucken/rucken/commit/e3738ba8928a2f18f7a28eb7b15ba5dbe0ce5444))
+
 ## [4.13.0](https://github.com/rucken/rucken/compare/v4.12.0...v4.13.0) (2025-01-14)
 
 ### Features
