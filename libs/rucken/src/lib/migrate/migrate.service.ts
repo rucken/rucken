@@ -174,7 +174,7 @@ export class MigrateService implements OnModuleDestroy {
       historyTable,
     });
 
-    collection = await this.loopForRepeatableMigrations({
+    await this.loopForRepeatableMigrations({
       migrations,
       histories,
       collection,
