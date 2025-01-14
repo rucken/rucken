@@ -46,7 +46,7 @@
     "release": "standard-version -a",
     "publish": "npm publish ./dist/libs/rucken",
     "create-release": "npm run test && npm run build && npm run release && git push --follow-tags origin master",
-    "test:integrations-e2e": "export NODE_OPTIONS=--experimental-vm-modules && npm run nx -- test rucken --skip-nx-cache --json --outputFile=jest.result.json --detectOpenHandles --testLocationInResults",
+    "test:integrations-e2e": "export NODE_OPTIONS=--experimental-vm-modules && npm run nx -- test rucken --skip-nx-cache --json --outputFile=jest.result.json --detectOpenHandles --testLocationInResults --verbose",
     "test:fast-prepare": "cross-env ./integrations/scripts/fast-prepare.sh",
     "test:integrations-prepare": "cross-env ./integrations/scripts/prepare-application.sh",
     "test:integrations-run": "npm run test:integrations-e2e",

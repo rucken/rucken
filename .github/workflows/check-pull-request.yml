@@ -11,10 +11,10 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v2
 
-      - name: Setup Node.js 16.x to publish to npmjs.org
+      - name: Setup Node.js 22.11.0 to publish to npmjs.org
         uses: actions/setup-node@v1
         with:
-          node-version: '16.13.1'
+          node-version: '22.11.0'
           registry-url: 'https://registry.npmjs.org'
 
       - uses: actions/cache@v2
