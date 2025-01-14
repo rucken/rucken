@@ -1,6 +1,7 @@
 import execa from 'execa';
 import { Client } from 'pg';
 import { getPostgres, Pg } from '../unit/utils/get-postgres';
+import { setTimeout } from 'node:timers/promises';
 
 describe('Basic migrate with pglite (e2e)', () => {
   jest.setTimeout(5 * 60 * 1000);
@@ -18,6 +19,7 @@ describe('Basic migrate with pglite (e2e)', () => {
     const client = new Client({ connectionString: pg.connectionString });
     await client.connect();
     await client.end();
+    await setTimeout(1000);
   });
 
   it('apply migrations', async () => {
@@ -49,5 +51,6 @@ describe('Basic migrate with pglite (e2e)', () => {
       },
     ]);
     await client.end();
+    await setTimeout(1000);
   });
 });
