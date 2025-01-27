@@ -13,7 +13,7 @@
           "log4js",
           "@nestjs/common",
           "@nestjs/core",
-          "nestjs-console",
+          "commander",
           "recursive-readdir",
           "replace-ext",
           "sort-paths",

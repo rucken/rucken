@@ -1,8 +1,8 @@
 import { DynamicModule, Module } from '@nestjs/common';
-import { ConsoleModule } from 'nestjs-console';
 import { UtilsModule } from '../utils/utils.module';
 import { GettextCommands } from './gettext.commands';
 import { GettextService } from './gettext.service';
+import { ConsoleModule } from '../../nestjs-console';
 
 @Module({
   imports: [ConsoleModule, UtilsModule],

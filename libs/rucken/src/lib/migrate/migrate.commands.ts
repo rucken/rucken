@@ -1,7 +1,7 @@
-import { Command, Console } from 'nestjs-console';
+/* eslint-disable @typescript-eslint/no-unused-vars */
+import { Command, Console } from '../../nestjs-console';
 import { UtilsService } from '../utils/utils.service';
 import { DEFAULT_MIGRATE_CONFIG } from './migrate.config';
-import { MigrateService } from './migrate.service';
 
 @Console()
 export class MigrateCommands {
@@ -9,10 +9,7 @@ export class MigrateCommands {
     DEFAULT_MIGRATE_CONFIG
   ).migrate;
 
-  constructor(
-    private readonly migrateService: MigrateService,
-    private readonly utilsService: UtilsService
-  ) {}
+  constructor(private readonly utilsService: UtilsService) {}
 
   @Command({
     command: 'migrate',
@@ -57,20 +54,8 @@ export class MigrateCommands {
     historyTable?: string;
     sqlMigrationSuffixes?: string;
   }) {
-    this.migrateService.setLogger(MigrateService.title);
-    await this.migrateService.migrate({
-      dryRun,
-      databaseUrl,
-      locations: locations
-        ? locations.split(',').map((s) => s.trim())
-        : this.migrateConfig.locations,
-      historyTable: historyTable || this.migrateConfig.historyTable,
-      sqlMigrationSuffixes: sqlMigrationSuffixes
-        ? sqlMigrationSuffixes.split(',').map((s) => s.trim())
-        : this.migrateConfig.sqlMigrationSuffixes,
-      sqlMigrationSeparator: this.migrateConfig.sqlMigrationSeparator,
-      sqlMigrationStatementSeparator:
-        this.migrateConfig.sqlMigrationStatementSeparator,
-    });
+    throw new Error(
+      'The migration command has been moved to the project https://github.com/EndyKaufman/pg-tools and is published as a console utility https://www.npmjs.com/package/pg-flyway'
+    );
   }
 }

@@ -1,4 +1,4 @@
-import { Command, Console } from 'nestjs-console';
+import { Command, Console } from '../../nestjs-console';
 import { UtilsService } from '../utils/utils.service';
 import { DEFAULT_COPY_PASTE_CONFIG } from './copy-paste.config';
 import { CopyPasteService } from './copy-paste.service';

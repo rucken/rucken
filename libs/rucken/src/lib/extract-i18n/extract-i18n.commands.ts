@@ -1,4 +1,4 @@
-import { Command, Console } from 'nestjs-console';
+import { Command, Console } from '../../nestjs-console';
 import { UtilsService } from '../utils/utils.service';
 import { DEFAULT_EXTRACT_I18N_CONFIG } from './extract-i18n.config';
 import { Extracti18nService } from './extract-i18n.service';

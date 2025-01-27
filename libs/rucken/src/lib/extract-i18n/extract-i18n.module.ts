@@ -1,8 +1,8 @@
 import { DynamicModule, Module } from '@nestjs/common';
-import { ConsoleModule } from 'nestjs-console';
 import { UtilsModule } from '../utils/utils.module';
 import { Extracti18nCommands } from './extract-i18n.commands';
 import { Extracti18nService } from './extract-i18n.service';
+import { ConsoleModule } from '../../nestjs-console';
 
 @Module({
   imports: [ConsoleModule, UtilsModule],

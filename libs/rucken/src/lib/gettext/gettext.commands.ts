@@ -1,4 +1,4 @@
-import { Command, Console } from 'nestjs-console';
+import { Command, Console } from '../../nestjs-console';
 import { UtilsService } from '../utils/utils.service';
 import { DEFAULT_GETTEXT_CONFIG } from './gettext.config';
 import { GettextService } from './gettext.service';

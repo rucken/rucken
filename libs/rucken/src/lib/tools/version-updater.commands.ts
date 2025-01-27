@@ -1,4 +1,4 @@
-import { Command, Console } from 'nestjs-console';
+import { Command, Console } from '../../nestjs-console';
 import { UtilsService } from '../utils/utils.service';
 import { DEFAULT_TOOLS_CONFIG } from './tools.config';
 import { VersionUpdaterService } from './version-updater.service';
