@@ -2,6 +2,12 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [4.15.0](https://github.com/rucken/rucken/compare/v4.13.1...v4.15.0) (2025-01-27)
+
+### Features
+
+- change external nestjs-console to local nestjs-console for remove "postinstall" script from rucken, remove logic for migrate command, change it to error message with link to https://www.npmjs.com/package/pg-flyway, remove sourceMap from result bundle ([b78f05e](https://github.com/rucken/rucken/commit/b78f05e0f77f15353668bece76580ecb85ebe109))
+
 ## [4.14.0](https://github.com/rucken/rucken/compare/v4.13.1...v4.14.0) (2025-01-27)
 
 ### Features
