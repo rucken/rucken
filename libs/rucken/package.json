@@ -1,6 +1,6 @@
 {
     "name": "rucken",
-    "version": "4.13.1",
+    "version": "4.14.0",
     "description": "Console tools and scripts for nx and not only that I (EndyKaufman) use to automate the workflow and speed up the development process",
     "license": "MIT",
     "author": "EndyKaufman <admin@site15.ru>",
@@ -24,9 +24,6 @@
         "copy",
         "paste"
     ],
-    "scripts": {
-        "postinstall": "npm --save --force i nestjs-console"
-    },
     "bugs": {
         "url": "https://github.com/rucken/rucken/issues"
     },
@@ -45,23 +42,21 @@
         "rucken": "./index.js"
     },
     "dependencies": {
-        "crc-32": "1.2.2",
+        "commander": "11.0.0",
         "glob": "11.0.0",
         "tslib": "^2.3.0",
         "log4js": "6.9.1",
-        "@nestjs/common": "^9",
-        "@nestjs/core": "^9",
-        "nestjs-console": "9.0.0",
+        "@nestjs/common": "9.0.0",
+        "@nestjs/core": "9.0.0",
         "recursive-readdir": "2.2.3",
         "replace-ext": "2.0.0",
         "sort-paths": "1.1.1",
         "fast-deep-equal": "3.1.3",
-        "@ngneat/transloco-keys-manager": "^3.4.2",
+        "@ngneat/transloco-keys-manager": "3.4.2",
         "@ngneat/transloco-scoped-libs": "3.0.4",
         "lodash.mergewith": "4.6.2",
         "connection-string": "4.3.5",
         "rxjs": "7.1.0",
-        "source-map-support": "0.5.21",
         "case-anything": "2.1.10",
         "pluralize": "8.0.0",
         "gettext-converter": "1.3.0",

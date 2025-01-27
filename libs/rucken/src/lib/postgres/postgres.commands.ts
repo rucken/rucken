@@ -1,4 +1,4 @@
-import { Command, Console } from 'nestjs-console';
+import { Command, Console } from '../../nestjs-console';
 import { UtilsService } from '../utils/utils.service';
 import { DEFAULT_POSTGRES_CONFIG } from './postgres.config';
 import { PostgresService } from './postgres.service';

@@ -1,5 +1,5 @@
 import { DynamicModule, Module } from '@nestjs/common';
-import { ConsoleModule } from 'nestjs-console';
+import { ConsoleModule } from '../../nestjs-console';
 import { Extracti18nModule } from '../extract-i18n/extract-i18n.module';
 import { GettextModule } from '../gettext/gettext.module';
 import { UtilsModule } from '../utils/utils.module';

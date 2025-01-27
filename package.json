@@ -1,7 +1,7 @@
 {
   "name": "rucken",
   "description": "Console tools and scripts for nx and not only that I (EndyKaufman) use to automate the workflow and speed up the development process",
-  "version": "4.13.1",
+  "version": "4.14.0",
   "license": "MIT",
   "author": "EndyKaufman <admin@site15.ru>",
   "keywords": [
@@ -65,7 +65,7 @@
     "@electric-sql/pglite": "0.2.15",
     "@nestjs/testing": "^9",
     "@nestjs/platform-express": "^9",
-    "@ngneat/transloco-keys-manager": "^3.4.2",
+    "@ngneat/transloco-keys-manager": "3.4.2",
     "@ngneat/transloco-scoped-libs": "3.0.4",
     "@nrwl/cli": "14.6.5",
     "@nrwl/eslint-plugin-nx": "14.6.5",
@@ -90,7 +90,6 @@
     "jest": "29.7.0",
     "lint-staged": "13.0.3",
     "log4js": "6.9.1",
-    "nestjs-console": "9.0.0",
     "nx": "14.6.5",
     "prettier": "2.7.1",
     "recursive-readdir": "2.2.3",
@@ -103,9 +102,9 @@
     "typescript": "4.7.4"
   },
   "dependencies": {
-    "crc-32": "1.2.2",
-    "@nestjs/common": "^9",
-    "@nestjs/core": "^9",
+    "commander": "11.0.0",
+    "@nestjs/common": "9.0.0",
+    "@nestjs/core": "9.0.0",
     "case-anything": "2.1.10",
     "class-validator-multi-lang": "^0.140.1",
     "connection-string": "4.3.5",
@@ -121,7 +120,6 @@
     "pluralize": "8.0.0",
     "reflect-metadata": "0.1.13",
     "rxjs": "7.1.0",
-    "source-map-support": "0.5.21",
     "tslib": "^2.3.0"
   },
   "standard-version": {

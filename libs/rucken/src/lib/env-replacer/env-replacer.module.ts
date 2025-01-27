@@ -1,5 +1,5 @@
 import { DynamicModule, Module } from '@nestjs/common';
-import { ConsoleModule } from 'nestjs-console';
+import { ConsoleModule } from '../../nestjs-console';
 import { UtilsModule } from '../utils/utils.module';
 import { EnvReplacerCommands } from './env-replacer.commands';
 

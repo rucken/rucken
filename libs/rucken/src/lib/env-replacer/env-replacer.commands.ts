@@ -1,4 +1,4 @@
-import { Command, Console } from 'nestjs-console';
+import { Command, Console } from '../../nestjs-console';
 import { UtilsService } from '../utils/utils.service';
 
 @Console()

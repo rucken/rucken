@@ -152,25 +152,6 @@ Options:
   -h, --help                      display help for command
 ```
 
-## migrate - database migration tool, NodeJS version of Java migration tool - flyway, supported databases: PostrgeSQL
-
-> npx rucken "migrate" "--help"
-
-```sh
-Usage: rucken copy-paste|cp [options]
-
-database migration tool, NodeJS version of Java migration tool - flyway, supported databases: PostrgeSQL
-
-Options:
-  -dry,--dry-run [boolean]               show content of migrations without apply them in database (default: false)
-  -db,--database-url [strings]           database url for connect (example:
-                                         postgres://POSTGRES_USER:POSTGRES_PASSWORD@localhost:POSTGRES_PORT/POSTGRES_DATABASE?schema=public)
-  -l,--locations [strings]               locations with migration files (default: migrations)
-  -t,--historyTable [strings]            history table with states of migration (default: __migrations)
-  -f,--sql-migration-suffixes [strings]  extension of migration files (default: .sql)
-  -h, --help                             display help for command
-```
-
 ## License
 
 MIT

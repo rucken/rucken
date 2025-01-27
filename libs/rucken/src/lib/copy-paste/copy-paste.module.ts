@@ -1,8 +1,8 @@
 import { DynamicModule, Module } from '@nestjs/common';
-import { ConsoleModule } from 'nestjs-console';
 import { UtilsModule } from '../utils/utils.module';
 import { CopyPasteCommands } from './copy-paste.commands';
 import { CopyPasteService } from './copy-paste.service';
+import { ConsoleModule } from '../../nestjs-console';
 
 @Module({
   imports: [ConsoleModule, UtilsModule],
