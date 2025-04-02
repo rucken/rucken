@@ -2,6 +2,12 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [4.16.0](https://github.com/rucken/rucken/compare/v4.15.0...v4.16.0) (2025-04-02)
+
+### Features
+
+- removed the postgres command since I moved it to https://github.com/EndyKaufman/pg-tools/tree/master/libs/pg-create-db ([127f106](https://github.com/rucken/rucken/commit/127f106e4b7a8e93fd59c090d00074db7271b8a6))
+
 ## [4.15.0](https://github.com/rucken/rucken/compare/v4.13.1...v4.15.0) (2025-01-27)
 
 ### Features
