@@ -94,27 +94,6 @@ Options:
   -h, --help                               display help for command
 ```
 
-## postgres - application database creator
-
-> npx rucken "postgres" "--help"
-
-```sh
-Usage: rucken postgres [options]
-
-postgres application database creator
-
-Options:
-  -r,--root-database-url [strings]       database url for connect as root user (example:
-                                         postgres://ROOT_POSTGRES_USER:ROOT_POSTGRES_PASSWORD@localhost:POSTGRES_PORT/postgres?schema=public)
-  -a,--app-database-url [strings]        application database url used for create new database (example:
-                                         postgres://POSTGRES_USER:POSTGRES_PASSWORD@localhost:POSTGRES_PORT/POSTGRES_DATABASE?schema=public)
-  -fu,--force-change-username [boolean]  force rename username if one exists in database for app-database-url
-                                         excluding root (default: false)
-  -fp,--force-change-password [boolean]  force change password of specified app-database-url (default: false)
-  -d,--drop-app-database [boolean]       drop application database before try create it (default: false)
-  -h, --help                             display help for command
-```
-
 ## env-replacer - recursive replace input value with process environment values
 
 > npx rucken "env-replacer" "--help"

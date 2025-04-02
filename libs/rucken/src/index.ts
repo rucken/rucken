@@ -22,7 +22,6 @@ export * from './lib/migrate/migrate.module';
 export * from './lib/postgres/postgres.commands';
 export * from './lib/postgres/postgres.config';
 export * from './lib/postgres/postgres.module';
-export * from './lib/postgres/postgres.service';
 export * from './lib/prepare/prepare.commands';
 export * from './lib/prepare/prepare.module';
 export * from './lib/tools/make-ts-list.commands';

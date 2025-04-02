@@ -1,7 +1,6 @@
 import { Command, Console } from '../../nestjs-console';
 import { UtilsService } from '../utils/utils.service';
 import { DEFAULT_POSTGRES_CONFIG } from './postgres.config';
-import { PostgresService } from './postgres.service';
 
 @Console()
 export class PostgresCommands {
@@ -9,10 +8,7 @@ export class PostgresCommands {
     DEFAULT_POSTGRES_CONFIG
   ).postgres;
 
-  constructor(
-    private readonly postgresService: PostgresService,
-    private readonly utilsService: UtilsService
-  ) {}
+  constructor(private readonly utilsService: UtilsService) {}
 
   @Command({
     command: 'postgres',
@@ -58,14 +54,8 @@ export class PostgresCommands {
     forceChangePassword?: boolean;
     dropAppDatabase?: boolean;
   }) {
-    this.postgresService.setLogger(PostgresService.title);
-    await this.postgresService.postgres({
-      dropAppDatabase: dropAppDatabase || this.postgresConfig.dropAppDatabase,
-      rootDatabaseUrl,
-      appDatabaseUrl,
-      forceChangeUsername,
-      forceChangePassword,
-      extensions: this.postgresConfig.extensions,
-    });
+    throw new Error(
+      'The postgres application database creator has been moved to the project https://github.com/EndyKaufman/pg-tools and is published as a console utility https://www.npmjs.com/package/pg-create-db'
+    );
   }
 }

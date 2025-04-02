@@ -16,7 +16,6 @@
         "make-ts-list",
         "index",
         "version-updater",
-        "postgres",
         "env",
         "replace",
         "change",
@@ -55,7 +54,6 @@
         "@ngneat/transloco-keys-manager": "3.4.2",
         "@ngneat/transloco-scoped-libs": "3.0.4",
         "lodash.mergewith": "4.6.2",
-        "connection-string": "4.3.5",
         "rxjs": "7.1.0",
         "case-anything": "2.1.10",
         "pluralize": "8.0.0",
@@ -63,10 +61,6 @@
         "gettext-extractor": "3.8.0",
         "gettext-parser": "7.0.1",
         "node-gettext": "3.0.0"
-    },
-    "peerDependencies": {
-        "pg": "8.8.0",
-        "pg-promise": "10.12.0"
     },
     "i18n": [
         {

@@ -25,7 +25,6 @@
           "@ngneat/transloco-keys-manager",
           "@ngneat/transloco-scoped-libs",
           "lodash.mergewith",
-          "connection-string",
           "rxjs",
           "case-anything",
           "pluralize"
