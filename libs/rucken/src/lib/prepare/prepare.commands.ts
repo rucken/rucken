@@ -55,6 +55,10 @@ export class PrepareCommands {
         description: 'update package version (default: true)',
       },
       {
+        flags: '-udv,--update-dependencies-version [boolean]',
+        description: 'update dependencies version (default: true)',
+      },
+      {
         flags: '-epnp,--e2e-project-name-parts [string]',
       },
       {
@@ -70,6 +74,7 @@ export class PrepareCommands {
     locales,
     resetUnusedTranslates,
     updatePackageVersion,
+    updateDependenciesVersion,
     clientProjectNameParts,
     e2eProjectNameParts,
     serverProjectNameParts,
@@ -78,6 +83,7 @@ export class PrepareCommands {
     locales: string;
     resetUnusedTranslates?: string;
     updatePackageVersion?: string;
+    updateDependenciesVersion?: string;
     clientProjectNameParts?: string;
     e2eProjectNameParts?: string;
     serverProjectNameParts?: string;
@@ -103,6 +109,11 @@ export class PrepareCommands {
       updatePackageVersion: updatePackageVersion
         ? updatePackageVersion.toUpperCase().trim() === 'TRUE'
         : this.versionUpdaterConfig.updatePackageVersion,
+      updateDependenciesVersion: updateDependenciesVersion
+        ? updateDependenciesVersion.toUpperCase().trim() === 'TRUE'
+          ? true
+          : false
+        : this.versionUpdaterConfig.updateDependenciesVersion,
     });
 
     this.extracti18nService.setLogger(`prepare: ${Extracti18nService.title}`);

@@ -18,8 +18,10 @@ export class VersionUpdaterService {
 
   versionUpdaterHandler({
     updatePackageVersion,
+    updateDependenciesVersion,
   }: {
     updatePackageVersion: boolean;
+    updateDependenciesVersion: boolean;
   }): void {
     this.logger.info('Start update versions...');
     this.logger.debug(
@@ -41,6 +43,7 @@ export class VersionUpdaterService {
           rootConfigPath,
           appConfigPath: `${projects[projectName].root}/package.json`,
           updatePackageVersion,
+          updateDependenciesVersion,
         });
       });
     this.logger.info('End of update versions...');
@@ -50,10 +53,12 @@ export class VersionUpdaterService {
     rootConfigPath,
     appConfigPath,
     updatePackageVersion,
+    updateDependenciesVersion,
   }: {
     rootConfigPath: string;
     appConfigPath: string;
     updatePackageVersion: boolean;
+    updateDependenciesVersion: boolean;
   }) {
     this.logger.debug(
       `Start for ${JSON.stringify({
@@ -79,33 +84,42 @@ export class VersionUpdaterService {
     try {
       content = readFileSync(appConfigPath).toString();
       folderConfig = JSON.parse(content);
+      let save = false;
       if (updatePackageVersion) {
         folderConfig['version'] = rootConfig['version'];
+        save = true;
       }
-      if (folderConfig['peerDependencies']) {
-        const peerDependenciesKeys = Object.keys(
-          folderConfig['peerDependencies']
-        );
-        peerDependenciesKeys.forEach((key) => {
-          if (rootConfig['dependencies'][key]) {
-            folderConfig['peerDependencies'][key] =
-              rootConfig['dependencies'][key];
-          }
-        });
+      if (updateDependenciesVersion) {
+        if (folderConfig['peerDependencies']) {
+          const peerDependenciesKeys = Object.keys(
+            folderConfig['peerDependencies']
+          );
+          peerDependenciesKeys.forEach((key) => {
+            save = true;
+            if (rootConfig['dependencies'][key]) {
+              folderConfig['peerDependencies'][key] =
+                rootConfig['dependencies'][key];
+            }
+          });
+        }
+        if (folderConfig['dependencies']) {
+          const dependenciesKeys = Object.keys(folderConfig['dependencies']);
+          dependenciesKeys.forEach((key) => {
+            save = true;
+            if (rootConfig['dependencies'][key]) {
+              folderConfig['dependencies'][key] =
+                rootConfig['dependencies'][key];
+            }
+            if (rootConfig['devDependencies'][key]) {
+              folderConfig['dependencies'][key] =
+                rootConfig['devDependencies'][key];
+            }
+          });
+        }
       }
-      if (folderConfig['dependencies']) {
-        const dependenciesKeys = Object.keys(folderConfig['dependencies']);
-        dependenciesKeys.forEach((key) => {
-          if (rootConfig['dependencies'][key]) {
-            folderConfig['dependencies'][key] = rootConfig['dependencies'][key];
-          }
-          if (rootConfig['devDependencies'][key]) {
-            folderConfig['dependencies'][key] =
-              rootConfig['devDependencies'][key];
-          }
-        });
+      if (save) {
+        writeFileSync(appConfigPath, JSON.stringify(folderConfig, null, 4));
       }
-      writeFileSync(appConfigPath, JSON.stringify(folderConfig, null, 4));
     } catch (error) {
       this.logger.info('Error', `Wrong body of file ${appConfigPath}`);
     }

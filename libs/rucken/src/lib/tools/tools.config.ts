@@ -5,6 +5,7 @@ export interface ToolsConfig {
   };
   versionUpdater: {
     updatePackageVersion: boolean;
+    updateDependenciesVersion: boolean;
   };
 }
 
@@ -24,5 +25,6 @@ export const DEFAULT_TOOLS_CONFIG: ToolsConfig = {
   },
   versionUpdater: {
     updatePackageVersion: true,
+    updateDependenciesVersion: true,
   },
 };

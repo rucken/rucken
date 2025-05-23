@@ -22,18 +22,31 @@ export class VersionUpdaterCommands {
         flags: '-upv,--update-package-version [boolean]',
         description: 'update package version (default: true)',
       },
+      {
+        flags: '-udv,--update-dependencies-version [boolean]',
+        description: 'update dependencies version (default: true)',
+      },
     ],
   })
   async versionUpdater({
     updatePackageVersion,
+    updateDependenciesVersion,
   }: {
     updatePackageVersion?: string;
+    updateDependenciesVersion?: string;
   } = {}) {
     this.versionUpdaterService.setLogger(VersionUpdaterService.title);
     this.versionUpdaterService.versionUpdaterHandler({
       updatePackageVersion: updatePackageVersion
         ? updatePackageVersion.toUpperCase().trim() === 'TRUE'
+          ? true
+          : false
         : this.config.updatePackageVersion,
+      updateDependenciesVersion: updateDependenciesVersion
+        ? updateDependenciesVersion.toUpperCase().trim() === 'TRUE'
+          ? true
+          : false
+        : this.config.updateDependenciesVersion,
     });
   }
 }
