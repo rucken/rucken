@@ -2,6 +2,12 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [4.16.1](https://github.com/rucken/rucken/compare/v4.16.0...v4.16.1) (2025-05-23)
+
+### Bug Fixes
+
+- **prepare,version-updater:** add options for skip update dependencies versions ([e0b8e8d](https://github.com/rucken/rucken/commit/e0b8e8de6c7c0db7edfef87a54ddf829361b4508))
+
 ## [4.16.0](https://github.com/rucken/rucken/compare/v4.15.0...v4.16.0) (2025-04-02)
 
 ### Features
