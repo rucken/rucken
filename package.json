@@ -88,7 +88,7 @@
     "lint-staged": "13.0.3",
     "log4js": "6.9.1",
     "nx": "14.6.5",
-    "prettier": "2.7.1",
+    "prettier": "^3.5.3",
     "recursive-readdir": "2.2.3",
     "replace-ext": "2.0.0",
     "sort-paths": "1.1.1",
