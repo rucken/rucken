@@ -1,0 +1,35 @@
+name: Create GitHub Release
+
+on:
+  workflow_dispatch:
+    branches:
+      - master
+
+jobs:
+  manual-publish:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js 23.11.1 to publish to npmjs.org
+        uses: actions/setup-node@v1
+        with:
+          node-version: '23.11.1'
+          registry-url: 'https://registry.npmjs.org'
+
+      - name: Install Packages
+        run: npm i
+
+      - name: Build
+        run: npm run build
+
+      - name: Generate Release Body
+        run: npx extract-changelog-release > RELEASE_BODY.md
+
+      - name: Create GitHub Release
+        uses: ncipollo/release-action@v1
+        with:
+          bodyFile: 'RELEASE_BODY.md'
+          token: ${{ secrets.GITHUB_TOKEN }}
