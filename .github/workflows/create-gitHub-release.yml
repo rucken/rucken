@@ -6,7 +6,7 @@ on:
       - master
 
 jobs:
-  manual-publish:
+  create-gitHub-release:
     runs-on: ubuntu-latest
 
     steps:
