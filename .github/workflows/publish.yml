@@ -4,6 +4,9 @@ on:
   push:
     tags:
       - v*
+  workflow_dispatch:
+    branches:
+      - master
 
 jobs:
   publish:
@@ -25,10 +28,11 @@ jobs:
       - name: Build
         run: npm run build
 
-      # - name: Test
-      #   run: npm run test
-      #   env:
-      #     CI: true
+      - name: Test
+        if: github.event_name != 'workflow_dispatch' && !contains(github.event.head_commit.message, '[skip test]')
+        run: npm run test
+        env:
+          CI: true
 
       - name: Generate Release Body
         run: npx extract-changelog-release > RELEASE_BODY.md
