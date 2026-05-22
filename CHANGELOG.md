@@ -2,6 +2,20 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [4.17.0](https://github.com/rucken/rucken/compare/v4.16.1...v4.17.0) (2026-05-22)
+
+
+### Features
+
+* update all deps ([42d6dc1](https://github.com/rucken/rucken/commit/42d6dc1a71c6d4519d25c83b1880025051db2c35))
+* update all deps ([c99aa0d](https://github.com/rucken/rucken/commit/c99aa0d239dfb04b87a82b36069979a64848d6f1))
+* update all deps ([a97160e](https://github.com/rucken/rucken/commit/a97160efd48ee2bad87459b6558129ab603bcad6))
+
+
+### Bug Fixes
+
+* format code ([88f6cc5](https://github.com/rucken/rucken/commit/88f6cc58d9bd5b69673104b9c01fadf3c24615ed))
+
 ### [4.16.1](https://github.com/rucken/rucken/compare/v4.16.0...v4.16.1) (2025-05-23)
 
 ### Bug Fixes
