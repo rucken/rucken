@@ -57,7 +57,6 @@ npm run rucken -- copy-paste --find=new --replace=new1-user --path=./libs/featur
 export START_ENV_VARIABLE="examples:"
 npm run rucken -- copy-paste --find=cat-dog --replace=human-ufo --path=./libs/cat-dog --replace-envs=true
 
-tsc --noEmit -p tsconfig.base.json
 npm run nx -- run-many --target=build --all
 
 # mkdir ./integrations/app/src/app/new-api
