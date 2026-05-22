@@ -5,13 +5,15 @@ import { VersionUpdaterService } from './version-updater.service';
 
 @Console()
 export class VersionUpdaterCommands {
-  private readonly config =
-    this.utilsService.getRuckenConfig(DEFAULT_TOOLS_CONFIG).versionUpdater;
+  private config: Record<string, unknown> = {};
 
   constructor(
     private readonly versionUpdaterService: VersionUpdaterService,
-    private readonly utilsService: UtilsService
-  ) {}
+    private readonly utilsService: UtilsService,
+  ) {
+    this.config = this.utilsService.getRuckenConfig(DEFAULT_TOOLS_CONFIG)
+      .versionUpdater as Record<string, unknown>;
+  }
 
   @Command({
     alias: 'vu',
@@ -34,19 +36,20 @@ export class VersionUpdaterCommands {
   }: {
     updatePackageVersion?: string;
     updateDependenciesVersion?: string;
-  } = {}) {
+  } = {}): Promise<void> {
     this.versionUpdaterService.setLogger(VersionUpdaterService.title);
+
+    const shouldUpdatePackageVersion = updatePackageVersion
+      ? updatePackageVersion.toUpperCase().trim() === 'TRUE'
+      : (this.config.updatePackageVersion as boolean);
+
+    const shouldUpdateDependenciesVersion = updateDependenciesVersion
+      ? updateDependenciesVersion.toUpperCase().trim() === 'TRUE'
+      : (this.config.updateDependenciesVersion as boolean);
+
     this.versionUpdaterService.versionUpdaterHandler({
-      updatePackageVersion: updatePackageVersion
-        ? updatePackageVersion.toUpperCase().trim() === 'TRUE'
-          ? true
-          : false
-        : this.config.updatePackageVersion,
-      updateDependenciesVersion: updateDependenciesVersion
-        ? updateDependenciesVersion.toUpperCase().trim() === 'TRUE'
-          ? true
-          : false
-        : this.config.updateDependenciesVersion,
+      updatePackageVersion: shouldUpdatePackageVersion,
+      updateDependenciesVersion: shouldUpdateDependenciesVersion,
     });
   }
 }

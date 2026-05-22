@@ -5,11 +5,13 @@ import { DEFAULT_MIGRATE_CONFIG } from './migrate.config';
 
 @Console()
 export class MigrateCommands {
-  private readonly migrateConfig = this.utilsService.getRuckenConfig(
-    DEFAULT_MIGRATE_CONFIG
-  ).migrate;
+  private migrateConfig: Record<string, unknown> = {};
 
-  constructor(private readonly utilsService: UtilsService) {}
+  constructor(private readonly utilsService: UtilsService) {
+    this.migrateConfig = this.utilsService.getRuckenConfig(
+      DEFAULT_MIGRATE_CONFIG,
+    ).migrate as Record<string, unknown>;
+  }
 
   @Command({
     command: 'migrate',
@@ -55,7 +57,7 @@ export class MigrateCommands {
     sqlMigrationSuffixes?: string;
   }) {
     throw new Error(
-      'The migration command has been moved to the project https://github.com/EndyKaufman/pg-tools and is published as a console utility https://www.npmjs.com/package/pg-flyway'
+      'The migration command has been moved to the project https://github.com/EndyKaufman/pg-tools and is published as a console utility https://www.npmjs.com/package/pg-flyway',
     );
   }
 }

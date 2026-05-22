@@ -4,11 +4,13 @@ import { DEFAULT_POSTGRES_CONFIG } from './postgres.config';
 
 @Console()
 export class PostgresCommands {
-  private readonly postgresConfig = this.utilsService.getRuckenConfig(
-    DEFAULT_POSTGRES_CONFIG
-  ).postgres;
+  private postgresConfig: Record<string, unknown> = {};
 
-  constructor(private readonly utilsService: UtilsService) {}
+  constructor(private readonly utilsService: UtilsService) {
+    this.postgresConfig = this.utilsService.getRuckenConfig(
+      DEFAULT_POSTGRES_CONFIG,
+    ).postgres as Record<string, unknown>;
+  }
 
   @Command({
     command: 'postgres',
@@ -42,11 +44,11 @@ export class PostgresCommands {
     ],
   })
   async postgres({
-    rootDatabaseUrl,
-    appDatabaseUrl,
-    forceChangeUsername,
-    forceChangePassword,
-    dropAppDatabase,
+    rootDatabaseUrl: _rootDatabaseUrl,
+    appDatabaseUrl: _appDatabaseUrl,
+    forceChangeUsername: _forceChangeUsername,
+    forceChangePassword: _forceChangePassword,
+    dropAppDatabase: _dropAppDatabase,
   }: {
     rootDatabaseUrl: string;
     appDatabaseUrl: string;
@@ -55,7 +57,7 @@ export class PostgresCommands {
     dropAppDatabase?: boolean;
   }) {
     throw new Error(
-      'The postgres application database creator has been moved to the project https://github.com/EndyKaufman/pg-tools and is published as a console utility https://www.npmjs.com/package/pg-create-db'
+      'The postgres application database creator has been moved to the project https://github.com/EndyKaufman/pg-tools and is published as a console utility https://www.npmjs.com/package/pg-create-db',
     );
   }
 }

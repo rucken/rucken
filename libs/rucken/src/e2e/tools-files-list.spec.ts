@@ -1,61 +1,50 @@
 import { readFileSync } from 'fs';
 import { resolve } from 'path';
 
+const INTEGRATIONS_APP = resolve(
+  __dirname,
+  '..',
+  '..',
+  '..',
+  '..',
+  'integrations',
+  'app',
+);
+
 describe('Tools make-ts-list (e2e)', () => {
   it('libs/feature-client', () => {
     const makeTsList = readFileSync(
-      resolve(
-        __dirname,
-        '..',
-        '..',
-        '..',
-        '..',
-        'integrations/app/libs/feature/client/src/index.ts'
-      )
+      resolve(INTEGRATIONS_APP, 'libs/feature/client/src/index.ts'),
     )
       .toString()
       .split('\n');
     expect(makeTsList[0]).toEqual(`export * from './lib/feature-client-user';`);
     expect(makeTsList[1]).toEqual(
-      `export * from './lib/feature-client.module';`
+      `export * from './lib/feature-client.module';`,
     );
   });
 
   it('libs/feature-server', () => {
     const makeTsList = readFileSync(
-      resolve(
-        __dirname,
-        '..',
-        '..',
-        '..',
-        '..',
-        'integrations/app/libs/feature/server/src/index.ts'
-      )
+      resolve(INTEGRATIONS_APP, 'libs/feature/server/src/index.ts'),
     )
       .toString()
       .split('\n');
     expect(
       makeTsList.find(
-        (line) => line === `export * from './lib/feature-server-user';`
-      )
+        (line) => line === `export * from './lib/feature-server-user';`,
+      ),
     ).not.toBeUndefined();
     expect(
       makeTsList.find(
-        (line) => line === `export * from './lib/feature-server.module';`
-      )
+        (line) => line === `export * from './lib/feature-server.module';`,
+      ),
     ).not.toBeUndefined();
   });
 
   it('libs/feature-common', () => {
     const makeTsList = readFileSync(
-      resolve(
-        __dirname,
-        '..',
-        '..',
-        '..',
-        '..',
-        'integrations/app/libs/feature/common/src/index.ts'
-      )
+      resolve(INTEGRATIONS_APP, 'libs/feature/common/src/index.ts'),
     )
       .toString()
       .split('\n');
@@ -74,8 +63,8 @@ describe('Tools make-ts-list (e2e)', () => {
           '..',
           '..',
           '..',
-          'integrations/apps/client/src/index.ts'
-        )
+          'integrations/apps/client/src/index.ts',
+        ),
       )
         .toString()
         .split('\n');
@@ -94,8 +83,8 @@ describe('Tools make-ts-list (e2e)', () => {
           '..',
           '..',
           '..',
-          'integrations/apps/server/src/index.ts'
-        )
+          'integrations/apps/server/src/index.ts',
+        ),
       )
         .toString()
         .split('\n');
@@ -114,8 +103,8 @@ describe('Tools make-ts-list (e2e)', () => {
           '..',
           '..',
           '..',
-          'integrations/apps/cli/src/index.ts'
-        )
+          'integrations/apps/cli/src/index.ts',
+        ),
       )
         .toString()
         .split('\n');

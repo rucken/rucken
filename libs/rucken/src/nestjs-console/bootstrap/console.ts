@@ -1,7 +1,7 @@
 /**
  * @module BootstrapConsole
  */
-import { INestApplicationContext } from '@nestjs/common';
+import { INestApplicationContext, Type } from '@nestjs/common';
 import { NestFactory } from '@nestjs/core';
 
 import {
@@ -18,8 +18,8 @@ export class BootstrapConsole extends AbstractBootstrapConsole<
 > {
   create(): Promise<INestApplicationContext> {
     return NestFactory.createApplicationContext(
-      this.options.module,
-      this.options.contextOptions
+      this.options.module as unknown as Type,
+      this.options.contextOptions,
     );
   }
 }

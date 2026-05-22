@@ -34,9 +34,30 @@ jobs:
         run: npx extract-changelog-release > RELEASE_BODY.md
 
       - name: Publish to NPM
-        run: npm run publish
+        run: |
+          max_retries=3
+          retry_count=0
+          while [ $retry_count -lt $max_retries ]; do
+            error_output=$(npm run publish 2>&1)
+            exit_code=$?
+            if [ $exit_code -eq 0 ]; then
+              echo "Publish succeeded on attempt $((retry_count + 1))"
+              exit 0
+            fi
+            retry_count=$((retry_count + 1))
+            echo "Publish failed on attempt $retry_count with exit code $exit_code"
+            echo "Error output:"
+            echo "$error_output"
+            if [ $retry_count -lt $max_retries ]; then
+              echo "Retrying in 30 seconds..."
+              sleep 30
+            fi
+          done
+          echo "Publish failed after $max_retries attempts"
+          exit 1
         env:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+          NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
 
       - name: Create GitHub Release
         uses: ncipollo/release-action@v1

@@ -1,17 +1,29 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
 import { po, mo } from 'gettext-parser';
+// @ts-expect-error - No type definitions available for gettext-converter
 import { i18next2js } from 'gettext-converter';
 
-export function i18nextToPo(locale, body, options = {}) {
-  return i18nextToGettext(locale, body, po, options);
+export function i18nextToPo(
+  locale: string,
+  body: string | Buffer,
+  options = {},
+): Promise<Buffer> {
+  return i18nextToGettext(locale, body.toString('utf8'), po, options);
 }
 
-export function i18nextToPot(locale, body, options = {}) {
-  return i18nextToGettext(locale, body, po, options);
+export function i18nextToPot(
+  locale: string,
+  body: string | Buffer,
+  options = {},
+): Promise<Buffer> {
+  return i18nextToGettext(locale, body.toString('utf8'), po, options);
 }
 
-export function i18nextToMo(locale, body, options = {}) {
-  return i18nextToGettext(locale, body, mo, options);
+export function i18nextToMo(
+  locale: string,
+  body: string | Buffer,
+  options = {},
+): Promise<Buffer> {
+  return i18nextToGettext(locale, body.toString('utf8'), mo, options);
 }
 
 function i18nextToGettext(
@@ -20,10 +32,10 @@ function i18nextToGettext(
   parser: {
     compile: (
       arg0: any,
-      arg1: { foldLength?: undefined } | { foldLength: any }
+      arg1: { foldLength?: undefined } | { foldLength: any },
     ) => any;
   },
-  options: { foldLength?: any; project?: any }
+  options: { foldLength?: any; project?: any },
 ) {
   const parserOptions =
     options.foldLength === undefined ? {} : { foldLength: options.foldLength };
@@ -38,9 +50,9 @@ function i18nextToGettext(
           ...options,
           project: options.project ?? 'i18next-conv',
           setLocaleAsLanguageHeader: false,
-        }
+        },
       ),
-      parserOptions
-    )
+      parserOptions,
+    ),
   );
 }

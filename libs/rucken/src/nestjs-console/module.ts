@@ -24,12 +24,12 @@ export class ConsoleModule {
 
   public async scan(
     app: INestApplicationContext,
-    includedModules?: unknown[]
+    includedModules?: unknown[],
   ): Promise<void> {
     const scanResponse = await this.scanner.scan(app, includedModules);
     const cli = this.service.getRootCli();
     scanResponse.forEach(({ methods, instance, metadata }) => {
-      let parent: commander.Command = cli;
+      let parent: commander.Command;
       let subCli = this.service.getCli(metadata.command);
       if (subCli !== undefined) {
         parent = subCli;
@@ -49,7 +49,7 @@ export class ConsoleModule {
         this.service.createCommand(
           method.metadata,
           { instance, methodName: method.name },
-          parent
+          parent,
         );
       }
     });

@@ -90,19 +90,37 @@ export class ConsoleService {
    * Wrap an action handler to work with promise.
    */
   static createHandler(action: CommandActionHandler): CommandActionWrapper {
-    return async (...args: any[]): Promise<CommandResponse> => {
-      const command: commander.Command = args.find(
-        (c) => c instanceof commander.Command
+    return async (...args: unknown[]): Promise<CommandResponse> => {
+      const command = args.find(
+        (c): c is commander.Command => c instanceof commander.Command,
       );
-      let data: CommandResponse;
-      if (typeof action === 'object') {
-        data = action.instance[action.methodName](...args);
-      } else {
-        data = action(...args);
+
+      if (!command) {
+        throw new Error('Command instance not found in arguments');
       }
+
+      let data: unknown;
+      if (
+        typeof action === 'object' &&
+        'instance' in action &&
+        'methodName' in action
+      ) {
+        const instance = action.instance as Record<string, unknown>;
+        const method = instance[action.methodName] as (
+          ...args: unknown[]
+        ) => unknown;
+        // Bind the method to the instance to preserve 'this' context
+        data = method.call(instance, ...args);
+      } else if (typeof action === 'function') {
+        data = action(...args);
+      } else {
+        throw new Error('Invalid action handler type');
+      }
+
       if (data instanceof Promise) {
         data = await data;
       }
+
       return { data, command };
     };
   }
@@ -111,15 +129,23 @@ export class ConsoleService {
    * Execute the cli
    */
   async init(argv: string[]): Promise<CommandResponse> {
-    const userArgs = (this.cli as any)._prepareUserArgs(argv);
+    const userArgs = (
+      this.cli as commander.Command & {
+        _prepareUserArgs: (argv: string[]) => string[];
+      }
+    )._prepareUserArgs(argv);
     return new Promise((resolve, reject) => {
-      this.responseListener.once('response', (res) => {
+      this.responseListener.once('response', (res: CommandResponse) => {
         resolve(res);
       });
-      this.responseListener.once('error', (error) => {
+      this.responseListener.once('error', (error: Error) => {
         reject(error);
       });
-      (this.cli as any)._parseCommand([], userArgs);
+      (
+        this.cli as commander.Command & {
+          _parseCommand: (args: string[], userArgs: string[]) => void;
+        }
+      )._parseCommand([], userArgs);
     });
   }
 
@@ -134,12 +160,12 @@ export class ConsoleService {
     options: CreateCommandOptions,
     handler: CommandActionHandler,
     parent: commander.Command,
-    commanderOptions?: commander.CommandOptions
+    commanderOptions?: commander.CommandOptions,
   ): commander.Command {
     const args = options.command.split(' ');
     const commandNames = args[0].split('.');
     const command = ConsoleService.createCli(
-      commandNames[commandNames.length - 1]
+      commandNames[commandNames.length - 1],
     );
 
     if (args.length > 1) {
@@ -154,36 +180,27 @@ export class ConsoleService {
     }
     if (Array.isArray(options.options)) {
       for (const opt of options.options) {
-        let method = 'option';
-        if (opt.required === true) {
-          method = 'requiredOption';
-        }
-        command[method](
+        const method = opt.required === true ? 'requiredOption' : 'option';
+        (command as any)[method](
           opt.flags,
           opt.description,
           opt.fn || opt.defaultValue,
-          opt.defaultValue
+          opt.defaultValue as unknown,
         );
       }
     }
-    // here as any is required cause commander bad typing on action for promise
-    command.action(async (...args) => {
+
+    command.action(async (...args: unknown[]) => {
       try {
         const res = await ConsoleService.createHandler(handler)(...args);
         this.responseListener.emit('response', res);
-      } catch (e) {
-        this.responseListener.emit('error', e);
+      } catch (error) {
+        this.responseListener.emit('error', error);
       }
     });
 
-    // add the command to the parent
     parent.addCommand(command, commanderOptions);
-
-    // add the command to cli stack
     this.commands.set(this.getCommandFullName(command), command);
-
-    // eslint-disable-next-line @typescript-eslint/no-empty-function
-    command.on('response', (res) => {});
 
     return command;
   }
@@ -196,16 +213,18 @@ export class ConsoleService {
    */
   createGroupCommand(
     options: CreateCommandOptions,
-    parent: commander.Command
+    parent: commander.Command,
   ): commander.Command {
-    if ((parent as any)._args.length > 0) {
+    const parentCommand = parent as commander.Command & { _args: unknown[] };
+    if (parentCommand._args.length > 0) {
       throw new Error(
-        'Sub commands cannot be applied to command with explicit args'
+        'Sub commands cannot be applied to command with explicit args',
       );
     }
+
     const commandNames = options.command.split('.');
     const command = ConsoleService.createCli(
-      commandNames[commandNames.length - 1]
+      commandNames[commandNames.length - 1],
     );
 
     if (options.description !== undefined) {
@@ -216,18 +235,16 @@ export class ConsoleService {
     }
     if (Array.isArray(options.options)) {
       for (const opt of options.options) {
-        let method = 'option';
-        if (opt.required === true) {
-          method = 'requiredOption';
-        }
-        command[method](
+        const method = opt.required === true ? 'requiredOption' : 'option';
+        (command as any)[method](
           opt.flags,
           opt.description,
           opt.fn || opt.defaultValue,
-          opt.defaultValue
+          opt.defaultValue as unknown,
         );
       }
     }
+
     parent.addCommand(command);
     this.commands.set(this.getCommandFullName(command), command);
     return command;

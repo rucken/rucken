@@ -1,19 +1,22 @@
 import { existsSync, readFileSync } from 'fs';
 import { resolve } from 'path';
 
+const INTEGRATIONS_APP = resolve(
+  __dirname,
+  '..',
+  '..',
+  '..',
+  '..',
+  'integrations',
+  'app',
+);
+
 describe('Extract-i18n (e2e)', () => {
   it('libs/feature-client', () => {
     let content = JSON.parse(
       readFileSync(
-        resolve(
-          __dirname,
-          '..',
-          '..',
-          '..',
-          '..',
-          'integrations/app/libs/feature/client/package.json'
-        )
-      ).toString()
+        resolve(INTEGRATIONS_APP, 'libs/feature/client/package.json'),
+      ).toString(),
     );
     expect(content.i18n).toMatchObject([
       {
@@ -29,14 +32,7 @@ describe('Extract-i18n (e2e)', () => {
     ]);
 
     content = readFileSync(
-      resolve(
-        __dirname,
-        '..',
-        '..',
-        '..',
-        '..',
-        'integrations/app/libs/feature/client/src/i18n/en.json'
-      )
+      resolve(INTEGRATIONS_APP, 'libs/feature/client/src/i18n/en.json'),
     ).toString();
     expect(JSON.parse(content)).toMatchObject({
       'client feature transloco message!': 'client feature transloco message!',
@@ -45,14 +41,7 @@ describe('Extract-i18n (e2e)', () => {
     });
 
     content = readFileSync(
-      resolve(
-        __dirname,
-        '..',
-        '..',
-        '..',
-        '..',
-        'integrations/app/libs/feature/client/src/i18n/en.po'
-      )
+      resolve(INTEGRATIONS_APP, 'libs/feature/client/src/i18n/en.po'),
     )
       .toString()
       .split('\n')
@@ -70,18 +59,11 @@ msgstr "FeatureClientUser Password"`
         .split(' ')
         .join('')
         .split('\n')
-        .join('')
+        .join(''),
     );
 
     content = readFileSync(
-      resolve(
-        __dirname,
-        '..',
-        '..',
-        '..',
-        '..',
-        'integrations/app/libs/feature/client/src/i18n/ru.json'
-      )
+      resolve(INTEGRATIONS_APP, 'libs/feature/client/src/i18n/ru.json'),
     ).toString();
     expect(JSON.parse(content)).toMatchObject({
       'client feature transloco message!': '',
@@ -90,14 +72,7 @@ msgstr "FeatureClientUser Password"`
     });
 
     content = readFileSync(
-      resolve(
-        __dirname,
-        '..',
-        '..',
-        '..',
-        '..',
-        'integrations/app/libs/feature/client/src/i18n/ru.po'
-      )
+      resolve(INTEGRATIONS_APP, 'libs/feature/client/src/i18n/ru.po'),
     )
       .toString()
       .split('\n')
@@ -115,18 +90,11 @@ msgstr ""`
         .split(' ')
         .join('')
         .split('\n')
-        .join('')
+        .join(''),
     );
 
     content = readFileSync(
-      resolve(
-        __dirname,
-        '..',
-        '..',
-        '..',
-        '..',
-        'integrations/app/libs/feature/client/src/i18n/template.pot'
-      )
+      resolve(INTEGRATIONS_APP, 'libs/feature/client/src/i18n/template.pot'),
     )
       .toString()
       .split('\n')
@@ -144,22 +112,15 @@ msgstr "FeatureClientUser Password"`
         .split(' ')
         .join('')
         .split('\n')
-        .join('')
+        .join(''),
     );
   });
 
   it('libs/feature-server', () => {
     const content = JSON.parse(
       readFileSync(
-        resolve(
-          __dirname,
-          '..',
-          '..',
-          '..',
-          '..',
-          'integrations/app/libs/feature/server/package.json'
-        )
-      ).toString()
+        resolve(INTEGRATIONS_APP, 'libs/feature/server/package.json'),
+      ).toString(),
     );
     expect(content.i18n).toMatchObject([
       {
@@ -176,43 +137,22 @@ msgstr "FeatureClientUser Password"`
 
     expect(
       existsSync(
-        resolve(
-          __dirname,
-          '..',
-          '..',
-          '..',
-          '..',
-          'integrations/app/libs/feature/server/src/i18n/en.json'
-        )
-      )
+        resolve(INTEGRATIONS_APP, 'libs/feature/server/src/i18n/en.json'),
+      ),
     ).toBeFalsy();
 
     expect(
       existsSync(
-        resolve(
-          __dirname,
-          '..',
-          '..',
-          '..',
-          '..',
-          'integrations/app/libs/feature/server/src/i18n/ru.json'
-        )
-      )
+        resolve(INTEGRATIONS_APP, 'libs/feature/server/src/i18n/ru.json'),
+      ),
     ).toBeFalsy();
   });
 
   it('libs/feature-common', () => {
     const content = JSON.parse(
       readFileSync(
-        resolve(
-          __dirname,
-          '..',
-          '..',
-          '..',
-          '..',
-          'integrations/app/libs/feature/common/package.json'
-        )
-      ).toString()
+        resolve(INTEGRATIONS_APP, 'libs/feature/common/package.json'),
+      ).toString(),
     );
     expect(content.i18n).toMatchObject([
       {
@@ -229,15 +169,8 @@ msgstr "FeatureClientUser Password"`
 
     expect(
       existsSync(
-        resolve(
-          __dirname,
-          '..',
-          '..',
-          '..',
-          '..',
-          'integrations/app/libs/feature/common/src/i18n/en.json'
-        )
-      )
+        resolve(INTEGRATIONS_APP, 'libs/feature/common/src/i18n/en.json'),
+      ),
     ).toBeFalsy();
   });
 
@@ -245,14 +178,7 @@ msgstr "FeatureClientUser Password"`
 
   it('apps/client', () => {
     let content = readFileSync(
-      resolve(
-        __dirname,
-        '..',
-        '..',
-        '..',
-        '..',
-        'integrations/app/apps/client/src/assets/i18n/en.json'
-      )
+      resolve(INTEGRATIONS_APP, 'apps/client/src/assets/i18n/en.json'),
     ).toString();
     expect(JSON.parse(content)).toMatchObject({
       'client transloco message!': 'client transloco message!',
@@ -261,14 +187,7 @@ msgstr "FeatureClientUser Password"`
     });
 
     content = readFileSync(
-      resolve(
-        __dirname,
-        '..',
-        '..',
-        '..',
-        '..',
-        'integrations/app/apps/client/src/assets/i18n/en.vendor.json'
-      )
+      resolve(INTEGRATIONS_APP, 'apps/client/src/assets/i18n/en.vendor.json'),
     ).toString();
     expect(JSON.parse(content)).toMatchObject({
       'feature-client': {
@@ -290,14 +209,7 @@ msgstr "FeatureClientUser Password"`
     });
 
     content = readFileSync(
-      resolve(
-        __dirname,
-        '..',
-        '..',
-        '..',
-        '..',
-        'integrations/app/apps/client/src/assets/i18n/en.po'
-      )
+      resolve(INTEGRATIONS_APP, 'apps/client/src/assets/i18n/en.po'),
     )
       .toString()
       .split('\n')
@@ -315,18 +227,11 @@ msgstr "Password"`
         .split(' ')
         .join('')
         .split('\n')
-        .join('')
+        .join(''),
     );
 
     content = readFileSync(
-      resolve(
-        __dirname,
-        '..',
-        '..',
-        '..',
-        '..',
-        'integrations/app/apps/client/src/assets/i18n/ru.json'
-      )
+      resolve(INTEGRATIONS_APP, 'apps/client/src/assets/i18n/ru.json'),
     ).toString();
     expect(JSON.parse(content)).toMatchObject({
       'client transloco message!': '',
@@ -335,14 +240,7 @@ msgstr "Password"`
     });
 
     content = readFileSync(
-      resolve(
-        __dirname,
-        '..',
-        '..',
-        '..',
-        '..',
-        'integrations/app/apps/client/src/assets/i18n/ru.vendor.json'
-      )
+      resolve(INTEGRATIONS_APP, 'apps/client/src/assets/i18n/ru.vendor.json'),
     ).toString();
     expect(JSON.parse(content)).toMatchObject({
       'feature-client-getText': {
@@ -362,14 +260,7 @@ msgstr "Password"`
     });
 
     content = readFileSync(
-      resolve(
-        __dirname,
-        '..',
-        '..',
-        '..',
-        '..',
-        'integrations/app/apps/client/src/assets/i18n/ru.po'
-      )
+      resolve(INTEGRATIONS_APP, 'apps/client/src/assets/i18n/ru.po'),
     )
       .toString()
       .split('\n')
@@ -387,18 +278,11 @@ msgstr ""`
         .split(' ')
         .join('')
         .split('\n')
-        .join('')
+        .join(''),
     );
 
     content = readFileSync(
-      resolve(
-        __dirname,
-        '..',
-        '..',
-        '..',
-        '..',
-        'integrations/app/apps/client/src/assets/i18n/template.pot'
-      )
+      resolve(INTEGRATIONS_APP, 'apps/client/src/assets/i18n/template.pot'),
     )
       .toString()
       .split('\n')
@@ -416,33 +300,19 @@ msgstr "Password"`
         .split(' ')
         .join('')
         .split('\n')
-        .join('')
+        .join(''),
     );
   });
 
   it('apps/server', () => {
     expect(
       existsSync(
-        resolve(
-          __dirname,
-          '..',
-          '..',
-          '..',
-          '..',
-          'integrations/app/apps/server/src/assets/i18n/en.json'
-        )
-      )
+        resolve(INTEGRATIONS_APP, 'apps/server/src/assets/i18n/en.json'),
+      ),
     ).toBeFalsy();
 
     let content = readFileSync(
-      resolve(
-        __dirname,
-        '..',
-        '..',
-        '..',
-        '..',
-        'integrations/app/apps/server/src/assets/i18n/en.vendor.json'
-      )
+      resolve(INTEGRATIONS_APP, 'apps/server/src/assets/i18n/en.vendor.json'),
     ).toString();
     expect(JSON.parse(content)).toMatchObject({
       'feature-common': {
@@ -465,26 +335,12 @@ msgstr "Password"`
 
     expect(
       existsSync(
-        resolve(
-          __dirname,
-          '..',
-          '..',
-          '..',
-          '..',
-          'integrations/app/apps/server/src/assets/i18n/ru.json'
-        )
-      )
+        resolve(INTEGRATIONS_APP, 'apps/server/src/assets/i18n/ru.json'),
+      ),
     ).toBeFalsy();
 
     content = readFileSync(
-      resolve(
-        __dirname,
-        '..',
-        '..',
-        '..',
-        '..',
-        'integrations/app/apps/server/src/assets/i18n/ru.vendor.json'
-      )
+      resolve(INTEGRATIONS_APP, 'apps/server/src/assets/i18n/ru.vendor.json'),
     ).toString();
     expect(JSON.parse(content)).toMatchObject({
       'feature-common-getText': {
@@ -500,29 +356,11 @@ msgstr "Password"`
 
   it('apps/cli', () => {
     expect(
-      existsSync(
-        resolve(
-          __dirname,
-          '..',
-          '..',
-          '..',
-          '..',
-          'integrations/app/apps/cli/src/assets/i18n/en.json'
-        )
-      )
+      existsSync(resolve(INTEGRATIONS_APP, 'apps/cli/src/assets/i18n/en.json')),
     ).toBeFalsy();
 
     expect(
-      existsSync(
-        resolve(
-          __dirname,
-          '..',
-          '..',
-          '..',
-          '..',
-          'integrations/app/apps/cli/src/assets/i18n/ru.json'
-        )
-      )
+      existsSync(resolve(INTEGRATIONS_APP, 'apps/cli/src/assets/i18n/ru.json')),
     ).toBeFalsy();
   });
 });

@@ -2,8 +2,9 @@ import { Injectable } from '@nestjs/common';
 import { kebabCase } from 'case-anything';
 import { existsSync, readFileSync } from 'fs';
 import { globSync } from 'glob';
+// @ts-expect-error - No type definitions available for lodash.mergewith
 import mergeWith from 'lodash.mergewith';
-import { getLogger } from 'log4js';
+import { getLogger, Logger } from 'log4js';
 import { join, resolve } from 'path';
 
 export const WORKSPACE_JSON = 'workspace.json';
@@ -15,20 +16,36 @@ export const RUCKEN_JSON = 'rucken.json';
 export const TRANSLOCO_CONFIG_JSON = 'transloco.config.json';
 export const TRANSLOCO_CONFIG_JS = 'transloco.config.js';
 
+export interface WorkspaceProject {
+  root?: string;
+  sourceRoot?: string;
+  projectType?: string;
+  [key: string]: unknown;
+}
+
+export interface WorkspaceConfig {
+  projects: Record<string, WorkspaceProject | string>;
+}
+
 @Injectable()
 export class UtilsService {
-  public static logLevel = () =>
+  private logger: Logger;
+
+  public static logLevel = (): string =>
     (process.env['DEBUG'] === '*'
       ? 'all'
       : process.env['RUCKEN_LOG_LEVEL'] || process.env['DEBUG']) || 'info';
 
-  getLogger() {
-    const logger = getLogger(UtilsService.name);
-    logger.level = UtilsService.logLevel();
-    return logger;
+  constructor() {
+    this.logger = getLogger(UtilsService.name);
+    this.logger.level = UtilsService.logLevel();
   }
 
-  resolveFilePath(filename: string, dirname?: string) {
+  getLogger(): Logger {
+    return this.logger;
+  }
+
+  resolveFilePath(filename: string, dirname?: string): string {
     if (!dirname && existsSync(filename)) {
       return resolve(filename);
     }
@@ -39,145 +56,142 @@ export class UtilsService {
       return resolve(join(dirname, filename));
     }
 
-    if (dirname) {
-      return resolve(join(dirname, filename));
-    } else {
-      return resolve(filename);
-    }
+    return dirname ? resolve(join(dirname, filename)) : resolve(filename);
   }
 
-  getWorkspaceProjects(workspaceFile?: string) {
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    let workspaceJson: any;
-    if (!workspaceFile) {
-      workspaceFile = this.resolveFilePath(WORKSPACE_JSON);
-    } else {
-      workspaceFile = this.resolveFilePath(workspaceFile);
-    }
-    if (existsSync(workspaceFile)) {
-      workspaceJson = JSON.parse(readFileSync(workspaceFile).toString());
+  getWorkspaceProjects(
+    workspaceFile?: string,
+  ): Record<string, WorkspaceProject> {
+    let workspaceJson: WorkspaceConfig;
+    const resolvedWorkspaceFile = workspaceFile
+      ? this.resolveFilePath(workspaceFile)
+      : this.resolveFilePath(WORKSPACE_JSON);
+
+    if (existsSync(resolvedWorkspaceFile)) {
+      workspaceJson = JSON.parse(
+        readFileSync(resolvedWorkspaceFile).toString(),
+      ) as WorkspaceConfig;
     } else {
       const tsconfigBaseJson = this.resolveFilePath(TSCONFIG_BASE_JSON);
       if (existsSync(tsconfigBaseJson)) {
-        const projects: Record<string, string> =
-          this.collectProjectsFromTsConfig(tsconfigBaseJson);
+        const projects = this.collectProjectsFromTsConfig(tsconfigBaseJson);
         workspaceJson = { projects };
       } else {
-        const tsconfigJson = this.resolveFilePath(TSCONFIG_BASE_JSON);
+        const tsconfigJson = this.resolveFilePath(TSCONFIG_JSON);
         if (existsSync(tsconfigJson)) {
-          const projects: Record<string, string> =
-            this.collectProjectsFromTsConfig(tsconfigJson);
+          const projects = this.collectProjectsFromTsConfig(tsconfigJson);
           workspaceJson = { projects };
+        } else {
+          workspaceJson = { projects: {} };
         }
       }
     }
 
-    const files = globSync(`./**/**/${PROJECT_JSON}`);
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    const projects: any = {};
+    const projectFiles = globSync(`./**/**/${PROJECT_JSON}`);
+    const projectsFromFiles: Record<string, WorkspaceProject> = {};
 
-    for (let index = 0; index < files.length; index++) {
-      const project = JSON.parse(readFileSync(files[index]).toString());
-      if (project.name && project.sourceRoot) {
-        projects[project.name] = project;
+    for (const projectFile of projectFiles) {
+      const project = JSON.parse(
+        readFileSync(projectFile).toString(),
+      ) as WorkspaceProject;
+      if (
+        project.name &&
+        project.sourceRoot &&
+        typeof project.name === 'string'
+      ) {
+        projectsFromFiles[project.name] = project;
       }
     }
 
-    const ruckenWorkspaceJson = this.getRuckenConfig({
-      workspace: { projects: {} },
+    const ruckenConfig = this.getRuckenConfig<WorkspaceConfig>({
+      projects: {},
     });
 
-    workspaceJson = {
+    const mergedWorkspace: WorkspaceConfig = {
       projects: {
         ...(workspaceJson?.projects || {}),
-        ...(ruckenWorkspaceJson.workspace?.projects || {}),
-        ...(projects || {}),
+        ...(ruckenConfig?.projects || {}),
+        ...(projectsFromFiles || {}),
       },
     };
 
-    return Object.keys(workspaceJson?.projects)
-      .map((projectName) => {
-        let project = {};
-        try {
-          project =
-            typeof workspaceJson.projects[projectName] === 'string'
-              ? {
-                  [projectName]: JSON.parse(
-                    readFileSync(
-                      `${workspaceJson.projects[projectName]}/project.json`
-                    ).toString()
-                  ),
-                }
-              : { [projectName]: workspaceJson.projects[projectName] };
-        } catch (err) {
-          project = {
-            [kebabCase(projectName)]: {
-              root: workspaceJson.projects[projectName],
-            },
-          };
-        }
-        project[projectName].root =
-          project[projectName].root ||
-          (project[projectName].sourceRoot || '')
-            .split('/')
-            .filter((o, i, a) => i < a.length - 1)
-            .join('/');
-        return project;
-      })
-      .reduce((all, cur) => ({ ...all, ...cur }), {});
+    return Object.entries(mergedWorkspace.projects).reduce<
+      Record<string, WorkspaceProject>
+    >((acc, [projectName, projectData]) => {
+      let project: WorkspaceProject;
+      try {
+        project =
+          typeof projectData === 'string'
+            ? JSON.parse(readFileSync(`${projectData}/project.json`).toString())
+            : { ...projectData };
+      } catch (_err) {
+        project = {
+          root:
+            typeof projectData === 'string' ? projectData : projectData.root,
+        };
+      }
+
+      project.root =
+        project.root ||
+        (project.sourceRoot || '')
+          .split('/')
+          .filter((_, i, arr) => i < arr.length - 1)
+          .join('/');
+
+      acc[kebabCase(projectName)] = project;
+      return acc;
+    }, {});
   }
 
-  private collectProjectsFromTsConfig(tsconfigFile: string) {
+  private collectProjectsFromTsConfig(
+    tsconfigFile: string,
+  ): Record<string, string> {
     const json = JSON.parse(readFileSync(tsconfigFile).toString());
     const projects: Record<string, string> = {};
-    Object.keys(json.compilerOptions.paths || {})
-      .filter((key) => !key.includes('*'))
-      .map((key) => {
+    const paths = json.compilerOptions?.paths || {};
+
+    Object.entries<string[]>(paths)
+      .filter(([key]) => !key.includes('*'))
+      .forEach(([key, pathArray]) => {
         try {
-          let path = json.compilerOptions.paths[key][0].replace(
-            '/src/index.ts',
-            ''
-          );
+          let path = pathArray[0].replace('/src/index.ts', '');
           const projectName = kebabCase(key);
 
           if (existsSync(join(path, PROJECT_JSON))) {
             projects[projectName] = path;
           } else {
-            path = (
-              Array.isArray(json.compilerOptions.paths[key])
-                ? json.compilerOptions.paths[key][0]
-                : json.compilerOptions.paths[key]
-            ).replace('/index.ts', '');
+            path = pathArray[0].replace('/index.ts', '');
             projects[projectName] = path;
           }
         } catch (err) {
-          this.getLogger().log(JSON.stringify({ json, key }));
-          this.getLogger().error(err, err.stack);
+          this.logger.error(JSON.stringify({ json, key }));
+          this.logger.error((err as Error).message, (err as Error).stack);
           throw err;
         }
       });
+
     return projects;
   }
 
   getRuckenConfig<T>(defaultValue: T, configFile?: string): T {
-    if (!configFile) {
-      configFile = this.resolveFilePath(RUCKEN_JSON);
-    } else {
-      configFile = this.resolveFilePath(configFile);
-    }
-    if (!existsSync(configFile)) {
+    const resolvedConfigFile = configFile
+      ? this.resolveFilePath(configFile)
+      : this.resolveFilePath(RUCKEN_JSON);
+
+    if (!existsSync(resolvedConfigFile)) {
       return defaultValue;
     }
+
     try {
-      const config = JSON.parse(readFileSync(configFile).toString());
-      return mergeWith(defaultValue, config);
+      const config = JSON.parse(readFileSync(resolvedConfigFile).toString());
+      return mergeWith({}, defaultValue, config);
     } catch (error) {
-      this.getLogger().warn(error);
+      this.logger.warn(error);
       return defaultValue;
     }
   }
 
-  getExtractAppName(nxAppName: string) {
+  getExtractAppName(nxAppName: string): string {
     return nxAppName
       .split('-')
       .join('_')
@@ -188,31 +202,35 @@ export class UtilsService {
   replaceEnv(
     command: string | undefined,
     envReplacerKeyPattern = '$key',
-    depth = 10
+    depth = 10,
   ): string {
     if (!command) {
-      return command;
+      return command || '';
     }
+
     let newCommand = command;
-    Object.keys(process.env).forEach(
-      (key) =>
-        (newCommand = (newCommand || '')
-          .split('%space%')
-          .join(' ')
-          .split('%br%')
-          .join('<br/>')
-          .split(`\${${key}}`)
-          .join(process.env[key])
-          .split(envReplacerKeyPattern.replace('key', key))
-          .join(process.env[key]))
-    );
+
+    for (const key of Object.keys(process.env)) {
+      const envValue = process.env[key] || '';
+      newCommand = newCommand
+        .split('%space%')
+        .join(' ')
+        .split('%br%')
+        .join('<br/>')
+        .split(`\${${key}}`)
+        .join(envValue)
+        .split(envReplacerKeyPattern.replace('key', key))
+        .join(envValue);
+    }
+
     if (command !== newCommand && newCommand.includes('$') && depth > 0) {
       newCommand = this.replaceEnv(
         newCommand,
         envReplacerKeyPattern,
-        depth - 1
+        depth - 1,
       );
     }
-    return newCommand || '';
+
+    return newCommand;
   }
 }

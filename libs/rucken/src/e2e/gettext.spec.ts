@@ -1,17 +1,20 @@
 import { readFileSync } from 'fs';
 import { resolve } from 'path';
 
+const INTEGRATIONS_APP = resolve(
+  __dirname,
+  '..',
+  '..',
+  '..',
+  '..',
+  'integrations',
+  'app',
+);
+
 describe('Gettext (e2e)', () => {
   it('libs/feature-client', () => {
     let content = readFileSync(
-      resolve(
-        __dirname,
-        '..',
-        '..',
-        '..',
-        '..',
-        'integrations/app/libs/feature/client/src/i18n/getText/en.json'
-      )
+      resolve(INTEGRATIONS_APP, 'libs/feature/client/src/i18n/getText/en.json'),
     ).toString();
     expect(content.split(' ').join('').split('\n').join('')).toEqual(
       `{
@@ -20,18 +23,11 @@ describe('Gettext (e2e)', () => {
         .split(' ')
         .join('')
         .split('\n')
-        .join('')
+        .join(''),
     );
 
     content = readFileSync(
-      resolve(
-        __dirname,
-        '..',
-        '..',
-        '..',
-        '..',
-        'integrations/app/libs/feature/client/src/i18n/getText/en.po'
-      )
+      resolve(INTEGRATIONS_APP, 'libs/feature/client/src/i18n/getText/en.po'),
     )
       .toString()
       .split('\n')
@@ -43,18 +39,11 @@ msgstr "FeatureClientUser Id"`
         .split(' ')
         .join('')
         .split('\n')
-        .join('')
+        .join(''),
     );
 
     content = readFileSync(
-      resolve(
-        __dirname,
-        '..',
-        '..',
-        '..',
-        '..',
-        'integrations/app/libs/feature/client/src/i18n/getText/ru.json'
-      )
+      resolve(INTEGRATIONS_APP, 'libs/feature/client/src/i18n/getText/ru.json'),
     ).toString();
     expect(content.split(' ').join('').split('\n').join('')).toEqual(
       `{
@@ -63,18 +52,11 @@ msgstr "FeatureClientUser Id"`
         .split(' ')
         .join('')
         .split('\n')
-        .join('')
+        .join(''),
     );
 
     content = readFileSync(
-      resolve(
-        __dirname,
-        '..',
-        '..',
-        '..',
-        '..',
-        'integrations/app/libs/feature/client/src/i18n/getText/ru.po'
-      )
+      resolve(INTEGRATIONS_APP, 'libs/feature/client/src/i18n/getText/ru.po'),
     )
       .toString()
       .split('\n')
@@ -86,18 +68,14 @@ msgstr ""`
         .split(' ')
         .join('')
         .split('\n')
-        .join('')
+        .join(''),
     );
 
     content = readFileSync(
       resolve(
-        __dirname,
-        '..',
-        '..',
-        '..',
-        '..',
-        'integrations/app/libs/feature/client/src/i18n/getText/template.pot'
-      )
+        INTEGRATIONS_APP,
+        'libs/feature/client/src/i18n/getText/template.pot',
+      ),
     )
       .toString()
       .split('\n')
@@ -109,20 +87,13 @@ msgstr "FeatureClientUser Id"`
         .split(' ')
         .join('')
         .split('\n')
-        .join('')
+        .join(''),
     );
   });
 
   it('libs/feature-server', () => {
     let content = readFileSync(
-      resolve(
-        __dirname,
-        '..',
-        '..',
-        '..',
-        '..',
-        'integrations/app/libs/feature/server/src/i18n/getText/en.json'
-      )
+      resolve(INTEGRATIONS_APP, 'libs/feature/server/src/i18n/getText/en.json'),
     ).toString();
     expect(content.split(' ').join('').split('\n').join('')).toEqual(
       `{
@@ -133,18 +104,11 @@ msgstr "FeatureClientUser Id"`
         .split(' ')
         .join('')
         .split('\n')
-        .join('')
+        .join(''),
     );
 
     content = readFileSync(
-      resolve(
-        __dirname,
-        '..',
-        '..',
-        '..',
-        '..',
-        'integrations/app/libs/feature/server/src/i18n/getText/en.po'
-      )
+      resolve(INTEGRATIONS_APP, 'libs/feature/server/src/i18n/getText/en.po'),
     )
       .toString()
       .split('\n')
@@ -162,18 +126,11 @@ msgstr "FeatureServerUser Id"`
         .split(' ')
         .join('')
         .split('\n')
-        .join('')
+        .join(''),
     );
 
     content = readFileSync(
-      resolve(
-        __dirname,
-        '..',
-        '..',
-        '..',
-        '..',
-        'integrations/app/libs/feature/server/src/i18n/getText/ru.json'
-      )
+      resolve(INTEGRATIONS_APP, 'libs/feature/server/src/i18n/getText/ru.json'),
     ).toString();
     expect(content.split(' ').join('').split('\n').join('')).toEqual(
       `{
@@ -184,18 +141,11 @@ msgstr "FeatureServerUser Id"`
         .split(' ')
         .join('')
         .split('\n')
-        .join('')
+        .join(''),
     );
 
     content = readFileSync(
-      resolve(
-        __dirname,
-        '..',
-        '..',
-        '..',
-        '..',
-        'integrations/app/libs/feature/server/src/i18n/getText/ru.po'
-      )
+      resolve(INTEGRATIONS_APP, 'libs/feature/server/src/i18n/getText/ru.po'),
     )
       .toString()
       .split('\n')
@@ -213,18 +163,14 @@ msgstr ""`
         .split(' ')
         .join('')
         .split('\n')
-        .join('')
+        .join(''),
     );
 
     content = readFileSync(
       resolve(
-        __dirname,
-        '..',
-        '..',
-        '..',
-        '..',
-        'integrations/app/libs/feature/server/src/i18n/getText/template.pot'
-      )
+        INTEGRATIONS_APP,
+        'libs/feature/server/src/i18n/getText/template.pot',
+      ),
     )
       .toString()
       .split('\n')
@@ -242,20 +188,13 @@ msgstr "FeatureServerUser Id"`
         .split(' ')
         .join('')
         .split('\n')
-        .join('')
+        .join(''),
     );
   });
 
   it('libs/feature-common', () => {
     let content = readFileSync(
-      resolve(
-        __dirname,
-        '..',
-        '..',
-        '..',
-        '..',
-        'integrations/app/libs/feature/common/src/i18n/getText/en.json'
-      )
+      resolve(INTEGRATIONS_APP, 'libs/feature/common/src/i18n/getText/en.json'),
     ).toString();
     expect(content.split(' ').join('').split('\n').join('')).toEqual(
       `{
@@ -266,18 +205,11 @@ msgstr "FeatureServerUser Id"`
         .split(' ')
         .join('')
         .split('\n')
-        .join('')
+        .join(''),
     );
 
     content = readFileSync(
-      resolve(
-        __dirname,
-        '..',
-        '..',
-        '..',
-        '..',
-        'integrations/app/libs/feature/common/src/i18n/getText/en.po'
-      )
+      resolve(INTEGRATIONS_APP, 'libs/feature/common/src/i18n/getText/en.po'),
     )
       .toString()
       .split('\n')
@@ -295,18 +227,11 @@ msgstr "FeatureCommonUser Username"`
         .split(' ')
         .join('')
         .split('\n')
-        .join('')
+        .join(''),
     );
 
     content = readFileSync(
-      resolve(
-        __dirname,
-        '..',
-        '..',
-        '..',
-        '..',
-        'integrations/app/libs/feature/common/src/i18n/getText/ru.json'
-      )
+      resolve(INTEGRATIONS_APP, 'libs/feature/common/src/i18n/getText/ru.json'),
     ).toString();
     expect(content.split(' ').join('').split('\n').join('')).toEqual(
       `{
@@ -317,18 +242,11 @@ msgstr "FeatureCommonUser Username"`
         .split(' ')
         .join('')
         .split('\n')
-        .join('')
+        .join(''),
     );
 
     content = readFileSync(
-      resolve(
-        __dirname,
-        '..',
-        '..',
-        '..',
-        '..',
-        'integrations/app/libs/feature/common/src/i18n/getText/ru.po'
-      )
+      resolve(INTEGRATIONS_APP, 'libs/feature/common/src/i18n/getText/ru.po'),
     )
       .toString()
       .split('\n')
@@ -346,18 +264,14 @@ msgstr ""`
         .split(' ')
         .join('')
         .split('\n')
-        .join('')
+        .join(''),
     );
 
     content = readFileSync(
       resolve(
-        __dirname,
-        '..',
-        '..',
-        '..',
-        '..',
-        'integrations/app/libs/feature/common/src/i18n/getText/template.pot'
-      )
+        INTEGRATIONS_APP,
+        'libs/feature/common/src/i18n/getText/template.pot',
+      ),
     )
       .toString()
       .split('\n')
@@ -375,7 +289,7 @@ msgstr "FeatureCommonUser Username"`
         .split(' ')
         .join('')
         .split('\n')
-        .join('')
+        .join(''),
     );
   });
 
@@ -383,14 +297,7 @@ msgstr "FeatureCommonUser Username"`
 
   it('apps/client', () => {
     let content = readFileSync(
-      resolve(
-        __dirname,
-        '..',
-        '..',
-        '..',
-        '..',
-        'integrations/app/apps/client/src/assets/i18n/getText/en.json'
-      )
+      resolve(INTEGRATIONS_APP, 'apps/client/src/assets/i18n/getText/en.json'),
     ).toString();
     expect(content.split(' ').join('').split('\n').join('')).toEqual(
       `{
@@ -399,18 +306,11 @@ msgstr "FeatureCommonUser Username"`
         .split(' ')
         .join('')
         .split('\n')
-        .join('')
+        .join(''),
     );
 
     content = readFileSync(
-      resolve(
-        __dirname,
-        '..',
-        '..',
-        '..',
-        '..',
-        'integrations/app/apps/client/src/assets/i18n/getText/en.po'
-      )
+      resolve(INTEGRATIONS_APP, 'apps/client/src/assets/i18n/getText/en.po'),
     )
       .toString()
       .split('\n')
@@ -422,18 +322,11 @@ msgstr "Id"`
         .split(' ')
         .join('')
         .split('\n')
-        .join('')
+        .join(''),
     );
 
     content = readFileSync(
-      resolve(
-        __dirname,
-        '..',
-        '..',
-        '..',
-        '..',
-        'integrations/app/apps/client/src/assets/i18n/getText/ru.json'
-      )
+      resolve(INTEGRATIONS_APP, 'apps/client/src/assets/i18n/getText/ru.json'),
     ).toString();
     expect(content.split(' ').join('').split('\n').join('')).toEqual(
       `{
@@ -442,18 +335,11 @@ msgstr "Id"`
         .split(' ')
         .join('')
         .split('\n')
-        .join('')
+        .join(''),
     );
 
     content = readFileSync(
-      resolve(
-        __dirname,
-        '..',
-        '..',
-        '..',
-        '..',
-        'integrations/app/apps/client/src/assets/i18n/getText/ru.po'
-      )
+      resolve(INTEGRATIONS_APP, 'apps/client/src/assets/i18n/getText/ru.po'),
     )
       .toString()
       .split('\n')
@@ -465,18 +351,14 @@ msgstr ""`
         .split(' ')
         .join('')
         .split('\n')
-        .join('')
+        .join(''),
     );
 
     content = readFileSync(
       resolve(
-        __dirname,
-        '..',
-        '..',
-        '..',
-        '..',
-        'integrations/app/apps/client/src/assets/i18n/getText/template.pot'
-      )
+        INTEGRATIONS_APP,
+        'apps/client/src/assets/i18n/getText/template.pot',
+      ),
     )
       .toString()
       .split('\n')
@@ -488,20 +370,13 @@ msgstr "Id"`
         .split(' ')
         .join('')
         .split('\n')
-        .join('')
+        .join(''),
     );
   });
 
   it('apps/server', () => {
     let content = readFileSync(
-      resolve(
-        __dirname,
-        '..',
-        '..',
-        '..',
-        '..',
-        'integrations/app/apps/server/src/assets/i18n/getText/en.json'
-      )
+      resolve(INTEGRATIONS_APP, 'apps/server/src/assets/i18n/getText/en.json'),
     ).toString();
     expect(content.split(' ').join('').split('\n').join('')).toEqual(
       `{
@@ -512,18 +387,11 @@ msgstr "Id"`
         .split(' ')
         .join('')
         .split('\n')
-        .join('')
+        .join(''),
     );
 
     content = readFileSync(
-      resolve(
-        __dirname,
-        '..',
-        '..',
-        '..',
-        '..',
-        'integrations/app/apps/server/src/assets/i18n/getText/en.po'
-      )
+      resolve(INTEGRATIONS_APP, 'apps/server/src/assets/i18n/getText/en.po'),
     )
       .toString()
       .split('\n')
@@ -541,18 +409,11 @@ msgstr "ServerUserPassword"`
         .split(' ')
         .join('')
         .split('\n')
-        .join('')
+        .join(''),
     );
 
     content = readFileSync(
-      resolve(
-        __dirname,
-        '..',
-        '..',
-        '..',
-        '..',
-        'integrations/app/apps/server/src/assets/i18n/getText/ru.json'
-      )
+      resolve(INTEGRATIONS_APP, 'apps/server/src/assets/i18n/getText/ru.json'),
     ).toString();
     expect(content.split(' ').join('').split('\n').join('')).toEqual(
       `{
@@ -563,18 +424,11 @@ msgstr "ServerUserPassword"`
         .split(' ')
         .join('')
         .split('\n')
-        .join('')
+        .join(''),
     );
 
     content = readFileSync(
-      resolve(
-        __dirname,
-        '..',
-        '..',
-        '..',
-        '..',
-        'integrations/app/apps/server/src/assets/i18n/getText/ru.po'
-      )
+      resolve(INTEGRATIONS_APP, 'apps/server/src/assets/i18n/getText/ru.po'),
     )
       .toString()
       .split('\n')
@@ -592,18 +446,14 @@ msgstr ""`
         .split(' ')
         .join('')
         .split('\n')
-        .join('')
+        .join(''),
     );
 
     content = readFileSync(
       resolve(
-        __dirname,
-        '..',
-        '..',
-        '..',
-        '..',
-        'integrations/app/apps/server/src/assets/i18n/getText/template.pot'
-      )
+        INTEGRATIONS_APP,
+        'apps/server/src/assets/i18n/getText/template.pot',
+      ),
     )
       .toString()
       .split('\n')
@@ -621,20 +471,13 @@ msgstr "ServerUserPassword"`
         .split(' ')
         .join('')
         .split('\n')
-        .join('')
+        .join(''),
     );
   });
 
   it('apps/cli', () => {
     let content = readFileSync(
-      resolve(
-        __dirname,
-        '..',
-        '..',
-        '..',
-        '..',
-        'integrations/app/apps/cli/src/assets/i18n/getText/en.json'
-      )
+      resolve(INTEGRATIONS_APP, 'apps/cli/src/assets/i18n/getText/en.json'),
     ).toString();
     expect(content.split(' ').join('').split('\n').join('')).toEqual(
       `{
@@ -645,18 +488,11 @@ msgstr "ServerUserPassword"`
         .split(' ')
         .join('')
         .split('\n')
-        .join('')
+        .join(''),
     );
 
     content = readFileSync(
-      resolve(
-        __dirname,
-        '..',
-        '..',
-        '..',
-        '..',
-        'integrations/app/apps/cli/src/assets/i18n/getText/en.po'
-      )
+      resolve(INTEGRATIONS_APP, 'apps/cli/src/assets/i18n/getText/en.po'),
     )
       .toString()
       .split('\n')
@@ -674,18 +510,11 @@ msgstr "CliUser Password"`
         .split(' ')
         .join('')
         .split('\n')
-        .join('')
+        .join(''),
     );
 
     content = readFileSync(
-      resolve(
-        __dirname,
-        '..',
-        '..',
-        '..',
-        '..',
-        'integrations/app/apps/cli/src/assets/i18n/getText/ru.json'
-      )
+      resolve(INTEGRATIONS_APP, 'apps/cli/src/assets/i18n/getText/ru.json'),
     ).toString();
     expect(content.split(' ').join('').split('\n').join('')).toEqual(
       `{
@@ -696,18 +525,11 @@ msgstr "CliUser Password"`
         .split(' ')
         .join('')
         .split('\n')
-        .join('')
+        .join(''),
     );
 
     content = readFileSync(
-      resolve(
-        __dirname,
-        '..',
-        '..',
-        '..',
-        '..',
-        'integrations/app/apps/cli/src/assets/i18n/getText/ru.po'
-      )
+      resolve(INTEGRATIONS_APP, 'apps/cli/src/assets/i18n/getText/ru.po'),
     )
       .toString()
       .split('\n')
@@ -725,18 +547,14 @@ msgstr ""`
         .split(' ')
         .join('')
         .split('\n')
-        .join('')
+        .join(''),
     );
 
     content = readFileSync(
       resolve(
-        __dirname,
-        '..',
-        '..',
-        '..',
-        '..',
-        'integrations/app/apps/cli/src/assets/i18n/getText/template.pot'
-      )
+        INTEGRATIONS_APP,
+        'apps/cli/src/assets/i18n/getText/template.pot',
+      ),
     )
       .toString()
       .split('\n')
@@ -754,7 +572,7 @@ msgstr "CliUser Password"`
         .split(' ')
         .join('')
         .split('\n')
-        .join('')
+        .join(''),
     );
   });
 });

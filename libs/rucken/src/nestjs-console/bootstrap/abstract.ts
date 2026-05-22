@@ -17,7 +17,7 @@ export interface CommonBootstrapConsoleOptions {
    * If you are using a dynamic module as a root module, you must create a module that imports your dynamic module first.
    * "@Module({imports: [MyDynamicModule.register()]})"
    */
-  module: any;
+  module: unknown;
 
   /**
    * If true the BootstrapConsole will scan the application to find Console and Command decorators
@@ -27,8 +27,7 @@ export interface CommonBootstrapConsoleOptions {
   /**
    * An optional list of Nest Modules to scan. If set, only listed modules will be scanned.
    */
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  includeModules?: any[];
+  includeModules?: unknown[];
 
   /**
    * The nest application context options
@@ -43,17 +42,17 @@ export interface CommonBootstrapConsoleOptions {
  */
 export abstract class AbstractBootstrapConsole<
   A extends INestApplicationContext,
-  O extends CommonBootstrapConsoleOptions = CommonBootstrapConsoleOptions
+  O extends CommonBootstrapConsoleOptions = CommonBootstrapConsoleOptions,
 > {
   /**
    * The console service
    */
-  protected service: ConsoleService;
+  protected service!: ConsoleService;
 
   /**
    * The application container
    */
-  protected container: A;
+  protected container!: A;
 
   /**
    * The options to bootstrap
@@ -75,9 +74,16 @@ export abstract class AbstractBootstrapConsole<
    * Activate the decorators scanner
    */
   protected async useDecorators(): Promise<this> {
-    const consoleModule = this.container.get(ConsoleModule);
+    const consoleModule = this.container.get<ConsoleModule>(ConsoleModule);
     await consoleModule.scan(this.container, this.options.includeModules);
     return this;
+  }
+
+  /**
+   * Public method to activate decorator scanning (call after app.init())
+   */
+  public async scanDecorators(): Promise<this> {
+    return this.useDecorators();
   }
 
   /**
@@ -87,9 +93,7 @@ export abstract class AbstractBootstrapConsole<
     this.container = await this.create();
     this.service = this.container.get(ConsoleService);
     this.service.setContainer(this.container);
-    if (this.options.useDecorators) {
-      await this.useDecorators();
-    }
+    // Note: useDecorators should be called after app.init() to ensure all dependencies are resolved
     return this.container;
   }
 

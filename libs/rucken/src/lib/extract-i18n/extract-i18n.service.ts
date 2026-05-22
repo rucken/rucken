@@ -14,7 +14,7 @@ import {
 export class Extracti18nService {
   public static title = 'extract-i18n';
 
-  private logger: Logger;
+  private logger!: Logger;
 
   constructor(private readonly utilsService: UtilsService) {}
 
@@ -50,7 +50,7 @@ export class Extracti18nService {
         serverProjectNameParts,
         clientProjectNameParts,
         e2eProjectNameParts,
-      })}`
+      })}`,
     );
     try {
       const projects = this.utilsService.getWorkspaceProjects();
@@ -62,14 +62,14 @@ export class Extracti18nService {
         .filter(
           (projectName) =>
             projects[projectName].projectType === 'application' ||
-            projects[projectName].sourceRoot?.substring(0, 5) === 'apps/'
+            projects[projectName].sourceRoot?.substring(0, 5) === 'apps/',
         )
         .forEach((projectName) => {
           this.logger.debug(projectName, projects[projectName].sourceRoot);
           this.processApplication(
-            projects[projectName].sourceRoot,
-            resetUnusedTranslates,
-            noExtract
+            projects[projectName].sourceRoot!,
+            resetUnusedTranslates || false,
+            noExtract || false,
           );
         });
 
@@ -78,17 +78,17 @@ export class Extracti18nService {
         .filter(
           (projectName) =>
             projects[projectName].projectType === 'library' ||
-            projects[projectName].sourceRoot?.substring(0, 5) === 'libs/'
+            projects[projectName].sourceRoot?.substring(0, 5) === 'libs/',
         )
         .forEach((projectName) => {
           this.logger.debug(projectName, projects[projectName].sourceRoot);
           this.processLibrary(
             projectName,
-            projects[projectName].sourceRoot,
-            projects[projectName].root,
+            projects[projectName].sourceRoot!,
+            projects[projectName].root!,
             markers,
-            resetUnusedTranslates,
-            noExtract
+            resetUnusedTranslates || false,
+            noExtract || false,
           );
         });
       this.collectServerToTranslocoConfig({
@@ -122,7 +122,7 @@ export class Extracti18nService {
         [
           `const { readFileSync, existsSync } = require('fs');`,
           `module.exports = existsSync('${TRANSLOCO_CONFIG_JSON}') ? JSON.parse(readFileSync('${TRANSLOCO_CONFIG_JSON}').toString()) : {};`,
-        ].join('\n')
+        ].join('\n'),
       );
     }
   }
@@ -140,7 +140,7 @@ export class Extracti18nService {
     e2eProjectNameParts: string[];
   }) {
     const translocoConfigFilepath = this.utilsService.resolveFilePath(
-      TRANSLOCO_CONFIG_JSON
+      TRANSLOCO_CONFIG_JSON,
     );
 
     const scopedLibs = Object.keys(projects)
@@ -149,8 +149,8 @@ export class Extracti18nService {
           (projects[projectName].projectType === 'library' ||
             projects[projectName].sourceRoot?.substring(0, 5) === 'libs/') &&
           !serverProjectNameParts.find((serverProjectNamePart) =>
-            projectName.includes(serverProjectNamePart)
-          )
+            projectName.includes(serverProjectNamePart),
+          ),
       )
       .map((projectName) => projects[projectName].root);
 
@@ -160,11 +160,11 @@ export class Extracti18nService {
           (projects[projectName].projectType === 'application' ||
             projects[projectName].sourceRoot?.substring(0, 5) === 'apps/') &&
           !serverProjectNameParts.find((serverProjectNamePart) =>
-            projectName.includes(serverProjectNamePart)
+            projectName.includes(serverProjectNamePart),
           ) &&
           !e2eProjectNameParts.find((e2eProjectNamePart) =>
-            projectName.includes(e2eProjectNamePart)
-          )
+            projectName.includes(e2eProjectNamePart),
+          ),
       )
       .map((projectName) => projects[projectName].sourceRoot);
 
@@ -173,7 +173,7 @@ export class Extracti18nService {
       let translocoConfig: any = {};
       if (existsSync(translocoConfigFilepath)) {
         translocoConfig = JSON.parse(
-          readFileSync(translocoConfigFilepath).toString()
+          readFileSync(translocoConfigFilepath).toString(),
         );
       }
       translocoConfig.clientRootTranslationsPath = `./${sourceRoot}/assets/i18n/`;
@@ -188,7 +188,7 @@ export class Extracti18nService {
       }
       writeFileSync(
         translocoConfigFilepath,
-        JSON.stringify(translocoConfig, null, 4)
+        JSON.stringify(translocoConfig, null, 4),
       );
       spawnSync('transloco-keys-manager');
       spawnSync('transloco-scoped-libs', ['--skip-gitignore']);
@@ -208,7 +208,7 @@ export class Extracti18nService {
     e2eProjectNameParts: string[];
   }) {
     const translocoConfigFilepath = this.utilsService.resolveFilePath(
-      TRANSLOCO_CONFIG_JSON
+      TRANSLOCO_CONFIG_JSON,
     );
 
     const scopedLibs = Object.keys(projects)
@@ -217,8 +217,8 @@ export class Extracti18nService {
           (projects[projectName].projectType === 'library' ||
             projects[projectName].sourceRoot?.substring(0, 5) === 'libs/') &&
           !clientProjectNameParts.find((clientProjectNamePart) =>
-            projectName.includes(clientProjectNamePart)
-          )
+            projectName.includes(clientProjectNamePart),
+          ),
       )
       .map((projectName) => projects[projectName].root);
 
@@ -228,11 +228,11 @@ export class Extracti18nService {
           (projects[projectName].projectType === 'application' ||
             projects[projectName].sourceRoot?.substring(0, 5) === 'apps/') &&
           !clientProjectNameParts.find((clientProjectNamePart) =>
-            projectName.includes(clientProjectNamePart)
+            projectName.includes(clientProjectNamePart),
           ) &&
           !e2eProjectNameParts.find((e2eProjectNamePart) =>
-            projectName.includes(e2eProjectNamePart)
-          )
+            projectName.includes(e2eProjectNamePart),
+          ),
       )
       .map((projectName) => projects[projectName].sourceRoot);
 
@@ -259,7 +259,7 @@ export class Extracti18nService {
     }
     writeFileSync(
       translocoConfigFilepath,
-      JSON.stringify(translocoConfig, null, 4)
+      JSON.stringify(translocoConfig, null, 4),
     );
   }
 
@@ -274,7 +274,7 @@ export class Extracti18nService {
   processApplication(
     sourceRoot: string,
     resetUnusedTranslates: boolean,
-    noExtract: boolean
+    noExtract: boolean,
   ) {
     if (!noExtract) {
       spawnSync('transloco-keys-manager', [
@@ -294,7 +294,7 @@ export class Extracti18nService {
     root: string,
     markers: string[],
     resetUnusedTranslates: boolean,
-    noExtract: boolean
+    noExtract: boolean,
   ) {
     if (!noExtract) {
       spawnSync('transloco-keys-manager', [
@@ -308,7 +308,7 @@ export class Extracti18nService {
     }
     const packageJsonFilePath = this.utilsService.resolveFilePath(
       PACKAGE_JSON,
-      root
+      root,
     );
     try {
       const packageJson = existsSync(packageJsonFilePath)
@@ -324,7 +324,7 @@ export class Extracti18nService {
       markers.forEach((marker) => {
         if (
           existsSync(
-            resolve(dirname(packageJsonFilePath), `src/i18n/${marker}`)
+            resolve(dirname(packageJsonFilePath), `src/i18n/${marker}`),
           )
         ) {
           packageJson.i18n.push({

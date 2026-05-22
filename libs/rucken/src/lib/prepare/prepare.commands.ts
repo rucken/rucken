@@ -10,27 +10,31 @@ import { UtilsService } from '../utils/utils.service';
 
 @Console()
 export class PrepareCommands {
-  private readonly extracti18nConfig = this.utilsService.getRuckenConfig(
-    DEFAULT_EXTRACT_I18N_CONFIG
-  ).extracti18n;
-
-  private readonly gettextConfig = this.utilsService.getRuckenConfig(
-    DEFAULT_GETTEXT_CONFIG
-  ).gettext;
-
-  private readonly makeTsListConfig =
-    this.utilsService.getRuckenConfig(DEFAULT_TOOLS_CONFIG).makeTsList;
-
-  private readonly versionUpdaterConfig =
-    this.utilsService.getRuckenConfig(DEFAULT_TOOLS_CONFIG).versionUpdater;
+  private extracti18nConfig: Record<string, unknown> = {};
+  private gettextConfig: Record<string, unknown> = {};
+  private makeTsListConfig: Record<string, unknown> = {};
+  private versionUpdaterConfig: Record<string, unknown> = {};
 
   constructor(
     private readonly gettextService: GettextService,
     private readonly extracti18nService: Extracti18nService,
     private readonly versionUpdaterService: VersionUpdaterService,
     private readonly makeTsListService: MakeTsListService,
-    private readonly utilsService: UtilsService
-  ) {}
+    private readonly utilsService: UtilsService,
+  ) {
+    this.extracti18nConfig = this.utilsService.getRuckenConfig(
+      DEFAULT_EXTRACT_I18N_CONFIG,
+    ).extracti18n as Record<string, unknown>;
+    this.gettextConfig = this.utilsService.getRuckenConfig(
+      DEFAULT_GETTEXT_CONFIG,
+    ).gettext as Record<string, unknown>;
+    this.makeTsListConfig = this.utilsService.getRuckenConfig(
+      DEFAULT_TOOLS_CONFIG,
+    ).makeTsList as Record<string, unknown>;
+    this.versionUpdaterConfig = this.utilsService.getRuckenConfig(
+      DEFAULT_TOOLS_CONFIG,
+    ).versionUpdater as Record<string, unknown>;
+  }
 
   @Command({
     command: 'prepare',
@@ -91,29 +95,27 @@ export class PrepareCommands {
     const resetUnusedTranslatesBoolean =
       (
         resetUnusedTranslates ||
-        this.gettextConfig.resetUnusedTranslates ||
+        (this.gettextConfig.resetUnusedTranslates as string) ||
         'false'
       ).toLowerCase() === 'true';
 
     this.makeTsListService.setLogger(`prepare: ${MakeTsListService.title}`);
 
     await this.makeTsListService.makeTsListHandler({
-      indexFileName: this.makeTsListConfig.indexFileName,
-      excludes: this.makeTsListConfig.excludes,
+      indexFileName: this.makeTsListConfig.indexFileName as string,
+      excludes: this.makeTsListConfig.excludes as string[],
     });
 
     this.versionUpdaterService.setLogger(
-      `prepare: ${VersionUpdaterService.title}`
+      `prepare: ${VersionUpdaterService.title}`,
     );
     this.versionUpdaterService.versionUpdaterHandler({
       updatePackageVersion: updatePackageVersion
         ? updatePackageVersion.toUpperCase().trim() === 'TRUE'
-        : this.versionUpdaterConfig.updatePackageVersion,
+        : (this.versionUpdaterConfig.updatePackageVersion as boolean),
       updateDependenciesVersion: updateDependenciesVersion
         ? updateDependenciesVersion.toUpperCase().trim() === 'TRUE'
-          ? true
-          : false
-        : this.versionUpdaterConfig.updateDependenciesVersion,
+        : (this.versionUpdaterConfig.updateDependenciesVersion as boolean),
     });
 
     this.extracti18nService.setLogger(`prepare: ${Extracti18nService.title}`);
@@ -121,51 +123,71 @@ export class PrepareCommands {
 
     if (resetUnusedTranslatesBoolean) {
       await this.gettextService.extractTranslatesFromSourcesForLibraries({
-        po2jsonOptions: this.gettextConfig.po2jsonOptions,
-        pattern: this.gettextConfig.gettextExtractorOptions.pattern,
-        locales: locales ? locales.split(',') : this.gettextConfig.locales,
-        defaultLocale: defaultLocale || this.gettextConfig.defaultLocale,
-        markers: this.gettextConfig.markers,
+        po2jsonOptions: this.gettextConfig.po2jsonOptions as Record<
+          string,
+          unknown
+        >,
+        pattern: (
+          this.gettextConfig.gettextExtractorOptions as Record<string, string>
+        ).pattern,
+        locales: locales
+          ? locales.split(',')
+          : (this.gettextConfig.locales as string[]),
+        defaultLocale:
+          defaultLocale || (this.gettextConfig.defaultLocale as string),
+        markers: this.gettextConfig.markers as string[],
       });
     }
 
     this.extracti18nService.extract({
-      locales: locales ? locales.split(',') : this.extracti18nConfig.locales,
-      markers: this.extracti18nConfig.markers,
+      locales: locales
+        ? locales.split(',')
+        : (this.extracti18nConfig.locales as string[]),
+      markers: this.extracti18nConfig.markers as string[],
       resetUnusedTranslates: resetUnusedTranslatesBoolean,
       clientProjectNameParts:
         clientProjectNameParts?.split(',') ||
-        this.extracti18nConfig.clientProjectNameParts,
+        (this.extracti18nConfig.clientProjectNameParts as string[]),
       e2eProjectNameParts:
         e2eProjectNameParts?.split(',') ||
-        this.extracti18nConfig.e2eProjectNameParts,
+        (this.extracti18nConfig.e2eProjectNameParts as string[]),
       serverProjectNameParts:
         serverProjectNameParts?.split(',') ||
-        this.extracti18nConfig.serverProjectNameParts,
+        (this.extracti18nConfig.serverProjectNameParts as string[]),
     });
 
     await this.gettextService.extractTranslatesFromSourcesForLibraries({
-      po2jsonOptions: this.gettextConfig.po2jsonOptions,
-      pattern: this.gettextConfig.gettextExtractorOptions.pattern,
-      locales: locales ? locales.split(',') : this.gettextConfig.locales,
-      defaultLocale: defaultLocale || this.gettextConfig.defaultLocale,
-      markers: this.gettextConfig.markers,
+      po2jsonOptions: this.gettextConfig.po2jsonOptions as Record<
+        string,
+        unknown
+      >,
+      pattern: (
+        this.gettextConfig.gettextExtractorOptions as Record<string, string>
+      ).pattern,
+      locales: locales
+        ? locales.split(',')
+        : (this.gettextConfig.locales as string[]),
+      defaultLocale:
+        defaultLocale || (this.gettextConfig.defaultLocale as string),
+      markers: this.gettextConfig.markers as string[],
     });
 
     this.extracti18nService.extract({
-      locales: locales ? locales.split(',') : this.extracti18nConfig.locales,
-      markers: this.extracti18nConfig.markers,
+      locales: locales
+        ? locales.split(',')
+        : (this.extracti18nConfig.locales as string[]),
+      markers: this.extracti18nConfig.markers as string[],
       resetUnusedTranslates: resetUnusedTranslatesBoolean,
       noExtract: true,
       clientProjectNameParts:
         clientProjectNameParts?.split(',') ||
-        this.extracti18nConfig.clientProjectNameParts,
+        (this.extracti18nConfig.clientProjectNameParts as string[]),
       e2eProjectNameParts:
         e2eProjectNameParts?.split(',') ||
-        this.extracti18nConfig.e2eProjectNameParts,
+        (this.extracti18nConfig.e2eProjectNameParts as string[]),
       serverProjectNameParts:
         serverProjectNameParts?.split(',') ||
-        this.extracti18nConfig.serverProjectNameParts,
+        (this.extracti18nConfig.serverProjectNameParts as string[]),
     });
   }
 }

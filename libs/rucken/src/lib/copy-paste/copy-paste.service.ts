@@ -22,6 +22,7 @@ import { getLogger, Logger } from 'log4js';
 import { basename, dirname, join, resolve, sep } from 'path';
 import pluralize from 'pluralize';
 import recursive from 'recursive-readdir';
+// @ts-expect-error - No type definitions available for sort-paths
 import sortPaths from 'sort-paths';
 import { UtilsService } from '../utils/utils.service';
 import { glob } from 'glob';
@@ -30,7 +31,7 @@ import { glob } from 'glob';
 export class CopyPasteService {
   public static title = 'copy-paste';
 
-  private logger: Logger;
+  private logger!: Logger;
 
   constructor(private readonly utilsService: UtilsService) {}
 
@@ -75,7 +76,7 @@ export class CopyPasteService {
         cases,
         globRules,
         replaceEnvs,
-      })}`
+      })}`,
     );
 
     await this.process({
@@ -170,13 +171,13 @@ export class CopyPasteService {
       replace,
       replacePlural,
       cases,
-      allResultReplacedTexts
+      allResultReplacedTexts,
     );
 
     // replace content
     for (let file of files) {
       file = file.split(sep).join('/');
-      const fileExt = file.split('.').pop().toUpperCase();
+      const fileExt = file.split('.').pop()?.toUpperCase() || '';
       if (extensions[0] === '*' || extensions.includes(fileExt)) {
         let { destFile } = this.getDestFile(
           allResultReplacedTexts,
@@ -187,7 +188,7 @@ export class CopyPasteService {
           findPlural,
           replace,
           replacePlural,
-          cases
+          cases,
         );
 
         const content = readFileSync(file).toString();
@@ -199,15 +200,15 @@ export class CopyPasteService {
           findPlural,
           replace,
           replacePlural,
-          cases
+          cases,
         );
 
         if (replaceEnvs) {
           const findStrings = Object.entries(process.env).map(([key]) =>
-            replaceEnvs.replace('key', key)
+            replaceEnvs.replace('key', key),
           );
           const replaceStrings = Object.entries(process.env).map(
-            ([key, value]) => this.utilsService.replaceEnv(value)
+            ([key, value]) => this.utilsService.replaceEnv(value),
           );
 
           for (let index = 0; index < findStrings.length; index++) {
@@ -220,7 +221,7 @@ export class CopyPasteService {
 
         if (file !== destFile) {
           this.logger.log(
-            `${file}(${content.length}) => ${destFile}(${destContent.length})`
+            `${file}(${content.length}) => ${destFile}(${destContent.length})`,
           );
           if (!existsSync(dirname(destFile))) {
             mkdirSync(dirname(destFile), { recursive: true });
@@ -238,14 +239,14 @@ export class CopyPasteService {
     findPlural: string,
     replace: string,
     replacePlural: string,
-    cases: string[]
+    cases: string[],
   ) {
     let destContent = content;
     // first we should replace all paths
     for (const allResultReplacedText of allResultReplacedTexts) {
       destContent = destContent.replace(
         new RegExp(`${sep}${allResultReplacedText.from}`, 'g'),
-        `${sep}${allResultReplacedText.toMd5}`
+        `${sep}${allResultReplacedText.toMd5}`,
       );
     }
 
@@ -266,21 +267,24 @@ export class CopyPasteService {
     for (const allResultReplacedText of allResultReplacedTexts) {
       destContent = destContent.replace(
         new RegExp(`${sep}${allResultReplacedText.toMd5}`, 'g'),
-        `${sep}${allResultReplacedText.to}`
+        `${sep}${allResultReplacedText.to}`,
       );
     }
     // replace all markers to replaced text for content
     for (const allResultReplacedText of allResultReplacedTexts) {
-      destContent = destContent.replace(
-        new RegExp(allResultReplacedText.toMd5, 'g'),
-        allResultReplacedText.to
-      );
+      const pattern = allResultReplacedText.toMd5;
+      if (pattern) {
+        destContent = destContent.replace(
+          new RegExp(pattern, 'g'),
+          allResultReplacedText.to,
+        );
+      }
     }
     // replace markers to replaced text for content
     for (const allResultReplacedText of resultReplacedTexts) {
       destContent = destContent.replace(
         new RegExp(allResultReplacedText.toMd5, 'g'),
-        allResultReplacedText.to
+        allResultReplacedText.to,
       );
     }
     return destContent;
@@ -295,12 +299,12 @@ export class CopyPasteService {
     findPlural: string,
     replace: string,
     replacePlural: string,
-    cases: string[]
+    cases: string[],
   ) {
     for (const allResultReplacedText of allResultReplacedTexts) {
       destPath = destPath.replace(
         new RegExp(`${sep}${allResultReplacedText.from}`, 'g'),
-        `${sep}${allResultReplacedText.toMd5}`
+        `${sep}${allResultReplacedText.toMd5}`,
       );
     }
 
@@ -319,17 +323,20 @@ export class CopyPasteService {
     for (const allResultReplacedText of allResultReplacedTexts) {
       destPath = destPath.replace(
         new RegExp(`${sep}${allResultReplacedText.toMd5}`, 'g'),
-        `${sep}${allResultReplacedText.to}`
+        `${sep}${allResultReplacedText.to}`,
       );
-      destFile = destFile.replace(
-        new RegExp(allResultReplacedText.toMd5, 'g'),
-        allResultReplacedText.to
-      );
+      const pattern = allResultReplacedText.toMd5;
+      if (pattern) {
+        destFile = destFile.replace(
+          new RegExp(pattern, 'g'),
+          allResultReplacedText.to,
+        );
+      }
     }
     for (const allResultReplacedText of filesResultReplacedTexts) {
       destFile = destFile.replace(
         new RegExp(allResultReplacedText.toMd5, 'g'),
-        allResultReplacedText.to
+        allResultReplacedText.to,
       );
     }
     return { destFile };
@@ -349,11 +356,11 @@ export class CopyPasteService {
       from: string;
       to: string;
       toMd5?: string;
-    }[]
+    }[],
   ) {
     for (let file of files) {
       file = file.split(sep).join('/');
-      const fileExt = file.split('.').pop().toUpperCase();
+      const fileExt = file.split('.').pop()?.toUpperCase() || '';
       if (extensions[0] === '*' || extensions.includes(fileExt)) {
         const { resultReplacedTexts } = this.replace({
           text: file.replace(path, destPath),
@@ -466,11 +473,11 @@ export class CopyPasteService {
         options?: {
           keepSpecialCharacters?: boolean;
           keep?: string[];
-        }
+        },
       ) =>
         mode === 'filepath'
-          ? item(camelCase(string), options)
-          : item(camelCase(string), options);
+          ? item!(camelCase(string), options)
+          : item!(camelCase(string), options);
 
       const from = func(findPlural, { keepSpecialCharacters: true });
       const to = func(replacePlural, { keepSpecialCharacters: true });
@@ -482,9 +489,9 @@ export class CopyPasteService {
             ? from
             : // eslint-disable-next-line no-useless-escape
               from.replace(/[-\/\\^$*+?.()|[\]{}]/g, '\\$&'),
-          'g'
+          'g',
         ),
-        toMd5
+        toMd5,
       );
       if (newText !== replacedText) {
         resultReplacedTexts.push({ from, to, toMd5 });
@@ -498,11 +505,11 @@ export class CopyPasteService {
         options?: {
           keepSpecialCharacters?: boolean;
           keep?: string[];
-        }
+        },
       ) =>
         mode === 'filepath'
-          ? item(camelCase(string), options)
-          : item(camelCase(string), options);
+          ? item!(camelCase(string), options)
+          : item!(camelCase(string), options);
 
       const from = func(find, { keepSpecialCharacters: true });
       const to = func(replace, { keepSpecialCharacters: true });
@@ -514,9 +521,9 @@ export class CopyPasteService {
             ? from
             : // eslint-disable-next-line no-useless-escape
               from.replace(/[-_\/\\^$*+?.()|[\]{}]/g, '\\$&'),
-          'g'
+          'g',
         ),
-        toMd5
+        toMd5,
       );
       if (newText !== replacedText) {
         resultReplacedTexts.push({ from, to, toMd5 });

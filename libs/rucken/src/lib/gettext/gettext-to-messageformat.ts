@@ -1,4 +1,9 @@
-import { mo, po } from 'gettext-parser';
+import {
+  GetTextPoParserOptions,
+  GetTextTranslations,
+  mo,
+  po,
+} from 'gettext-parser';
 /*
 Examples from https://www.gnu.org/software/gettext/manual/html_node/Plural-forms.html
 
@@ -16,7 +21,7 @@ Plural-Forms: nplurals=4; plural=n%100==1 ? 0 : n%100==2 ? 1 : n%100==3 || n%100
 Plural-Forms: nplurals=6; plural=n==0 ? 0 : n==1 ? 1 : n==2 ? 2 : n%100>=3 && n%100<=10 ? 3 : n%100>=11 ? 4 : 5;
 */
 
-const validPlural = (plural) => {
+const validPlural = (plural: string) => {
   const words = plural.match(/\b\w+\b/g);
   if (!words) return null;
   for (let i = 0; i < words.length; ++i) {
@@ -26,13 +31,14 @@ const validPlural = (plural) => {
   return plural.trim();
 };
 
-const getPluralFunction = (pluralForms) => {
+const getPluralFunction = (pluralForms: string) => {
   if (!pluralForms) return null;
   let nplurals;
   let plural;
-  pluralForms.split(';').forEach((part) => {
+  pluralForms.split(';').forEach((part: string) => {
     const m = part.match(/^\s*(\w+)\s*=(.*)/);
-    switch (m && m[1]) {
+    if (!m) return;
+    switch (m[1]) {
       case 'nplurals':
         nplurals = Number(m[2]);
         break;
@@ -62,7 +68,7 @@ const defaultOptions = {
     // },
     {
       pattern: /%(\d+)(?:\$\w)?/g,
-      replacement: (_, n) => `{${n - 1}}`,
+      replacement: (_: any, n: number) => `{${n - 1}}`,
     },
     {
       pattern: /%\((\w+)\)\w/g,
@@ -70,7 +76,7 @@ const defaultOptions = {
     },
     {
       pattern: /%\w/g,
-      replacement: function () {
+      replacement: function (this: { n: number }): string {
         return `{${this.n++}}`;
       },
       state: { n: 0 },
@@ -84,8 +90,26 @@ const defaultOptions = {
 };
 
 const getMessageFormat = (
-  { pluralFunction, pluralVariablePattern, replacements, verbose },
-  { msgid, msgid_plural, msgstr }
+  {
+    pluralFunction,
+    pluralVariablePattern,
+    replacements,
+    verbose,
+  }: {
+    pluralFunction: unknown;
+    pluralVariablePattern: unknown;
+    replacements: unknown;
+    verbose: unknown;
+  },
+  {
+    msgid,
+    msgid_plural,
+    msgstr,
+  }: {
+    msgid: string;
+    msgid_plural?: string;
+    msgstr: string[];
+  },
 ) => {
   if (!msgid || !msgstr) return null;
   if (!msgstr[0]) {
@@ -94,29 +118,62 @@ const getMessageFormat = (
   }
   if (msgid_plural) {
     if (!pluralFunction) throw new Error('Plural-Forms not defined');
-    for (let i = 1; i < pluralFunction.cardinal.length; ++i) {
+    for (
+      let i = 1;
+      i < (pluralFunction as { cardinal: number[] }).cardinal.length;
+      ++i
+    ) {
       if (!msgstr[i]) {
         if (verbose) console.warn('Plural translation not found:', msgid, i);
         msgstr[i] = msgid_plural;
       }
     }
   }
-  msgstr = msgstr.map((str) =>
-    replacements.reduce((str, { pattern, replacement, state }) => {
-      if (state) replacement = replacement.bind(Object.assign({}, state));
-      return str.replace(pattern, replacement);
-    }, str)
+  msgstr = msgstr.map((str: any) =>
+    (
+      replacements as Array<{
+        pattern: RegExp;
+        replacement: string | ((this: { n: number }) => string);
+        state?: { n: number };
+      }>
+    ).reduce((str: string, { pattern, replacement, state }) => {
+      if (state)
+        replacement = (replacement as (...args: unknown[]) => string).bind(
+          Object.assign({}, state),
+        );
+      return str.replace(pattern, replacement as string);
+    }, str),
   );
   if (msgid_plural) {
-    const m = msgid_plural.match(pluralVariablePattern);
+    // @ts-expect-error - pluralVariablePattern might be undefined
+    const m = msgid_plural.match(pluralVariablePattern!);
     const pv = (m && m[1]) || '0';
-    const pc = pluralFunction.cardinal.map((c, i) => `${c}{${msgstr[i]}}`);
+    const pc = (pluralFunction as { cardinal: number[] }).cardinal.map(
+      (c: any, i: number) => `${c}{${msgstr[i]}}`,
+    );
     return `{${pv}, plural, ${pc.join(' ')}}`;
   }
   return msgstr[0];
 };
 
-const convert = (parse, input, options) => {
+const convert = (
+  parse: {
+    (buffer: Buffer | string, defaultCharset?: string): GetTextTranslations;
+    (
+      buffer: Buffer | string,
+      options?: GetTextPoParserOptions,
+    ): GetTextTranslations;
+    (arg0: any, arg1: any): { headers: any; translations: any };
+  },
+  input: any,
+  options: {
+    pluralFunction: any;
+    forceContext?: any;
+    pluralVariablePattern?: any;
+    replacements?: any;
+    verbose?: any;
+  },
+) => {
   options = Object.assign({}, defaultOptions, options);
   const { headers, translations } = parse(input, options);
   if (!options.pluralFunction) {
@@ -127,7 +184,15 @@ const convert = (parse, input, options) => {
     if (context) hasContext = true;
     const data = translations[context];
     for (const id in data) {
-      const mf = getMessageFormat(options, data[id]);
+      const mf = getMessageFormat(
+        options as {
+          pluralFunction: unknown;
+          pluralVariablePattern: unknown;
+          replacements: unknown;
+          verbose: unknown;
+        },
+        data[id],
+      );
       if (mf) data[id] = mf;
       else delete data[id];
     }
@@ -140,10 +205,12 @@ const convert = (parse, input, options) => {
   };
 };
 
-export function parseMo(input, options) {
-  return convert(mo.parse, input, options || {});
+export function parseMo(input: unknown, options: Record<string, unknown>) {
+  // @ts-expect-error - mo.parse function signature mismatch
+  return convert(mo.parse.bind(mo), input, options || {});
 }
 
-export function parsePo(input, options) {
-  return convert(po.parse, input, options || {});
+export function parsePo(input: unknown, options: Record<string, unknown>) {
+  // @ts-expect-error - po.parse function signature mismatch
+  return convert(po.parse.bind(po), input, options || {});
 }

@@ -3,11 +3,19 @@ import { readFileSync, writeFileSync } from 'fs';
 import { getLogger, Logger } from 'log4js';
 import { PACKAGE_JSON, UtilsService } from '../utils/utils.service';
 
+export interface PackageJson {
+  version?: string;
+  dependencies?: Record<string, string>;
+  devDependencies?: Record<string, string>;
+  peerDependencies?: Record<string, string>;
+  [key: string]: unknown;
+}
+
 @Injectable()
 export class VersionUpdaterService {
   public static title = 'version-updater';
 
-  private logger: Logger;
+  private logger!: Logger;
 
   constructor(private readonly utilsService: UtilsService) {}
 
@@ -27,25 +35,30 @@ export class VersionUpdaterService {
     this.logger.debug(
       `Config: ${JSON.stringify({
         updatePackageVersion,
-      })}`
+        updateDependenciesVersion,
+      })}`,
     );
 
     const rootConfigPath = this.utilsService.resolveFilePath(PACKAGE_JSON);
     const projects = this.utilsService.getWorkspaceProjects();
 
-    Object.keys(projects)
-      .filter((key) => !key.includes('-e2e'))
-      .forEach((projectName) => {
+    for (const projectName of Object.keys(projects).filter(
+      (key) => !key.includes('-e2e'),
+    )) {
+      const project = projects[projectName];
+      if (project.root) {
         this.logger.debug(
-          `Process project "${projectName}" in ${projects[projectName].root}`
+          `Process project "${projectName}" in ${project.root}`,
         );
         this.updateFolderPackageFromRootPackage({
           rootConfigPath,
-          appConfigPath: `${projects[projectName].root}/package.json`,
+          appConfigPath: `${project.root}/package.json`,
           updatePackageVersion,
           updateDependenciesVersion,
         });
-      });
+      }
+    }
+
     this.logger.info('End of update versions...');
   }
 
@@ -59,75 +72,81 @@ export class VersionUpdaterService {
     appConfigPath: string;
     updatePackageVersion: boolean;
     updateDependenciesVersion: boolean;
-  }) {
+  }): void {
     this.logger.debug(
       `Start for ${JSON.stringify({
-        rootConfigPath: rootConfigPath,
-        appConfigPath: appConfigPath,
-      })}`
+        rootConfigPath,
+        appConfigPath,
+      })}`,
     );
+
     if (appConfigPath === rootConfigPath) {
       throw new Error(
-        `Source and destination is equals: ${appConfigPath}==${rootConfigPath}`
+        `Source and destination are equal: ${appConfigPath}==${rootConfigPath}`,
       );
     }
-    let folderConfig: unknown;
-    let rootConfig: unknown;
-    let content: string;
+
+    let rootConfig: PackageJson;
+    let folderConfig: PackageJson;
 
     try {
-      content = readFileSync(rootConfigPath).toString();
-      rootConfig = JSON.parse(content);
+      const content = readFileSync(rootConfigPath).toString();
+      rootConfig = JSON.parse(content) as PackageJson;
     } catch (error) {
-      throw new Error(`Wrong body of file ${rootConfigPath}`);
+      throw new Error(`Wrong body of file ${rootConfigPath}`, { cause: error });
     }
+
     try {
-      content = readFileSync(appConfigPath).toString();
-      folderConfig = JSON.parse(content);
-      let save = false;
-      if (updatePackageVersion) {
-        folderConfig['version'] = rootConfig['version'];
-        save = true;
+      const content = readFileSync(appConfigPath).toString();
+      folderConfig = JSON.parse(content) as PackageJson;
+      let shouldSave = false;
+
+      if (updatePackageVersion && rootConfig.version) {
+        folderConfig.version = rootConfig.version;
+        shouldSave = true;
       }
+
       if (updateDependenciesVersion) {
-        if (folderConfig['peerDependencies']) {
-          const peerDependenciesKeys = Object.keys(
-            folderConfig['peerDependencies']
-          );
-          peerDependenciesKeys.forEach((key) => {
-            save = true;
-            if (rootConfig['dependencies'][key]) {
-              folderConfig['peerDependencies'][key] =
-                rootConfig['dependencies'][key];
-            }
-          });
-        }
-        if (folderConfig['dependencies']) {
-          const dependenciesKeys = Object.keys(folderConfig['dependencies']);
-          dependenciesKeys.forEach((key) => {
-            save = true;
-            if (rootConfig['dependencies'][key]) {
-              folderConfig['dependencies'][key] =
-                rootConfig['dependencies'][key];
-            }
-            if (rootConfig['devDependencies'][key]) {
-              folderConfig['dependencies'][key] =
-                rootConfig['devDependencies'][key];
-            }
-          });
-        }
+        this.updateDependencies(folderConfig, rootConfig);
+        shouldSave = true;
       }
-      if (save) {
-        writeFileSync(appConfigPath, JSON.stringify(folderConfig, null, 4));
+
+      if (shouldSave) {
+        writeFileSync(appConfigPath, JSON.stringify(folderConfig, null, 2));
       }
-    } catch (error) {
-      this.logger.info('Error', `Wrong body of file ${appConfigPath}`);
+    } catch (_error) {
+      this.logger.warn(`Wrong body of file ${appConfigPath}`);
     }
-    this.logger.info(
-      `End of for ${JSON.stringify({
-        rootConfigPath: rootConfigPath,
-        appConfigPath: appConfigPath,
-      })}`
+
+    this.logger.debug(
+      `End for ${JSON.stringify({
+        rootConfigPath,
+        appConfigPath,
+      })}`,
     );
+  }
+
+  private updateDependencies(
+    folderConfig: PackageJson,
+    rootConfig: PackageJson,
+  ): void {
+    if (folderConfig.peerDependencies && rootConfig.dependencies) {
+      for (const key of Object.keys(folderConfig.peerDependencies)) {
+        if (rootConfig.dependencies[key]) {
+          folderConfig.peerDependencies[key] = rootConfig.dependencies[key];
+        }
+      }
+    }
+
+    if (folderConfig.dependencies) {
+      for (const key of Object.keys(folderConfig.dependencies)) {
+        if (rootConfig.dependencies?.[key]) {
+          folderConfig.dependencies[key] = rootConfig.dependencies[key];
+        }
+        if (rootConfig.devDependencies?.[key]) {
+          folderConfig.dependencies[key] = rootConfig.devDependencies[key];
+        }
+      }
+    }
   }
 }

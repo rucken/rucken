@@ -13,7 +13,7 @@ describe('Env replacer (e2e)', () => {
           VAR2: 'var2$var3',
           var3: 'VAR3$NO_REPLACE',
         },
-      }
+      },
     );
     expect(result.stdout).toEqual('var1var2VAR3$NO_REPLACE');
   });

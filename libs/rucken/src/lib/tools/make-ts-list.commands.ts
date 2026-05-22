@@ -5,13 +5,15 @@ import { DEFAULT_TOOLS_CONFIG } from './tools.config';
 
 @Console()
 export class MakeTsListCommands {
-  private readonly config =
-    this.utilsService.getRuckenConfig(DEFAULT_TOOLS_CONFIG).makeTsList;
+  private config: Record<string, unknown> = {};
 
   constructor(
     private readonly makeTsListService: MakeTsListService,
-    private readonly utilsService: UtilsService
-  ) {}
+    private readonly utilsService: UtilsService,
+  ) {
+    this.config = this.utilsService.getRuckenConfig(DEFAULT_TOOLS_CONFIG)
+      .makeTsList as Record<string, unknown>;
+  }
 
   @Command({
     alias: 'mtsl',
@@ -21,8 +23,8 @@ export class MakeTsListCommands {
   async makeTsList() {
     this.makeTsListService.setLogger(MakeTsListService.title);
     await this.makeTsListService.makeTsListHandler({
-      indexFileName: this.config.indexFileName,
-      excludes: this.config.excludes,
+      indexFileName: this.config.indexFileName as string,
+      excludes: this.config.excludes as string[],
     });
   }
 }

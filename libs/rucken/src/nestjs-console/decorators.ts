@@ -9,7 +9,7 @@ import {
   CONSOLE_METADATA_NAME,
 } from './constants';
 
-export type ParserType = (value: string, previous: any) => any;
+export type ParserType = (value: string, previous: unknown) => unknown;
 
 /**
  * A Param decorator to inject the root cli
@@ -39,7 +39,7 @@ export interface CommandOption {
   /**
    * The default value
    */
-  defaultValue?: any;
+  defaultValue?: unknown;
 
   /**
    * True if the option is required
@@ -77,11 +77,12 @@ export interface CreateCommandOptions {
 
 /**
  * The Command decorator is used to decorate a method in a class
- * You can use it in a class that is deecorated by a "@Console" decorator
+ * You can use it in a class that is decorated by a "@Console" decorator
  */
 export const Command =
   (options: CreateCommandOptions): MethodDecorator =>
-  (target: any, method: string | symbol): void =>
+  // @ts-expect-error - Target type compatibility with MethodDecorator
+  (target: Record<string, unknown>, method: string | symbol): void =>
     Reflect.defineMetadata(COMMAND_METADATA_NAME, options, target, method);
 
 /**
@@ -92,5 +93,6 @@ export const Command =
  */
 export const Console =
   (options?: CreateCommandOptions): ClassDecorator =>
-  (target: any): void =>
+  // @ts-expect-error - Target type compatibility with ClassDecorator
+  (target: Record<string, unknown>): void =>
     Reflect.defineMetadata(CONSOLE_METADATA_NAME, options || {}, target);

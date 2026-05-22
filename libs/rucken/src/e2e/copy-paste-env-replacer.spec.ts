@@ -2,17 +2,23 @@ import { existsSync, readFileSync } from 'fs';
 import { readFile } from 'fs/promises';
 import { resolve } from 'path';
 
+const INTEGRATIONS_APP = resolve(
+  __dirname,
+  '..',
+  '..',
+  '..',
+  '..',
+  'integrations',
+  'app',
+);
+
 describe('Copy paste env-replacer (e2e)', () => {
   it('new-1-user-repository.ts', () => {
     const content = readFileSync(
       resolve(
-        __dirname,
-        '..',
-        '..',
-        '..',
-        '..',
-        'integrations/app/libs/feature/server-env-replacer/src/lib/new-1-user-repository.ts'
-      )
+        INTEGRATIONS_APP,
+        'libs/feature/server-env-replacer/src/lib/new-1-user-repository.ts',
+      ),
     ).toString();
     expect(content).toEqual(`import { New1User } from './new-1-user';
 
@@ -36,14 +42,7 @@ export class New1UserRepository {
   });
   it('human_ufo.txt', () => {
     const content = readFileSync(
-      resolve(
-        __dirname,
-        '..',
-        '..',
-        '..',
-        '..',
-        'integrations/app/libs/human-ufo/human_ufo.txt'
-      )
+      resolve(INTEGRATIONS_APP, 'libs/human-ufo/human_ufo.txt'),
     ).toString();
     expect(content).toEqual(`examples:
 humanUfo

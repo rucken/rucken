@@ -18,7 +18,7 @@ import { parseFileSync } from './po2json';
 export class GettextService {
   public static title = 'gettext';
 
-  private logger: Logger;
+  private logger!: Logger;
 
   constructor(private readonly utilsService: UtilsService) {}
 
@@ -51,7 +51,7 @@ export class GettextService {
         locales,
         defaultLocale,
         markers,
-      })}`
+      })}`,
     );
     try {
       const projects = this.utilsService.getWorkspaceProjects();
@@ -70,7 +70,7 @@ export class GettextService {
             await this.processLibrary({
               po2jsonOptions,
               pattern,
-              sourceRoot: projects[projectName].sourceRoot,
+              sourceRoot: projects[projectName].sourceRoot!,
               defaultLocale,
               marker: '',
               locale,
@@ -81,7 +81,7 @@ export class GettextService {
               await this.processLibrary({
                 po2jsonOptions,
                 pattern,
-                sourceRoot: projects[projectName].sourceRoot,
+                sourceRoot: projects[projectName].sourceRoot!,
                 defaultLocale,
                 marker,
                 locale,
@@ -124,7 +124,7 @@ export class GettextService {
       assetsPath || '',
       'i18n',
       marker ? marker : '',
-      defaultPotFileName
+      defaultPotFileName,
     );
     let defaultJsonPotData: Record<string, unknown> = {};
 
@@ -135,7 +135,7 @@ export class GettextService {
       assetsPath || '',
       'i18n',
       marker ? marker : '',
-      defaultJsonFileName
+      defaultJsonFileName,
     );
     let defaultJsonData: Record<string, unknown> = {};
 
@@ -146,7 +146,7 @@ export class GettextService {
       assetsPath || '',
       'i18n',
       marker ? marker : '',
-      localeJsonFileName
+      localeJsonFileName,
     );
     let localeJsonData: Record<string, unknown> = {};
 
@@ -157,7 +157,7 @@ export class GettextService {
       assetsPath || '',
       'i18n',
       marker ? marker : '',
-      localePoFileName
+      localePoFileName,
     );
     let localeJsonPoData: Record<string, unknown> = {};
 
@@ -187,7 +187,10 @@ export class GettextService {
 
     // считываем пот файл
     if (existsSync(defaultPotFile)) {
-      defaultJsonPotData = parseFileSync(defaultPotFile, po2jsonOptions);
+      defaultJsonPotData = parseFileSync(
+        defaultPotFile,
+        po2jsonOptions,
+      ) as Record<string, unknown>;
     }
 
     const newDefaultJsonData = {
@@ -212,7 +215,10 @@ export class GettextService {
 
     // считываем по файл локали
     if (existsSync(localePoFile)) {
-      localeJsonPoData = parseFileSync(localePoFile, po2jsonOptions);
+      localeJsonPoData = parseFileSync(localePoFile, po2jsonOptions) as Record<
+        string,
+        unknown
+      >;
     }
 
     const newLocaleJsonData = {
@@ -235,7 +241,12 @@ export class GettextService {
     // формируем общий json
     const newJsonData = { ...newDefaultJsonData, ...newLocaleJsonData };
 
-    this.extractWithMarkers(marker, sourceRoot, pattern, newJsonData);
+    this.extractWithMarkers(
+      marker!,
+      sourceRoot,
+      pattern!,
+      newJsonData as Record<string, string>,
+    );
 
     // если язык не дефолт и у него перевод равен ключу, то сносим перевод
     Object.keys(newJsonData).forEach((key) => {
@@ -255,18 +266,18 @@ export class GettextService {
       if (locale === defaultLocale) {
         const poContent = await i18nextToPot(
           locale,
-          JSON.stringify(newJsonData, null, 4)
+          JSON.stringify(newJsonData, null, 4),
         );
 
         const newPoContent = poContent
           .toString()
           .split('\n')
           .filter(
-            (line) =>
+            (line: string) =>
               !(
                 line.includes('POT-Creation-Date') ||
                 line.includes('PO-Revision-Date')
-              )
+              ),
           )
           .join('\n');
 
@@ -276,26 +287,27 @@ export class GettextService {
         if (
           !equal(newJsonData, defaultJsonPotData) ||
           !existsSync(defaultPotFile) ||
-          newPoContent !== poContent
+          (newPoContent as unknown as string) !==
+            (poContent as unknown as string)
         ) {
           writeFileSync(defaultPotFile, newPoContent.toString());
         }
       }
 
       const poContent = await i18nextToPo(
-        locale,
-        JSON.stringify(newJsonData, null, 4)
+        locale!,
+        JSON.stringify(newJsonData, null, 4),
       );
 
       const newPoContent = poContent
         .toString()
         .split('\n')
         .filter(
-          (line) =>
+          (line: string) =>
             !(
               line.includes('POT-Creation-Date') ||
               line.includes('PO-Revision-Date')
-            )
+            ),
         )
         .join('\n');
 
@@ -305,7 +317,7 @@ export class GettextService {
       if (
         !equal(newJsonData, localeJsonPoData) ||
         !existsSync(localePoFile) ||
-        newPoContent !== poContent
+        (newPoContent as unknown as string) !== (poContent as unknown as string)
       ) {
         writeFileSync(localePoFile, newPoContent.toString());
       }
@@ -330,7 +342,7 @@ export class GettextService {
     marker: string,
     sourceRoot: string,
     pattern: string,
-    newJsonData: Record<string, unknown>
+    newJsonData: Record<string, unknown>,
   ) {
     let extractor: GettextExtractor | null = null;
     if (marker) {
@@ -347,8 +359,8 @@ export class GettextService {
         .parseFilesGlob(`./${sourceRoot}/${pattern}`);
     }
 
-    extractor
-      ? extractor.getMessages().reduce((all, cur) => {
+    const _extractedMessages = extractor
+      ? extractor.getMessages().reduce<Record<string, string>>((all, cur) => {
           // сканируем исходники и ищим по маркеру слова, если есть новые, то добавляем их в общий json
           if (cur.text && !newJsonData[cur.text]) {
             all[cur.text] = cur.text;

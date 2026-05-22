@@ -1,17 +1,20 @@
 import { readFileSync } from 'fs';
 import { resolve } from 'path';
 
+const INTEGRATIONS_APP = resolve(
+  __dirname,
+  '..',
+  '..',
+  '..',
+  '..',
+  'integrations',
+  'app',
+);
+
 describe('Copy paste (e2e)', () => {
   it('libs/my-company', () => {
     const content = readFileSync(
-      resolve(
-        __dirname,
-        '..',
-        '..',
-        '..',
-        '..',
-        'integrations/app/libs/feature/server/src/lib/my-company.ts'
-      )
+      resolve(INTEGRATIONS_APP, 'libs/feature/server/src/lib/my-company.ts'),
     ).toString();
     expect(content).toEqual(`export class MyCompany {
   id: string;
@@ -22,13 +25,9 @@ describe('Copy paste (e2e)', () => {
   it('libs/my-company-repository', () => {
     const content = readFileSync(
       resolve(
-        __dirname,
-        '..',
-        '..',
-        '..',
-        '..',
-        'integrations/app/libs/feature/server/src/lib/my-company-repository.ts'
-      )
+        INTEGRATIONS_APP,
+        'libs/feature/server/src/lib/my-company-repository.ts',
+      ),
     ).toString();
     expect(content).toEqual(`import { MyCompany } from './my-company';
 
@@ -53,13 +52,9 @@ export class MyCompanyRepository {
   it('libs/feature-server', () => {
     const content = readFileSync(
       resolve(
-        __dirname,
-        '..',
-        '..',
-        '..',
-        '..',
-        'integrations/app/libs/feature/server/src/lib/feature-server-company.ts'
-      )
+        INTEGRATIONS_APP,
+        'libs/feature/server/src/lib/feature-server-company.ts',
+      ),
     ).toString();
     expect(content)
       .toEqual(`import { getText } from 'class-validator-multi-lang';
@@ -77,13 +72,9 @@ export class FeatureServerCompanies {
   it('apps/test-server', () => {
     const content = readFileSync(
       resolve(
-        __dirname,
-        '..',
-        '..',
-        '..',
-        '..',
-        'integrations/app/libs/test/server/src/lib/feature-server-company.ts'
-      )
+        INTEGRATIONS_APP,
+        'libs/test/server/src/lib/feature-server-company.ts',
+      ),
     ).toString();
     expect(content)
       .toEqual(`import { getText } from 'class-validator-multi-lang';

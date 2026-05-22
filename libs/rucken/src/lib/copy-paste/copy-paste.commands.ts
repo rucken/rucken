@@ -5,14 +5,15 @@ import { CopyPasteService } from './copy-paste.service';
 
 @Console()
 export class CopyPasteCommands {
-  private readonly config = this.utilsService.getRuckenConfig(
-    DEFAULT_COPY_PASTE_CONFIG
-  ).copyPaste;
+  private config: Record<string, unknown> = {};
 
   constructor(
     private readonly copyPasteService: CopyPasteService,
-    private readonly utilsService: UtilsService
-  ) {}
+    private readonly utilsService: UtilsService,
+  ) {
+    this.config = this.utilsService.getRuckenConfig(DEFAULT_COPY_PASTE_CONFIG)
+      .copyPaste as Record<string, unknown>;
+  }
 
   @Command({
     alias: 'cp',
@@ -96,15 +97,15 @@ export class CopyPasteCommands {
       replace,
       replacePlural,
       destPath,
-      extensions: (extensions || this.config.extensions)
+      extensions: (extensions || (this.config.extensions as string))
         .split(',')
-        .map((s) => s.trim()),
-      cases: this.config.cases,
+        .map((s: string) => s.trim()),
+      cases: this.config.cases as string[],
       globRules,
       replaceEnvs: replaceEnvs
         ? replaceEnvs.includes('key')
           ? replaceEnvs
-          : this.config.replaceEnvsKeyPattern
+          : (this.config.replaceEnvsKeyPattern as string)
         : undefined,
     });
   }

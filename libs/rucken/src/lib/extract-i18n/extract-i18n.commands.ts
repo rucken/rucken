@@ -5,14 +5,15 @@ import { Extracti18nService } from './extract-i18n.service';
 
 @Console()
 export class Extracti18nCommands {
-  private readonly config = this.utilsService.getRuckenConfig(
-    DEFAULT_EXTRACT_I18N_CONFIG
-  ).extracti18n;
+  private config: Record<string, unknown> = {};
 
   constructor(
     private readonly extracti18nService: Extracti18nService,
-    private readonly utilsService: UtilsService
-  ) {}
+    private readonly utilsService: UtilsService,
+  ) {
+    this.config = this.utilsService.getRuckenConfig(DEFAULT_EXTRACT_I18N_CONFIG)
+      .extracti18n as Record<string, unknown>;
+  }
 
   @Command({
     command: 'extract-i18n',
@@ -58,17 +59,23 @@ export class Extracti18nCommands {
   }) {
     this.extracti18nService.setLogger(Extracti18nService.title);
     this.extracti18nService.extract({
-      locales: locales ? locales.split(',') : this.config.locales,
-      markers: this.config.markers,
+      locales: locales ? locales.split(',') : (this.config.locales as string[]),
+      markers: this.config.markers as string[],
       resetUnusedTranslates:
         (
           resetUnusedTranslates ||
-          this.config.resetUnusedTranslates ||
+          (this.config.resetUnusedTranslates as string) ||
           'false'
         ).toLowerCase() === 'true',
-      clientProjectNameParts: clientProjectNameParts.split(','),
-      e2eProjectNameParts: e2eProjectNameParts.split(','),
-      serverProjectNameParts: serverProjectNameParts.split(','),
+      clientProjectNameParts:
+        clientProjectNameParts?.split(',') ||
+        (this.config.clientProjectNameParts as string[]),
+      e2eProjectNameParts:
+        e2eProjectNameParts?.split(',') ||
+        (this.config.e2eProjectNameParts as string[]),
+      serverProjectNameParts:
+        serverProjectNameParts?.split(',') ||
+        (this.config.serverProjectNameParts as string[]),
     });
   }
 }

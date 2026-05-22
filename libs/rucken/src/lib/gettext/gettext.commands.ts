@@ -5,14 +5,15 @@ import { GettextService } from './gettext.service';
 
 @Console()
 export class GettextCommands {
-  private readonly config = this.utilsService.getRuckenConfig(
-    DEFAULT_GETTEXT_CONFIG
-  ).gettext;
+  private config: Record<string, unknown> = {};
 
   constructor(
     private readonly gettextService: GettextService,
-    private readonly utilsService: UtilsService
-  ) {}
+    private readonly utilsService: UtilsService,
+  ) {
+    this.config = (this.utilsService.getRuckenConfig(DEFAULT_GETTEXT_CONFIG)
+      .gettext || {}) as Record<string, unknown>;
+  }
 
   @Command({
     command: 'gettext',
@@ -37,11 +38,12 @@ export class GettextCommands {
   }) {
     this.gettextService.setLogger(GettextService.title);
     await this.gettextService.extractTranslatesFromSourcesForLibraries({
-      po2jsonOptions: this.config.po2jsonOptions,
-      pattern: this.config.gettextExtractorOptions.pattern,
-      locales: locales ? locales.split(',') : this.config.locales,
-      defaultLocale: defaultLocale || this.config.defaultLocale,
-      markers: this.config.markers,
+      po2jsonOptions: this.config.po2jsonOptions as Record<string, unknown>,
+      pattern: (this.config.gettextExtractorOptions as Record<string, string>)
+        ?.pattern,
+      locales: locales ? locales.split(',') : (this.config.locales as string[]),
+      defaultLocale: defaultLocale || (this.config.defaultLocale as string),
+      markers: this.config.markers as string[],
     });
   }
 }

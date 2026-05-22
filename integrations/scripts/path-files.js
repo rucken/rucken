@@ -19,7 +19,7 @@ const browserslistrc = join(
   'app',
   'apps',
   'client',
-  '.browserslistrc'
+  '.browserslistrc',
 );
 if (existsSync(browserslistrc)) {
   readFile(browserslistrc, function (err, content) {

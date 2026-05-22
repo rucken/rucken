@@ -53,7 +53,7 @@ function _sort(
     posixOrder?: any;
     windowsOrder?: any;
     segmentCompareFn?: (a: string, b: any) => number;
-  }
+  },
 ) {
   const {
     pathKey,
@@ -79,26 +79,29 @@ function _sort(
   // Never call prototype methods on entry arrays and objects directly.
   const parsedPaths = [].map.call(paths, parse);
   // Both map and sort will preserve holes. Sort will put holes at the end.
-  return parsedPaths
-    .sort(compare)
-    .map((parsedPath: { original: any }) => parsedPath.original);
+  return (
+    (parsedPaths as Array<{ original: unknown }>)
+      // @ts-expect-error - Complex sorting function with dynamic types
+      .sort(compare)
+      .map((parsedPath) => parsedPath.original)
+  );
 
   function validateOptions() {
     if (pathKey !== undefined && typeof pathKey !== 'string') {
       throw new Error(
-        'Invalid arguments: pathKey must be a string or undefined.'
+        'Invalid arguments: pathKey must be a string or undefined.',
       );
     }
     if (deepFirst && shallowFirst) {
       throw new Error(
-        'Invalid arguments: Only one of shallowFirst and deepFirst can have a truthy value.'
+        'Invalid arguments: Only one of shallowFirst and deepFirst can have a truthy value.',
       );
     }
     validateOrder(posixPathType, posixOrder, 'posixOrder');
     validateOrder(windowsPathType, windowsOrder, 'windowsOrder');
     if (typeof segmentCompareFn !== 'function') {
       throw new Error(
-        'Invalid argument: segmentCompareFunction must be a function or undefined.'
+        'Invalid argument: segmentCompareFunction must be a function or undefined.',
       );
     }
   }
@@ -114,23 +117,23 @@ function _sort(
       nms?: number;
     },
     order: string | any[],
-    paramName: string
+    paramName: string,
   ) {
     if (order !== undefined) {
       if (!Array.isArray(order)) {
         throw new Error(
-          `Invalid arguments: ${paramName} must be an array or undefined.`
+          `Invalid arguments: ${paramName} must be an array or undefined.`,
         );
       }
       const keys = Object.keys(type);
       if (
         keys.length !== order.length ||
-        !keys.every((key) => [].indexOf.call(order, key) >= 0)
+        !keys.every((key) => (order as string[]).indexOf(key) >= 0)
       ) {
         throw new Error(
           `Invalid arguments: ${paramName} must be a permutation of ${JSON.stringify(
-            keys
-          )} array or undefined.`
+            keys,
+          )} array or undefined.`,
         );
       }
     }
@@ -145,11 +148,14 @@ function _sort(
         // Custom
         order = [].map.call(
           posixOrder,
-          (key: string | number) => posixPathType[key]
+          (key: string | number) =>
+            (posixPathType as Record<string, number>)[key],
         );
       } else {
         // Predefined
-        order = Object.keys(posixPathType).map((key) => posixPathType[key]);
+        order = Object.keys(posixPathType).map(
+          (key) => (posixPathType as Record<string, number>)[key],
+        );
       }
     } else if (Path.sep === '\\') {
       // Windows
@@ -157,16 +163,19 @@ function _sort(
         // Custom
         order = [].map.call(
           windowsOrder,
-          (key: string | number) => windowsPathType[key]
+          (key: string | number) =>
+            (windowsPathType as Record<string, number>)[key],
         );
       } else {
         // Predefined
-        order = Object.keys(windowsPathType).map((key) => windowsPathType[key]);
+        order = Object.keys(windowsPathType).map(
+          (key) => (windowsPathType as Record<string, number>)[key],
+        );
       }
     } else {
       // Other platform
       order = Object.keys(otherPlatformPathType).map(
-        (key) => otherPlatformPathType[key]
+        (key) => (otherPlatformPathType as Record<string, number>)[key],
       );
     }
     // Paths with unrecognized parsed root will be at the end. It should never happen, though.
@@ -201,7 +210,7 @@ function _sort(
     const { root, base } = normalized;
     let { dir } = normalized;
 
-    let pathType = undefined;
+    let pathType: number;
     if (Path.sep === '/') {
       // Posix
       if (root) {
@@ -250,12 +259,12 @@ function _sort(
             // Remove ':' and also remove separator from the end to avoid the empty name subdir problem
             dir = `${dir.slice(0, root.length - 2)}${dir.slice(
               root.length - 1,
-              -1
+              -1,
             )}`;
           } else {
             // Remove ':'
             dir = `${dir.slice(0, root.length - 2)}${dir.slice(
-              root.length - 1
+              root.length - 1,
             )}`;
           }
         } else if (root.endsWith(':')) {
@@ -299,6 +308,12 @@ function _sort(
       pathType: leftPathType,
       dirs: leftDirs,
       base: leftBase,
+    }: {
+      pathString: unknown;
+      normalizedPathString: unknown;
+      pathType: unknown;
+      dirs: unknown;
+      base: unknown;
     },
     {
       pathString: rightPathString,
@@ -306,7 +321,13 @@ function _sort(
       pathType: rightPathType,
       dirs: rightDirs,
       base: rightBase,
-    }
+    }: {
+      pathString: unknown;
+      normalizedPathString: unknown;
+      pathType: unknown;
+      dirs: unknown;
+      base: unknown;
+    },
   ) {
     // Unreadable elements will be at the end, before holes
     const leftUnreadable = leftPathString === undefined ? 1 : 0;
@@ -325,34 +346,46 @@ function _sort(
     }
 
     // Same types of paths. Compare dirs first.
-    for (let i = 0; i < leftDirs.length && i < rightDirs.length; i++) {
-      const result = segmentCompareFn(leftDirs[i], rightDirs[i]);
+    const leftDirsArr = leftDirs as string[];
+    const rightDirsArr = rightDirs as string[];
+    for (let i = 0; i < leftDirsArr.length && i < rightDirsArr.length; i++) {
+      const result = segmentCompareFn(leftDirsArr[i], rightDirsArr[i]);
       if (result !== 0) return result;
     }
 
     // Dirs match, but one path might be deeper.
-    if (leftDirs.length === rightDirs.length) {
+    if (leftDirsArr.length === rightDirsArr.length) {
       // Dirs completely match.
-      const result = segmentCompareFn(leftBase, rightBase);
+      const result = segmentCompareFn(leftBase as string, rightBase as string);
       if (result !== 0) return result;
       // Two normalized paths are equal, compare full unnormalized versions.
-      return segmentCompareFn(leftPathString, rightPathString);
+      return segmentCompareFn(
+        leftPathString as string,
+        rightPathString as string,
+      );
     } else if (!(deepFirst || shallowFirst)) {
       // Base vs directory
       const result =
-        leftDirs.length < rightDirs.length
-          ? segmentCompareFn(leftBase, rightDirs[leftDirs.length])
-          : segmentCompareFn(leftDirs[rightDirs.length], rightBase);
+        leftDirsArr.length < rightDirsArr.length
+          ? segmentCompareFn(
+              leftBase as string,
+              rightDirsArr[leftDirsArr.length],
+            )
+          : segmentCompareFn(
+              leftDirsArr[rightDirsArr.length],
+              rightBase as string,
+            );
       if (result !== 0) return result;
       // Directory vs its content, compare full normalized paths
       return segmentCompareFn(
-        leftNormalizedPathString,
-        rightNormalizedPathString
+        leftNormalizedPathString as string,
+        rightNormalizedPathString as string,
       );
     } else {
       // Deep vs shallow. Exactly one of deepFirst and shallowFirst is true, no need to test both.
       return (
-        (leftDirs.length < rightDirs.length ? -1 : 1) * (deepFirst ? -1 : 1)
+        (leftDirsArr.length < rightDirsArr.length ? -1 : 1) *
+        (deepFirst ? -1 : 1)
       );
     }
   }
@@ -372,7 +405,7 @@ export function sort(
     deepFirst?: boolean;
     homePathsSupported?: boolean;
     segmentCompareFn?: (a: any, b: any) => any;
-  }
+  },
 ) {
   return _sort(NodePath, paths, options);
 }
@@ -391,7 +424,7 @@ export function posixSort(
     deepFirst?: boolean;
     homePathsSupported?: boolean;
     segmentCompareFn?: (a: any, b: any) => any;
-  }
+  },
 ) {
   return _sort(NodePath.posix, paths, options);
 }
@@ -410,7 +443,7 @@ export function windowsSort(
     deepFirst?: boolean;
     homePathsSupported?: boolean;
     segmentCompareFn?: (a: any, b: any) => any;
-  }
+  },
 ) {
   return _sort(NodePath.win32, paths, options);
 }

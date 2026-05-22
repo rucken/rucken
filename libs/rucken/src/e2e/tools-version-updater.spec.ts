@@ -1,37 +1,31 @@
 import { readFileSync } from 'fs';
 import { resolve } from 'path';
 
+const INTEGRATIONS_APP = resolve(
+  __dirname,
+  '..',
+  '..',
+  '..',
+  '..',
+  'integrations',
+  'app',
+);
+
 describe('Tools version-updater (e2e)', () => {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   let rootJson: any;
 
   beforeAll(() => {
     rootJson = JSON.parse(
-      readFileSync(
-        resolve(
-          __dirname,
-          '..',
-          '..',
-          '..',
-          '..',
-          'integrations/app/package.json'
-        )
-      ).toString()
+      readFileSync(resolve(INTEGRATIONS_APP, 'package.json')).toString(),
     );
   });
 
   it('libs/feature-client', () => {
     const json = JSON.parse(
       readFileSync(
-        resolve(
-          __dirname,
-          '..',
-          '..',
-          '..',
-          '..',
-          'integrations/app/libs/feature/client/package.json'
-        )
-      ).toString()
+        resolve(INTEGRATIONS_APP, 'libs/feature/client/package.json'),
+      ).toString(),
     );
     expect(json).toMatchObject({
       name: '@app/feature-client',
@@ -45,15 +39,8 @@ describe('Tools version-updater (e2e)', () => {
   it('libs/feature-server', () => {
     const json = JSON.parse(
       readFileSync(
-        resolve(
-          __dirname,
-          '..',
-          '..',
-          '..',
-          '..',
-          'integrations/app/libs/feature/server/package.json'
-        )
-      ).toString()
+        resolve(INTEGRATIONS_APP, 'libs/feature/server/package.json'),
+      ).toString(),
     );
     expect(json).toMatchObject({
       name: '@app/feature-server',
@@ -67,15 +54,8 @@ describe('Tools version-updater (e2e)', () => {
   it('libs/feature-common', () => {
     const json = JSON.parse(
       readFileSync(
-        resolve(
-          __dirname,
-          '..',
-          '..',
-          '..',
-          '..',
-          'integrations/app/libs/feature/common/package.json'
-        )
-      ).toString()
+        resolve(INTEGRATIONS_APP, 'libs/feature/common/package.json'),
+      ).toString(),
     );
     expect(json).toMatchObject({
       name: '@app/feature-common',
@@ -89,15 +69,8 @@ describe('Tools version-updater (e2e)', () => {
   it('apps/client', () => {
     const json = JSON.parse(
       readFileSync(
-        resolve(
-          __dirname,
-          '..',
-          '..',
-          '..',
-          '..',
-          'integrations/app/apps/client/package.json'
-        )
-      ).toString()
+        resolve(INTEGRATIONS_APP, 'apps/client/package.json'),
+      ).toString(),
     );
     expect(json).toMatchObject({
       name: '@app/client',
@@ -111,15 +84,8 @@ describe('Tools version-updater (e2e)', () => {
   it('apps/server', () => {
     const json = JSON.parse(
       readFileSync(
-        resolve(
-          __dirname,
-          '..',
-          '..',
-          '..',
-          '..',
-          'integrations/app/apps/server/package.json'
-        )
-      ).toString()
+        resolve(INTEGRATIONS_APP, 'apps/server/package.json'),
+      ).toString(),
     );
     expect(json).toMatchObject({
       name: '@app/server',
@@ -133,15 +99,8 @@ describe('Tools version-updater (e2e)', () => {
   it('apps/cli', () => {
     const json = JSON.parse(
       readFileSync(
-        resolve(
-          __dirname,
-          '..',
-          '..',
-          '..',
-          '..',
-          'integrations/app/apps/cli/package.json'
-        )
-      ).toString()
+        resolve(INTEGRATIONS_APP, 'apps/cli/package.json'),
+      ).toString(),
     );
     expect(json).toMatchObject({
       name: '@app/cli',

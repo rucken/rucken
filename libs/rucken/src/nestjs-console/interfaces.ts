@@ -14,19 +14,21 @@ import * as commander from 'commander';
  * storeOptionsAsProperties is set to false, to get options, use command.opts()
  */
 export type CommandActionHandler =
-  | ((...args: any[]) => any | Promise<any>)
-  | { instance: any; methodName: string };
+  | ((...args: unknown[]) => unknown | Promise<unknown>)
+  | { instance: unknown; methodName: string };
 
 /**
  * The wrapper type of a Command action handler
  * Note: The last argument is always the command
  */
-export type CommandActionWrapper = (...args: any[]) => Promise<CommandResponse>;
+export type CommandActionWrapper = (
+  ...args: unknown[]
+) => Promise<CommandResponse>;
 
 /**
- * The response of the
+ * The response of the command execution
  */
 export interface CommandResponse {
-  data: any;
+  data: unknown;
   command: commander.Command;
 }
