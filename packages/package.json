@@ -1,9 +1,0 @@
-{
-    "i18n": [
-        {
-            "scope": "devkit",
-            "path": "src/i18n",
-            "strategy": "join"
-        }
-    ]
-}
