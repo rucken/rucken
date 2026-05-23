@@ -2,6 +2,15 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [4.18.0](https://github.com/rucken/rucken/compare/v4.17.0...v4.18.0) (2026-05-23)
+
+
+### Features
+
+* move from ngneat to jsverse dependencies ([288f2f6](https://github.com/rucken/rucken/commit/288f2f6f909a8f4cb3714584b22be61f94d12567))
+* move from ngneat to jsverse dependencies ([4cc3c4d](https://github.com/rucken/rucken/commit/4cc3c4d77fa72ea719e5172bf006d85541b0cf98))
+* move from ngneat to jsverse dependencies ([8b97528](https://github.com/rucken/rucken/commit/8b97528c009f6184f32c4d9a2945bdb8be574aa1))
+
 ## [4.17.0](https://github.com/rucken/rucken/compare/v4.16.1...v4.17.0) (2026-05-22)
 
 
