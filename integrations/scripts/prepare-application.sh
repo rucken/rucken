@@ -8,7 +8,7 @@ node ./integrations/scripts/path-files.js
 cd ./integrations/app
 npm i --force
 npm install --save-dev @nrwl/angular@14.6.5 @nrwl/nest@14.6.5 @nrwl/node@14.6.5 --force
-npm install --save @ngneat/transloco @ngneat/transloco-locale
+npm install --save @jsverse/transloco @jsverse/transloco-locale
 npm run nx -- g @nrwl/nest:app server
 npm run nx -- g @nrwl/angular:app client --style=scss --routing=true
 npm run nx -- g @nrwl/node:app cli
@@ -28,7 +28,7 @@ npm pack .
 cd ../
 npm i --force
 npm install --save class-validator-multi-lang --force
-npm install --save-dev ./lib/rucken-0.0.0.tgz @ngneat/transloco-keys-manager --force
+npm install --save-dev ./lib/rucken-0.0.0.tgz @jsverse/transloco-keys-manager --force
 npm run nx -- format
 
 npm run rucken -- make-ts-list

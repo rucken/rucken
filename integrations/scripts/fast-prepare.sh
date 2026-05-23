@@ -12,7 +12,7 @@ npm pack .
 cd ../
 npm i --force
 npm install --save class-validator-multi-lang --force
-npm install --save-dev ./lib/rucken-0.0.0.tgz @ngneat/transloco-keys-manager --force
+npm install --save-dev ./lib/rucken-0.0.0.tgz @jsverse/transloco-keys-manager --force
 npm run nx -- format
 
 npm run rucken -- make-ts-list

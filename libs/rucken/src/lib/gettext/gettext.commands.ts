@@ -24,7 +24,7 @@ export class GettextCommands {
         description: 'list of available languages (example: ru,en)',
       },
       {
-        flags: '-dl,--default-locale [string]',
+        flags: '--default-locale [string]',
         description: 'default locale (default: en)',
       },
     ],

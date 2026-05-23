@@ -33,23 +33,23 @@ export class TranslateCommands {
         description: 'list of available languages (example: ru,en)',
       },
       {
-        flags: '-dl,--default-locale [string]',
+        flags: '--default-locale [string]',
         description: 'default locale (default: en)',
       },
       {
-        flags: '-rut,--reset-unused-translates [boolean]',
+        flags: '--reset-unused-translates [boolean]',
         description:
           'remove all translates if they not found in source code (default: true)',
         defaultValue: 'true',
       },
       {
-        flags: '-epnp,--e2e-project-name-parts [string]',
+        flags: '--e2e-project-name-parts [string]',
       },
       {
-        flags: '-cpnp,--client-project-name-parts [string]',
+        flags: '--client-project-name-parts [string]',
       },
       {
-        flags: '-spnp,--server-project-name-parts [string]',
+        flags: '--server-project-name-parts [string]',
       },
     ],
   })

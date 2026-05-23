@@ -16,7 +16,7 @@ export class Extracti18nService {
 
   private logger!: Logger;
 
-  constructor(private readonly utilsService: UtilsService) {}
+  constructor(private readonly utilsService: UtilsService) { }
 
   setLogger(command: string): void {
     this.logger = getLogger(command);
@@ -190,8 +190,17 @@ export class Extracti18nService {
         translocoConfigFilepath,
         JSON.stringify(translocoConfig, null, 4),
       );
-      spawnSync('transloco-keys-manager');
-      spawnSync('transloco-scoped-libs', ['--skip-gitignore']);
+      const result1 = spawnSync('transloco-keys-manager', [
+      ], { stdio: 'inherit' });
+      if (result1.status !== 0) {
+        this.logger.error(`transloco-keys-manager failed with status ${result1.status}`);
+      }
+      const result2 = spawnSync('transloco-scoped-libs', [
+        '--skip-gitignore'
+      ], { stdio: 'inherit' });
+      if (result2.status !== 0) {
+        this.logger.error(`transloco-scoped-libs failed with status ${result2.status}`);
+      }
     });
   }
 
@@ -247,8 +256,17 @@ export class Extracti18nService {
       translocoConfig.scopedLibs = scopedLibs;
 
       this.saveConfig(translocoConfigFilepath, translocoConfig);
-      spawnSync('transloco-keys-manager');
-      spawnSync('transloco-scoped-libs', ['--skip-gitignore']);
+      const result1 = spawnSync('transloco-keys-manager', [
+      ], { stdio: 'inherit' });
+      if (result1.status !== 0) {
+        this.logger.error(`transloco-keys-manager failed with status ${result1.status}`);
+      }
+      const result2 = spawnSync('transloco-scoped-libs', [
+        '--skip-gitignore'
+      ], { stdio: 'inherit' });
+      if (result2.status !== 0) {
+        this.logger.error(`transloco-scoped-libs failed with status ${result2.status}`);
+      }
     });
   }
 
@@ -277,14 +295,21 @@ export class Extracti18nService {
     noExtract: boolean,
   ) {
     if (!noExtract) {
-      spawnSync('transloco-keys-manager', [
+      const result = spawnSync('transloco-keys-manager', [
         'extract',
         ...(resetUnusedTranslates ? ['--replace'] : []),
         '--input',
         `${resolve(sourceRoot)}`,
         '--output',
         `${resolve(sourceRoot)}/assets/i18n`,
-      ]);
+        `--marker`,
+        'marker',
+        '--file-format',
+        'json'
+      ], { stdio: 'inherit' });
+      if (result.status !== 0) {
+        this.logger.error(`transloco-keys-manager failed with status ${result.status}`);
+      }
     }
   }
 
@@ -297,14 +322,21 @@ export class Extracti18nService {
     noExtract: boolean,
   ) {
     if (!noExtract) {
-      spawnSync('transloco-keys-manager', [
+      const result = spawnSync('transloco-keys-manager', [
         'extract',
         ...(resetUnusedTranslates ? ['--replace'] : []),
         '--input',
         `${resolve(sourceRoot)}`,
         '--output',
         `${resolve(sourceRoot)}/i18n`,
-      ]);
+        `--marker`,
+        'marker',
+        '--file-format',
+        'json'
+      ], { stdio: 'inherit' });
+      if (result.status !== 0) {
+        this.logger.error(`transloco-keys-manager failed with status ${result.status}`);
+      }
     }
     const packageJsonFilePath = this.utilsService.resolveFilePath(
       PACKAGE_JSON,
@@ -314,13 +346,13 @@ export class Extracti18nService {
       const packageJson = existsSync(packageJsonFilePath)
         ? JSON.parse(readFileSync(packageJsonFilePath).toString())
         : {};
-      packageJson.i18n = [
-        {
-          scope: projectName,
-          path: 'src/i18n',
-          strategy: 'join',
-        },
-      ];
+
+      packageJson.i18n = [{
+        scope: projectName,
+        path: 'src/i18n',
+        strategy: 'join',
+      }];
+
       markers.forEach((marker) => {
         if (
           existsSync(

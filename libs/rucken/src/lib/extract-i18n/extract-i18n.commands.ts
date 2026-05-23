@@ -25,21 +25,21 @@ export class Extracti18nCommands {
         description: 'list of available languages (example: ru,en)',
       },
       {
-        flags: '-rut,--reset-unused-translates [boolean]',
+        flags: '--reset-unused-translates [boolean]',
         description:
           'remove all translates if they not found in source code (default: true)',
         defaultValue: 'true',
       },
       {
-        flags: '-epnp,--e2e-project-name-parts [string]',
+        flags: '--e2e-project-name-parts [string]',
         defaultValue: 'e2e',
       },
       {
-        flags: '-cpnp,--client-project-name-parts [string]',
+        flags: '--client-project-name-parts [string]',
         defaultValue: 'client',
       },
       {
-        flags: '-spnp,--server-project-name-parts [string]',
+        flags: '--server-project-name-parts [string]',
         defaultValue: 'server,-ms',
       },
     ],

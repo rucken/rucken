@@ -45,31 +45,31 @@ export class PrepareCommands {
         description: 'list of available languages (example: ru,en)',
       },
       {
-        flags: '-dl,--default-locale [string]',
+        flags: '--default-locale [string]',
         description: 'default locale (default: en)',
       },
       {
-        flags: '-rut,--reset-unused-translates [boolean]',
+        flags: '--reset-unused-translates [boolean]',
         description:
           'remove all translates if they not found in source code (default: true)',
         defaultValue: 'true',
       },
       {
-        flags: '-upv,--update-package-version [boolean]',
+        flags: '--update-package-version [boolean]',
         description: 'update package version (default: true)',
       },
       {
-        flags: '-udv,--update-dependencies-version [boolean]',
+        flags: '--update-dependencies-version [boolean]',
         description: 'update dependencies version (default: true)',
       },
       {
-        flags: '-epnp,--e2e-project-name-parts [string]',
+        flags: '--e2e-project-name-parts [string]',
       },
       {
-        flags: '-cpnp,--client-project-name-parts [string]',
+        flags: '--client-project-name-parts [string]',
       },
       {
-        flags: '-spnp,--server-project-name-parts [string]',
+        flags: '--server-project-name-parts [string]',
       },
     ],
   })

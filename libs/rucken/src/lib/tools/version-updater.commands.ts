@@ -21,11 +21,11 @@ export class VersionUpdaterCommands {
     description: 'update versions in all nx applications',
     options: [
       {
-        flags: '-upv,--update-package-version [boolean]',
+        flags: '--update-package-version [boolean]',
         description: 'update package version (default: true)',
       },
       {
-        flags: '-udv,--update-dependencies-version [boolean]',
+        flags: '--update-dependencies-version [boolean]',
         description: 'update dependencies version (default: true)',
       },
     ],

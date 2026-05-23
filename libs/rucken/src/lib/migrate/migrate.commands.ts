@@ -19,12 +19,12 @@ export class MigrateCommands {
       'database migration tool, NodeJS version of Java migration tool - flyway, supported databases: PostrgeSQL',
     options: [
       {
-        flags: '-dry,--dry-run [boolean]',
+        flags: '--dry-run [boolean]',
         description:
           'show content of migrations without apply them in database (default: false)',
       },
       {
-        flags: '-db,--database-url [strings]',
+        flags: '--database-url [strings]',
         description:
           'database url for connect (example: postgres://POSTGRES_USER:POSTGRES_PASSWORD@localhost:POSTGRES_PORT/POSTGRES_DATABASE?schema=public)',
       },

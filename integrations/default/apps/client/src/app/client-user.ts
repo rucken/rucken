@@ -1,4 +1,4 @@
-import { marker } from '@ngneat/transloco-keys-manager/marker';
+import { marker } from '@jsverse/transloco-keys-manager/marker';
 import { getText } from 'class-validator-multi-lang';
 
 export class ClientUser {

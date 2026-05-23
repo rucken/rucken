@@ -32,7 +32,7 @@ export class CopyPasteCommands {
         required: true,
       },
       {
-        flags: '-fp,--find-plural [strings]',
+        flags: '--find-plural [strings]',
         description:
           'source text in plural in kebab-case, if not defined, it will be automatically detected programmatically (example: user-rules)',
       },
@@ -43,7 +43,7 @@ export class CopyPasteCommands {
         required: true,
       },
       {
-        flags: '-rp,--replace-plural [strings]',
+        flags: '--replace-plural [strings]',
         description:
           'destination text in plural in kebab-case, if not defined, it will be automatically detected programmatically (example: user-companies)',
       },
@@ -58,11 +58,11 @@ export class CopyPasteCommands {
           'extensions of files for copy paste, default: "ts,html,htm,scss,css,txt,json,yaml,yml,xml,js.esm,sh" (example: py,ini)',
       },
       {
-        flags: '-gr,--glob-rules [strings]',
+        flags: '--glob-rules [strings]',
         description: 'match files using the patterns the shell uses',
       },
       {
-        flags: '-re,--replace-envs [strings]',
+        flags: '--replace-envs [strings]',
         description:
           'do you need to replace environment variables when copying, you can specify a template, the default template is %key% (examples: "true", "%key%", "${key}")',
       },
